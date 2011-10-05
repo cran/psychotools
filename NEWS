@@ -1,0 +1,14 @@
+Changes in Version 0.1-1
+
+  o New "psychotools" package containing all 'base' infrastructure
+    previously contained in "psychotree". This is in order to provide
+    both methods and data that can be reused by "psychotree" and
+    the new package "psychomix" (as well as potentially further packages).
+    
+  o Classes: "paircomp" and associated methods.
+  
+  o Models: btReg.fit() and RaschModel.fit() and associated methods.
+  
+  o Data: Firstnames, GermanParties2009, Soundquality (previoulsy in
+    psychotree) and VerbalAggression (new data, contained in other
+    formatting in difR/verbal and lme4/VerbAgg).

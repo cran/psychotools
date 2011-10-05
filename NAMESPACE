@@ -1,0 +1,72 @@
+## imported packages (with generics etc.)
+import(
+  "stats",
+  "graphics"
+)
+
+export(
+  ## paircomp class and new generics
+  "paircomp",
+  "covariates",
+  "covariates<-",
+  "labels<-",
+  "mscale",
+  "mscale<-",
+
+  ## psychometric model fitters
+  "RaschModel.fit",
+  "btReg.fit",
+
+  ## auxiliary generics
+  "worth"
+)
+
+## methods for paircomp objects
+S3method("[", "paircomp")
+S3method("as.character", "paircomp")
+S3method("as.data.frame", "paircomp")
+S3method("as.double", "paircomp")
+S3method("as.integer", "paircomp")
+S3method("as.matrix", "paircomp")
+S3method("c", "paircomp")
+S3method("covariates", "paircomp")
+S3method("covariates<-", "paircomp")
+S3method("format", "paircomp")
+S3method("is.na", "paircomp")
+S3method("labels", "paircomp")
+S3method("labels<-", "paircomp")
+S3method("length", "paircomp")
+S3method("mscale", "paircomp")
+S3method("mscale<-", "paircomp")
+S3method("names", "paircomp")
+S3method("names<-", "paircomp")
+S3method("plot", "paircomp")
+S3method("print", "paircomp")
+S3method("reorder", "paircomp")
+S3method("rep", "paircomp")
+S3method("str", "paircomp")
+S3method("subset", "paircomp")
+S3method("summary", "paircomp")
+S3method("xtfrm", "paircomp")
+
+## methods for RaschModel objects
+S3method("coef", "RaschModel")
+S3method("logLik", "RaschModel")
+S3method("plot", "RaschModel")
+S3method("print", "RaschModel")
+S3method("print", "summary.RaschModel")
+S3method("summary", "RaschModel")
+S3method("vcov", "RaschModel")
+S3method("weights", "RaschModel")
+S3method("worth", "RaschModel")
+
+## methods for btReg objects
+S3method("coef", "btReg")
+S3method("deviance", "btReg")
+S3method("logLik", "btReg")
+S3method("plot", "btReg")
+S3method("print", "btReg")
+S3method("print", "summary.btReg")
+S3method("summary", "btReg")
+S3method("vcov", "btReg")
+S3method("worth", "btReg")
