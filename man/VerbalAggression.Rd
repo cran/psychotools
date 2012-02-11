@@ -42,7 +42,7 @@ age was 18.4.
 }
 
 \source{
-Onine materials accompanying De Boeck and Wilson (2004).
+Online materials accompanying De Boeck and Wilson (2004).
 
 \url{http://bear.soe.berkeley.edu/EIRM/}
 }

@@ -1,0 +1,788 @@
+
+R version 2.14.1 (2011-12-22)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "psychotools"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('psychotools')
+> 
+> assign(".oldSearch", search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("FirstNames")
+> ### * FirstNames
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: FirstNames
+> ### Title: Popularity of First Names
+> ### Aliases: FirstNames
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("FirstNames", package = "psychotools")
+> summary(FirstNames$preference)
+                      >   <
+Tim      : Lucas     87 105
+Tim      : Michael  103  89
+Lucas    : Michael  112  80
+Tim      : Robin    125  67
+Lucas    : Robin    129  63
+Michael  : Robin    106  86
+Tim      : Benedikt 140  52
+Lucas    : Benedikt 146  46
+Michael  : Benedikt 129  63
+Robin    : Benedikt 127  65
+Tim      : Julius   109  83
+Lucas    : Julius   120  72
+Michael  : Julius   103  89
+Robin    : Julius    95  97
+Benedikt : Julius    73 119
+> covariates(FirstNames$preference)
+         vowel
+Tim      front
+Lucas     back
+Michael  front
+Robin     back
+Benedikt front
+Julius    back
+> 
+> 
+> 
+> cleanEx()
+> nameEx("GermanParties2009")
+> ### * GermanParties2009
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: GermanParties2009
+> ### Title: Choice among German Political Parties
+> ### Aliases: GermanParties2009
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("GermanParties2009", package = "psychotools")
+> summary(GermanParties2009$preference)
+                    >   <
+none    : Linke   119  73
+none    : Gruene   25 167
+Linke   : Gruene   23 169
+none    : SPD      38 154
+Linke   : SPD      34 158
+Gruene  : SPD     124  68
+none    : CDU/CSU  69 123
+Linke   : CDU/CSU  76 116
+Gruene  : CDU/CSU 128  64
+SPD     : CDU/CSU 125  67
+none    : FDP      83 109
+Linke   : FDP      70 122
+Gruene  : FDP     137  55
+SPD     : FDP     134  58
+CDU/CSU : FDP     106  86
+> 
+> 
+> 
+> cleanEx()
+> nameEx("RaschModel.fit")
+> ### * RaschModel.fit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RaschModel.fit
+> ### Title: Rasch Model Fitting Function
+> ### Aliases: RaschModel.fit print.RaschModel summary.RaschModel
+> ###   print.summary.RaschModel coef.RaschModel worth.RaschModel
+> ###   logLik.RaschModel vcov.RaschModel
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Rasch model for the self-to-blame situations
+> m <- RaschModel.fit(VerbalAggression$resp2[, 1:12])
+> summary(m)
+
+Rasch model
+
+Difficulty parameters:
+              Estimate Std. Error z value Pr(>|z|)    
+S1DoCurse    1.910e-06  2.042e-01   0.000  0.99999    
+S1WantScold  6.857e-01  1.995e-01   3.436  0.00059 ***
+S1DoScold    8.727e-01  1.994e-01   4.376 1.21e-05 ***
+S1WantShout  1.208e+00  2.003e-01   6.032 1.62e-09 ***
+S1DoShout    2.294e+00  2.131e-01  10.766  < 2e-16 ***
+S2WantCurse -5.394e-01  2.135e-01  -2.527  0.01152 *  
+S2DoCurse    3.614e-01  2.009e-01   1.799  0.07199 .  
+S2WantScold  5.345e-01  2.000e-01   2.673  0.00753 ** 
+S2DoScold    1.359e+00  2.012e-01   6.755 1.42e-11 ***
+S2WantShout  1.283e+00  2.007e-01   6.395 1.61e-10 ***
+S2DoShout    3.067e+00  2.343e-01  13.088  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Log-likelihood: -1255 (df = 11) 
+Number of iterations in nlm optimization: 9 
+
+> plot(m)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SoundQuality")
+> ### * SoundQuality
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SoundQuality
+> ### Title: Quality of Multichannel Reproduced Sound
+> ### Aliases: SoundQuality
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("SoundQuality", package = "psychotools")
+> summary(SoundQuality$preference)
+                            >   <
+Mono        : PhantomMono 515 268
+Mono        : Stereo      737  46
+PhantomMono : Stereo      698  85
+Mono        : WideStereo  689  94
+PhantomMono : WideStereo  657 126
+Stereo      : WideStereo  315 468
+Mono        : Matrix      718  65
+PhantomMono : Matrix      684  99
+Stereo      : Matrix      392 391
+WideStereo  : Matrix      425 358
+Mono        : Upmix1      718  65
+PhantomMono : Upmix1      679 104
+Stereo      : Upmix1      340 443
+WideStereo  : Upmix1      389 394
+Matrix      : Upmix1      372 411
+Mono        : Upmix2      702  81
+PhantomMono : Upmix2      641 142
+Stereo      : Upmix2      279 504
+WideStereo  : Upmix2      347 436
+Matrix      : Upmix2      325 458
+Upmix1      : Upmix2      351 432
+Mono        : Original    722  61
+PhantomMono : Original    682 101
+Stereo      : Original    384 399
+WideStereo  : Original    414 369
+Matrix      : Original    402 381
+Upmix1      : Original    410 373
+Upmix2      : Original    450 333
+> ftable(xtabs(~ time + repet + progmat, data = SoundQuality))
+             progmat Beethoven Rachmaninov SteelyDan Sting
+time   repet                                              
+before 1                    39          39        40    39
+       2                    39          39        40    39
+       3                    39          39        40    39
+after  1                    39          39        39    39
+       2                    39          39        39    39
+       3                     0           0         0     0
+> 
+> 
+> 
+> cleanEx()
+> nameEx("StereotypeThreat")
+> ### * StereotypeThreat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: StereotypeThreat
+> ### Title: Stereotype Threat in Dutch Differential Aptitude Test
+> ### Aliases: StereotypeThreat
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## Data: Load and include/order wrt group variable
+> data("StereotypeThreat", package = "psychotools")
+> StereotypeThreat <- transform(StereotypeThreat, group = interaction(ethnicity, condition))
+> StereotypeThreat <- StereotypeThreat[order(StereotypeThreat$group),]
+> 
+> ## Exploratory analysis (Table 2, p. 703)
+> tab2 <- with(StereotypeThreat, rbind(
++    "#"         = tapply(numerical, group, length),
++    "Numerical" = tapply(numerical, group, mean),
++    "         " = tapply(numerical, group, sd),
++    "Abstract " = tapply(abstract,  group, mean),
++    "         " = tapply(abstract,  group, sd),
++    "Verbal   " = tapply(verbal,    group, mean),
++    "         " = tapply(verbal,    group, sd)))
+> round(tab2, digits = 2)
+          majority.control minority.control majority.threat minority.threat
+#                    79.00            65.00           78.00           73.00
+Numerical             5.35             4.88            5.49            4.67
+                      2.54             2.47            2.31            2.52
+Abstract             10.42             6.80            9.24            7.34
+                      2.96             3.33            3.34            2.83
+Verbal                7.27             5.37            6.65            5.56
+                      3.01             2.82            3.47            2.70
+> 
+> ## Corresponding boxplots
+> plot(numerical ~ group, data = StereotypeThreat)
+> plot(abstract  ~ group, data = StereotypeThreat)
+> plot(verbal    ~ group, data = StereotypeThreat)
+> 
+> ## MANOVA (p. 703)
+> m <- lm(cbind(numerical, abstract, verbal) ~ ethnicity * condition, data = StereotypeThreat)
+> anova(m, update(m, . ~ . - ethnicity:condition))
+Analysis of Variance Table
+
+Model 1: cbind(numerical, abstract, verbal) ~ ethnicity * condition
+Model 2: cbind(numerical, abstract, verbal) ~ ethnicity + condition
+  Res.Df Df Gen.var.   Pillai approx F num Df den Df  Pr(>F)  
+1    291      7.5292                                          
+2    292  1   7.5714 0.026692   2.6419      3    289 0.04961 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+> ## corresponding univariate results
+> printCoefmat(t(sapply(summary(m),
++   function(x) x$coefficients["ethnicityminority:conditionthreat", ])))
+                   Estimate Std. Error t value Pr(>|t|)  
+Response numerical -0.33844    0.57424 -0.5894  0.55607  
+Response abstract   1.71660    0.72798  2.3580  0.01903 *
+Response verbal     0.80439    0.70783  1.1364  0.25672  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+> 
+> ## MGCFA (Table 3, p. 704)
+> ## can be replicated using package lavaan
+> ## Not run: 
+> ##D ## Step 2: Fix loadings across groups
+> ##D m2  <- c(
+> ##D 'ability   =~ label(rep("load_n", 4)) * numerical  + 1 * abstract + label(rep("load_v", 4)) * verbal',
+> ##D 'ability   ~  0 * 1',
+> ##D 'ability   ~~ label(c("lvar:maj_c", "lvar:min_c", "lvar:maj_t", "lvar:min_t")) * ability',
+> ##D 
+> ##D 'numerical ~  label(c("mean_n:maj_c", "mean_n:min_c", "mean_n:maj_t", "mean_n:min_t")) * 1',
+> ##D 'abstract  ~  label(c("mean_a:maj_c", "mean_a:min_c", "mean_a:maj_t", "mean_a:min_t")) * 1',
+> ##D 'verbal    ~  label(c("mean_v:maj_c", "mean_v:min_c", "mean_v:maj_t", "mean_v:min_t")) * 1',
+> ##D 
+> ##D 'numerical ~~ label(c("var_n:maj_c", "var_n:min_c", "var_n:maj_t", "var_n:min_t")) * numerical',
+> ##D 'abstract  ~~ label(c("var_a:maj_c", "var_a:min_c", "var_a:maj_t", "var_a:min_t")) * abstract',
+> ##D 'verbal    ~~ label(c("var_v:maj_c", "var_v:min_c", "var_v:maj_t", "var_v:min_t")) * verbal')
+> ##D 
+> ##D ## Step 2a: Free numerical loading in group min_t (minority.threat)
+> ##D m2a <- m2
+> ##D m2a[1] <- 'ability   =~ label(c(rep("load_n", 3), "load_n:min_t")) * numerical  + 1 * abstract + label(rep("load_v", 4)) * verbal'
+> ##D 
+> ##D ## Step 3: Fix variances across groups
+> ##D m3 <- m2a
+> ##D m3[7:9] <- c(
+> ##D 'numerical ~~ label(rep("var_n", 4)) * numerical',
+> ##D 'abstract  ~~ label(rep("var_a", 4)) * abstract',
+> ##D 'verbal    ~~ label(rep("var_v", 4)) * verbal')
+> ##D 
+> ##D ## Step 3a: Free numerical variance in group min_t
+> ##D m3a <- m3
+> ##D m3a[7] <- 'numerical ~~ label(c(rep("var_n", 3), "var_n:min_t")) * numerical'
+> ##D 
+> ##D ## Step 4: Fix latent variances within conditions
+> ##D m4 <- m3a
+> ##D m4[3] <- 'ability   ~~ label(c("lvar:maj", "lvar:min", "lvar:maj", "lvar:min")) * ability'
+> ##D 
+> ##D ## Step 5: Fix certain means, free others
+> ##D m5 <- m4
+> ##D m5[c(2, 4:6)] <- c(
+> ##D 'ability   ~  label(c(NA, "lmean:min_c", "lmean:maj_t", "lmean:min_t")) * 1 + c(0, NA, NA, NA) * 1',
+> ##D 'numerical ~  label(c(rep("mean_n", 3), "mean_n:min_t")) * 1',
+> ##D 'abstract  ~  label(rep("mean_a", 4)) * 1',
+> ##D 'verbal    ~  label(rep("mean_v", 4)) * 1')
+> ##D 
+> ##D ## Step 5a: Free ability mean in group maj_c
+> ##D m5a <- m5
+> ##D m5a[5] <- 'abstract  ~  label(c("mean_a:maj_c", rep("mean_a", 3))) * 1'
+> ##D 
+> ##D ## Step 5b: Free ability mean in group min_c
+> ##D m5b <- m5a
+> ##D m5b[5] <- 'abstract  ~  label(c("mean_a:maj_c", "mean_a:min_c", rep("mean_a", 2))) * 1'
+> ##D 
+> ##D ## Step 6: Different latent mean structure
+> ##D m6 <- m5b
+> ##D m6[2] <- 'ability   ~  label(c("lmean:maj", NA, "lmean:maj", NA)) * 1 + c(NA, 0, NA, 0) * 1'
+> ##D 
+> ##D ## Fit all models
+> ##D m <- list(m2, m2a, m3, m3a, m4, m5, m5a, m5b, m6)
+> ##D names(m) <- c("2", "2a", "3", "3a", "4", "5", "5a", "5b", "6")
+> ##D fm <- lapply(m, function(f)
+> ##D   lavaan(f, data = StereotypeThreat, meanstructure = TRUE, group = "group", likelihood = "wishart"))
+> ##D 
+> ##D ## Extract measures of fit
+> ##D tab <- t(sapply(fm, fitMeasures, c("chisq", "df", "pvalue", "rmsea", "cfi")))
+> ##D tab <- rbind("1" = c(0, 0, 1, 0, 1), tab)
+> ##D tab <- cbind(tab,
+> ##D   delta_chisq = c(NA, abs(diff(tab[, "chisq"]))),
+> ##D   delta_df = c(NA, diff(tab[, "df"])))
+> ##D tab <- cbind(tab, "pvalue2" = pchisq(tab[, "delta_chisq"], abs(tab[, "delta_df"]), lower.tail = FALSE))
+> ##D tab <- tab[, c(2, 1, 3, 7, 6, 8, 4, 5)]
+> ##D round(tab, digits = 3)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("VerbalAggression")
+> ### * VerbalAggression
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: VerbalAggression
+> ### Title: Situation-Response Questionnaire on Verbal Aggression
+> ### Aliases: VerbalAggression
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Rasch model for the self-to-blame situations
+> m <- RaschModel.fit(VerbalAggression$resp2[, 1:12])
+> summary(m)
+
+Rasch model
+
+Difficulty parameters:
+              Estimate Std. Error z value Pr(>|z|)    
+S1DoCurse    1.910e-06  2.042e-01   0.000  0.99999    
+S1WantScold  6.857e-01  1.995e-01   3.436  0.00059 ***
+S1DoScold    8.727e-01  1.994e-01   4.376 1.21e-05 ***
+S1WantShout  1.208e+00  2.003e-01   6.032 1.62e-09 ***
+S1DoShout    2.294e+00  2.131e-01  10.766  < 2e-16 ***
+S2WantCurse -5.394e-01  2.135e-01  -2.527  0.01152 *  
+S2DoCurse    3.614e-01  2.009e-01   1.799  0.07199 .  
+S2WantScold  5.345e-01  2.000e-01   2.673  0.00753 ** 
+S2DoScold    1.359e+00  2.012e-01   6.755 1.42e-11 ***
+S2WantShout  1.283e+00  2.007e-01   6.395 1.61e-10 ***
+S2DoShout    3.067e+00  2.343e-01  13.088  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Log-likelihood: -1255 (df = 11) 
+Number of iterations in nlm optimization: 9 
+
+> plot(m)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("btReg.fit")
+> ### * btReg.fit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: btReg.fit
+> ### Title: Bradley-Terry Model Fitting Function
+> ### Aliases: btReg.fit print.btReg summary.btReg print.summary.btReg
+> ###   coef.btReg worth.btReg deviance.btReg logLik.btReg vcov.btReg
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> ## data
+> data("GermanParties2009", package = "psychotools")
+> 
+> ## Bradley-Terry model
+> bt <- btReg.fit(GermanParties2009$preference)
+> summary(bt)
+
+Bradley-Terry regression model
+
+Parameters:
+        Estimate Std. Error z value Pr(>|z|)    
+none    -0.37556    0.08902  -4.219 2.45e-05 ***
+Linke   -0.61607    0.09102  -6.768 1.30e-11 ***
+Gruene   1.18576    0.09507  12.473  < 2e-16 ***
+SPD      0.81310    0.09067   8.967  < 2e-16 ***
+CDU/CSU  0.17562    0.08750   2.007   0.0447 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Log-likelihood: -1717 (df = 5) 
+
+> plot(bt)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("covariates")
+> ### * covariates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: covariates
+> ### Title: Extract/Set Covariates
+> ### Aliases: covariates covariates<-
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## method for "paircomp" data
+> pc <- paircomp(rbind(
++   c(1,  1,  1), # a > b, a > c, b > c
++   c(1,  1, -1), # a > b, a > c, b < c
++   c(1, -1, -1), # a > b, a < c, b < c
++   c(1,  1,  1)))
+> covariates(pc)
+NULL
+> covariates(pc) <- data.frame(foo = factor(c(1, 2, 2), labels = c("foo", "bar")))
+> covariates(pc)
+  foo
+a foo
+b bar
+c bar
+> 
+> 
+> 
+> cleanEx()
+> nameEx("labels")
+> ### * labels
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: labels<-
+> ### Title: Set Labels
+> ### Aliases: labels<-
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## method for "paircomp" data
+> pc <- paircomp(rbind(
++   c(1,  1,  1), # a > b, a > c, b > c
++   c(1,  1, -1), # a > b, a > c, b < c
++   c(1, -1, -1), # a > b, a < c, b < c
++   c(1,  1,  1)))
+> labels(pc)
+[1] "a" "b" "c"
+> labels(pc) <- c("ah", "be", "ce")
+> pc
+[1] {ah > be, ah > ce, be > ce} {ah > be, ah > ce, be < ce}
+[3] {ah > be, ah < ce, be < ce} {ah > be, ah > ce, be > ce}
+> 
+> 
+> 
+> cleanEx()
+> nameEx("mscale")
+> ### * mscale
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: mscale
+> ### Title: Extract/Replace Measurement Scale
+> ### Aliases: mscale mscale<-
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## methods for "paircomp" data
+> pc <- paircomp(rbind(
++   c(2,  1,  0),
++   c(1,  1, -1),
++   c(1, -2, -1),
++   c(0,  0,  0)))
+> pc
+[1] {a >> b, a > c, b = c} {a > b, a > c, b < c}  {a > b, a << c, b < c}
+[4] {a = b, a = c, b = c} 
+> 
+> ## extract
+> mscale(pc)
+[1] -2 -1  0  1  2
+> 
+> ## replace (collapse to >/=/< scale)
+> mscale(pc) <- sign(mscale(pc))
+> pc
+[1] {a > b, a > c, b = c} {a > b, a > c, b < c} {a > b, a < c, b < c}
+[4] {a = b, a = c, b = c}
+> 
+> 
+> 
+> cleanEx()
+> nameEx("paircomp")
+> ### * paircomp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: paircomp
+> ### Title: Data Structure for Paired Comparisons
+> ### Aliases: paircomp length.paircomp c.paircomp [.paircomp rep.paircomp
+> ###   xtfrm.paircomp as.character.paircomp as.data.frame.paircomp
+> ###   as.double.paircomp as.integer.paircomp as.matrix.paircomp
+> ###   covariates.paircomp covariates<-.paircomp labels.paircomp
+> ###   labels<-.paircomp names.paircomp names<-.paircomp mscale.paircomp
+> ###   mscale<-.paircomp str.paircomp summary.paircomp is.na.paircomp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## a simple paired comparison
+> pc <- paircomp(rbind(
++   c(1,  1,  1), # a > b, a > c, b > c
++   c(1,  1, -1), # a > b, a > c, b < c
++   c(1, -1, -1), # a > b, a < c, b < c
++   c(1,  1,  1)))
+> 
+> ## basic methods
+> pc
+[1] {a > b, a > c, b > c} {a > b, a > c, b < c} {a > b, a < c, b < c}
+[4] {a > b, a > c, b > c}
+> str(pc)
+ Paired comparisons from 4 subjects for 3 objects: a, b, c.
+> summary(pc)
+      > <
+a : b 4 0
+a : c 3 1
+b : c 2 2
+> pc[2:3]
+[1] {a > b, a > c, b < c} {a > b, a < c, b < c}
+> c(pc[2], pc[c(1, 4)])
+[1] {a > b, a > c, b < c} {a > b, a > c, b > c} {a > b, a > c, b > c}
+> 
+> ## methods to extract/set attributes
+> labels(pc)
+[1] "a" "b" "c"
+> labels(pc) <- c("ah", "be", "ce")
+> pc
+[1] {ah > be, ah > ce, be > ce} {ah > be, ah > ce, be < ce}
+[3] {ah > be, ah < ce, be < ce} {ah > be, ah > ce, be > ce}
+> mscale(pc)
+[1] -1  1
+> covariates(pc)
+NULL
+> covariates(pc) <- data.frame(foo = factor(c(1, 2, 2), labels = c("foo", "bar")))
+> covariates(pc)
+   foo
+ah foo
+be bar
+ce bar
+> names(pc)
+NULL
+> names(pc) <- LETTERS[1:4]
+> pc
+                          A                           B 
+{ah > be, ah > ce, be > ce} {ah > be, ah > ce, be < ce} 
+                          C                           D 
+{ah > be, ah < ce, be < ce} {ah > be, ah > ce, be > ce} 
+> 
+> ## reorder() and subset() both select a subset of
+> ## objects and/or reorders the objects
+> reorder(pc, c("ce", "ah"))
+        A         B         C         D 
+{ce < ah} {ce < ah} {ce > ah} {ce < ah} 
+> 
+> 
+> ## include paircomp object in a data.frame
+> ## (i.e., with subject covariates)
+> dat <- data.frame(
++   x = rnorm(4),
++   y = factor(c(1, 2, 1, 1), labels = c("hansi", "beppi")))
+> dat$pc <- pc
+> dat
+           x     y                          pc
+1 -0.6264538 hansi {ah > be, ah > ce, be > ce}
+2  0.1836433 beppi {ah > be, ah > ce, be < ce}
+3 -0.8356286 hansi {ah > be, ah < ce, be < ce}
+4  1.5952808 hansi {ah > be, ah > ce, be > ce}
+> 
+> 
+> ## formatting with long(er) labels and extended scale
+> pc2 <- paircomp(rbind(
++   c(4,  1,  0),
++   c(1,  2, -1),
++   c(1, -2, -1),
++   c(0,  0,  -3)),
++   labels = c("Nordrhein-Westfalen", "Schleswig-Holstein", "Baden-Wuerttemberg"))
+> ## default: abbreviate
+> print(pc2)
+[1] {Nr-W 4> Sc-H, Nr-W > Bd-W, Sc-H = Bd-W}
+[2] {Nr-W > Sc-H, Nr-W 2> Bd-W, Sc-H < Bd-W}
+[3] {Nr-W > Sc-H, Nr-W 2< Bd-W, Sc-H < Bd-W}
+[4] {Nr-W = Sc-H, Nr-W = Bd-W, Sc-H 3< Bd-W}
+> print(pc2, abbreviate = FALSE)
+[1] {Nordrhein-Westfalen 4> Schleswig-Holstein, Nordrhein-Westfalen > Bad...}
+[2] {Nordrhein-Westfalen > Schleswig-Holstein, Nordrhein-Westfalen 2> Bad...}
+[3] {Nordrhein-Westfalen > Schleswig-Holstein, Nordrhein-Westfalen 2< Bad...}
+[4] {Nordrhein-Westfalen = Schleswig-Holstein, Nordrhein-Westfalen = Bade...}
+> print(pc2, abbreviate = FALSE, width = FALSE)
+[1] {Nordrhein-Westfalen 4> Schleswig-Holstein, Nordrhein-Westfalen > Baden-Wuerttemberg, Schleswig-Holstein = Baden-Wuerttemberg}
+[2] {Nordrhein-Westfalen > Schleswig-Holstein, Nordrhein-Westfalen 2> Baden-Wuerttemberg, Schleswig-Holstein < Baden-Wuerttemberg}
+[3] {Nordrhein-Westfalen > Schleswig-Holstein, Nordrhein-Westfalen 2< Baden-Wuerttemberg, Schleswig-Holstein < Baden-Wuerttemberg}
+[4] {Nordrhein-Westfalen = Schleswig-Holstein, Nordrhein-Westfalen = Baden-Wuerttemberg, Schleswig-Holstein 3< Baden-Wuerttemberg}
+> 
+> 
+> ## paired comparisons with object covariates
+> pc3 <- paircomp(rbind(
++   c(2,  1,  0),
++   c(1,  1, -1),
++   c(1, -2, -1),
++   c(0,  0,  0)),
++   labels = c("New York", "Rio", "Tokyo"),
++   covariates = data.frame(hemisphere = factor(c(1, 2, 1), labels = c("North", "South"))))
+> covariates(pc3)
+         hemisphere
+New York      North
+Rio           South
+Tokyo         North
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot.btReg")
+> ### * plot.btReg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot.btReg
+> ### Title: Visualizing Simple Rasch Models
+> ### Aliases: plot.btReg
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## data
+> data("GermanParties2009", package = "psychotools")
+> 
+> ## Bradley-Terry model
+> bt <- btReg.fit(GermanParties2009$preference)
+> plot(bt)
+> plot(bt, worth = FALSE)
+> plot(bt, index = FALSE)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot.paircomp")
+> ### * plot.paircomp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot.paircomp
+> ### Title: Plotting Paired Comparison Data
+> ### Aliases: plot.paircomp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> data("GermanParties2009", package = "psychotools")
+> par(mar = c(5, 6, 3, 6))
+> plot(GermanParties2009$preference, abbreviate = FALSE)
+> 
+> 
+> 
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("print.paircomp")
+> ### * print.paircomp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: print.paircomp
+> ### Title: Formatting Paired Comparison Data
+> ### Aliases: print.paircomp format.paircomp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> pc2 <- paircomp(rbind(
++   c(4,  1,  0),
++   c(1,  2, -1),
++   c(1, -2, -1),
++   c(0,  0,  -3)),
++   labels = c("New York", "Rio", "Tokyo"))
+> 
+> print(pc2)
+[1] {NwYr 4> Rio, NwYr > Toky, Rio = Toky}
+[2] {NwYr > Rio, NwYr 2> Toky, Rio < Toky}
+[3] {NwYr > Rio, NwYr 2< Toky, Rio < Toky}
+[4] {NwYr = Rio, NwYr = Toky, Rio 3< Toky}
+> print(pc2, abbreviate = FALSE)
+[1] {New York 4> Rio, New York > Tokyo, Rio = Tokyo}
+[2] {New York > Rio, New York 2> Tokyo, Rio < Tokyo}
+[3] {New York > Rio, New York 2< Tokyo, Rio < Tokyo}
+[4] {New York = Rio, New York = Tokyo, Rio 3< Tokyo}
+> print(pc2, abbreviate = FALSE, width = 10)
+[1] {New Y...} {New Y...} {New Y...} {New Y...}
+> 
+> 
+> 
+> cleanEx()
+> nameEx("subset.paircomp")
+> ### * subset.paircomp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: subset.paircomp
+> ### Title: Subsetting/Reordering Paired Comparison Data
+> ### Aliases: subset.paircomp reorder.paircomp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> pc <- paircomp(rbind(
++   c(1,  1,  1), # a > b, a > c, b > c
++   c(1,  1, -1), # a > b, a > c, b < c
++   c(1, -1, -1), # a > b, a < c, b < c
++   c(1,  1,  1)))
+> reorder(pc, c("c", "a"))
+[1] {c < a} {c < a} {c > a} {c < a}
+> 
+> 
+> 
+> cleanEx()
+> nameEx("worth")
+> ### * worth
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: worth
+> ### Title: Extract Worth Parameters
+> ### Aliases: worth
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## data
+> data("GermanParties2009", package = "psychotools")
+> 
+> ## Bradley-Terry model
+> bt <- btReg.fit(GermanParties2009$preference)
+> 
+> ## worth parameters
+> worth(bt)
+      none      Linke     Gruene        SPD    CDU/CSU        FDP 
+0.07677476 0.06036248 0.36583889 0.25202703 0.13322747 0.11176938 
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.008 0.096 1.136 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

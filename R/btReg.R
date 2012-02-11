@@ -19,15 +19,9 @@ btReg.fit <- function(y, weights = NULL,
   ix <- which(upper.tri(diag(nobj)), arr.ind = TRUE)
   
   ## weights
-  if(isTRUE(all.equal(weights, rep(1, nsubj)))) weights <- NULL
-  if(!is.null(weights)) {
-    stopifnot(length(weights) == nsubj)
-    if(!isTRUE(all.equal(weights, round(weights)))) stop("only case weights (integer) allowed")
-    weights <- as.integer(round(weights))
-    yorig <- y
-    y <- rep(y, weights)
-    nsubj <- length(y)
-  }
+  if(is.null(weights)) weights <- 1L
+  weights <- rep(weights, length.out = nsubj)
+  nsubj <- sum(weights > 0L)
 
   ## further arguments
   type <- match.arg(type, c("loglin", "logit"))
@@ -35,13 +29,13 @@ btReg.fit <- function(y, weights = NULL,
   if(is.character(ref)) ref <- match(ref, lab)
   if(is.null(undecided)) undecided <- has_ties
   if(undecided & type != "loglin") stop("only log-linear model can handle ties")  
-  if(!has_ties & undecided) stop("data have no ties")
+  if(!has_ties & undecided) stop("data have no ties") ## FIXME: set coef to NA and logprob to -Inf
   npar <- nobj - !undecided
   if(is.null(position)) position <- attr(y, "ordered")
   if(position) stop("position effects not yet implemented")
   
   ## basic aggregation quantities
-  ytab <- summary(y)
+  ytab <- summary(y, weights = weights)
   if(has_ties) ytab <- ytab[, c(1, 3, 2), drop = FALSE]
   if(!undecided) ytab <- ytab[, 1:2, drop = FALSE]
     
@@ -70,7 +64,7 @@ btReg.fit <- function(y, weights = NULL,
   }
 
   ## fit auxiliary model and extract information
-  fm <- glm.fit(xaux, yaux, family = famaux, control = glm.control(...))
+  fm <- suppressWarnings(glm.fit(xaux, yaux, family = famaux, control = glm.control(...)))
   par <- fm$coefficients[1:npar]
   vc <- summary.glm(fm, correlation = FALSE)$cov.unscaled[1:npar, 1:npar, drop = FALSE]
   names(par) <- rownames(vc) <- colnames(vc) <- c(lab[-ref], if(undecided) "(undecided)" else NULL)
@@ -94,7 +88,7 @@ btReg.fit <- function(y, weights = NULL,
   loglik <- sum(logp * ytab)
 
   ## raw original data
-  if(!is.null(weights)) y <- yorig
+##  if(!is.null(weights)) y <- yorig
   ymat <- as.matrix(y)
 
   ## estimating functions
@@ -119,8 +113,9 @@ btReg.fit <- function(y, weights = NULL,
     loglik = loglik,
     df = npar,
     estfun = ef,
-    weights = weights,
+    weights = if(isTRUE(all.equal(weights, rep(1, nsubj)))) NULL else weights,
     n = nsubj,
+    nobs = nsubj,
     type = type,
     ref = lab[ref],
     undecided = undecided,

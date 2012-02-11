@@ -162,7 +162,7 @@ str.paircomp <- function(object, width = getOption("width") - 7, ...)
   invisible(NULL)
 }
 
-summary.paircomp <- function(object, abbreviate = FALSE, decreasing = TRUE, pcmatrix = FALSE, ...)
+summary.paircomp <- function(object, abbreviate = FALSE, decreasing = TRUE, pcmatrix = FALSE, weights = NULL, ...)
 {
   ## data
   dat <- as.matrix(object)
@@ -201,7 +201,12 @@ summary.paircomp <- function(object, abbreviate = FALSE, decreasing = TRUE, pcma
   if(decreasing) cnam <- rev(cnam)
   if(any(is.na(dat))) cnam <- c(cnam, "NA's")
 
-  rval <- t(apply(dat, 2, function(x) table(factor(x, levels = mscale(object)))))
+  rval <- if(is.null(weights)) {
+    t(apply(dat, 2, function(x) table(factor(x, levels = mscale(object)))))
+  } else {
+    weights <- rep(weights, length.out = nrow(dat))
+    t(apply(dat, 2, function(x) xtabs(weights ~ factor(x, levels = mscale(object)))))
+  }
   if(decreasing) rval <- rval[, ncol(rval):1, drop = FALSE]
   if(any(is.na(dat))) rval <- cbind(rval, apply(dat, 2, function(x) sum(is.na(x))))
   dimnames(rval) <- list(rnam, cnam)

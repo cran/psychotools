@@ -1,3 +1,17 @@
+Changes in Version 0.1-2
+
+  o Support of non-integer weights in btReg.fit(). To facilitate this,
+    summary.paircomp() gained a weights argument so that optionally
+    the weights are aggregated instead of observations counted.  
+  
+  o Actually pass on nlm() arguments from RaschModel.fit(). Also
+    support iterlim = 0, i.e., set up model at pre-specified parameters.
+  
+  o Added StereotypeThreat data from Wicherts, Conor, Hessen (2005, JPSP),
+    provided by Jelte M. Wicherts. Replication code is provided in the
+    examples (the parts depending on lavaan are in \dontrun).
+
+
 Changes in Version 0.1-1
 
   o New "psychotools" package containing all 'base' infrastructure

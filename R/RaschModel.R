@@ -1,6 +1,6 @@
 ## workhorse fitting function
 RaschModel.fit <- function(y, weights = NULL, start = NULL, gradtol = 1e-6, 
-  deriv = c("sum", "diff", "numeric"), hessian = TRUE, ...)
+  deriv = c("sum", "diff", "numeric"), hessian = TRUE, iterlim = 100, ...)
 {
   ## argument matching
   deriv <- match.arg(deriv)
@@ -243,8 +243,17 @@ RaschModel.fit <- function(y, weights = NULL, start = NULL, gradtol = 1e-6,
   }
   
   ## optimization
+  if(iterlim > 0L) {
   opt <- nlm(cloglik, start, gradtol = gradtol, 
-    hessian = (deriv == "numeric") & hessian, check.analyticals = FALSE)
+    hessian = (deriv == "numeric") & hessian, check.analyticals = FALSE, iterlim = iterlim, ...)
+  } else {
+    opt <- list(
+      estimate = start,
+      minimum = cloglik(start),
+      hessian = if(deriv == "numeric") ahessian(start, esf) else NULL, ## no numeric Hessian available here
+      iterations = 0,
+      code = 4)
+  }
   
   ## collect and annotate results
   cf <- opt$estimate
