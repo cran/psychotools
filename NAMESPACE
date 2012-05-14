@@ -17,6 +17,9 @@ export(
   "RaschModel.fit",
   "btReg.fit",
 
+  ## tools
+  "elementary_symmetric_functions",
+
   ## auxiliary generics
   "worth"
 )

@@ -1,3 +1,10 @@
+Changes in Version 0.1-3
+
+  o Fully exported elementary_symmetric_functions(). (An extended C
+    implementation is under development and will be included in
+    future releases.)
+
+
 Changes in Version 0.1-2
 
   o Support of non-integer weights in btReg.fit(). To facilitate this,
