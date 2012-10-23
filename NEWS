@@ -1,3 +1,11 @@
+Changes in Version 0.1-4
+
+  o Added YouthGratitude data from Froh, Fan, Emmons, Bono, Huebner, Watkins
+    (2011, PA), provided by Jeff Froh and Jinyan Fan. Some approximate
+    replication code is provided in the examples (the parts depending on
+    lavaan are in \dontrun).
+
+
 Changes in Version 0.1-3
 
   o Fully exported elementary_symmetric_functions(). (An extended C

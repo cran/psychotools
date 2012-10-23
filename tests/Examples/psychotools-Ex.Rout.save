@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -381,6 +381,146 @@ Log-likelihood: -1255 (df = 11)
 Number of iterations in nlm optimization: 9 
 
 > plot(m)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("YouthGratitude")
+> ### * YouthGratitude
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: YouthGratitude
+> ### Title: Measuring Gratitude in Youth
+> ### Aliases: YouthGratitude
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("YouthGratitude", package = "psychotools")
+> summary(YouthGratitude)
+       id              age         agegroup       gq6_1           gq6_2      
+ Min.   :   1.0   Min.   :10.00   10-11:217   Min.   :1.000   Min.   :1.000  
+ 1st Qu.: 244.8   1st Qu.:13.00   12-13:194   1st Qu.:6.000   1st Qu.:5.000  
+ Median : 498.5   Median :15.00   14   :211   Median :6.000   Median :6.000  
+ Mean   : 511.5   Mean   :14.47   15   :249   Mean   :6.111   Mean   :5.856  
+ 3rd Qu.: 778.2   3rd Qu.:16.00   16   :260   3rd Qu.:7.000   3rd Qu.:7.000  
+ Max.   :1098.0   Max.   :19.00   17-19:274   Max.   :7.000   Max.   :7.000  
+ NA's   :1                                                                   
+     gq6_3          gq6_4           gq6_5           gq6_6           gac_1      
+ Min.   :1.00   Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:5.00   1st Qu.:5.000   1st Qu.:5.000   1st Qu.:3.000   1st Qu.:3.000  
+ Median :6.00   Median :6.000   Median :6.000   Median :4.000   Median :4.000  
+ Mean   :5.72   Mean   :5.551   Mean   :5.918   Mean   :4.453   Mean   :3.817  
+ 3rd Qu.:7.00   3rd Qu.:6.000   3rd Qu.:7.000   3rd Qu.:6.000   3rd Qu.:5.000  
+ Max.   :7.00   Max.   :7.000   Max.   :7.000   Max.   :7.000   Max.   :5.000  
+                                                                               
+     gac_2           gac_3           losd_1          losd_2     
+ Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:3.000   1st Qu.:3.000   1st Qu.:6.000   1st Qu.:4.000  
+ Median :4.000   Median :4.000   Median :7.000   Median :6.000  
+ Mean   :3.886   Mean   :3.966   Mean   :7.133   Mean   :5.734  
+ 3rd Qu.:5.000   3rd Qu.:5.000   3rd Qu.:9.000   3rd Qu.:8.000  
+ Max.   :5.000   Max.   :5.000   Max.   :9.000   Max.   :9.000  
+                                                                
+     losd_3          losd_4          losd_5          losd_6     
+ Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:3.000   1st Qu.:3.000   1st Qu.:4.000   1st Qu.:4.000  
+ Median :5.000   Median :5.000   Median :6.000   Median :5.000  
+ Mean   :5.289   Mean   :5.345   Mean   :5.846   Mean   :5.389  
+ 3rd Qu.:8.000   3rd Qu.:8.000   3rd Qu.:9.000   3rd Qu.:7.000  
+ Max.   :9.000   Max.   :9.000   Max.   :9.000   Max.   :9.000  
+                                                                
+      sa_1            sa_2            sa_3            sa_4      
+ Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:3.000   1st Qu.:2.000   1st Qu.:4.000   1st Qu.:5.000  
+ Median :5.000   Median :5.000   Median :5.000   Median :6.000  
+ Mean   :5.035   Mean   :4.696   Mean   :5.444   Mean   :5.723  
+ 3rd Qu.:7.000   3rd Qu.:6.000   3rd Qu.:7.000   3rd Qu.:7.607  
+ Max.   :9.000   Max.   :9.000   Max.   :9.000   Max.   :9.000  
+                                                                
+      sa_5            sa_6            ao_1            ao_2      
+ Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:6.000   1st Qu.:7.000   1st Qu.:6.000   1st Qu.:6.000  
+ Median :7.000   Median :9.000   Median :7.000   Median :7.000  
+ Mean   :7.052   Mean   :7.669   Mean   :6.772   Mean   :6.739  
+ 3rd Qu.:9.000   3rd Qu.:9.000   3rd Qu.:9.000   3rd Qu.:8.000  
+ Max.   :9.000   Max.   :9.000   Max.   :9.000   Max.   :9.000  
+                                                                
+      ao_3            ao_4       
+ Min.   :1.000   Min.   : 1.000  
+ 1st Qu.:5.000   1st Qu.: 6.000  
+ Median :7.000   Median : 7.000  
+ Mean   :6.404   Mean   : 7.278  
+ 3rd Qu.:8.000   3rd Qu.: 9.000  
+ Max.   :9.000   Max.   :34.203  
+                                 
+> 
+> ## modeling can be carried out using package lavaan
+> ## Not run: 
+> ##D ## remove cases with 'imputed' values (not in 1, ..., 9)
+> ##D yg <- YouthGratitude[apply(YouthGratitude[, 4:28], 1, function(x) all(x ##D 
+> ##D 
+> ##D ## GQ-6
+> ##D gq6_congeneric <- cfa(
+> ##D   'f1 =~ gq6_1 + gq6_2 + gq6_3 + gq6_4 + gq6_5',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE)
+> ##D gq6_tauequivalent <- cfa(
+> ##D   'f1 =~ gq6_1 + gq6_2 + gq6_3 + gq6_4 + gq6_5',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE,
+> ##D   group.equal = "loadings")
+> ##D gq6_parallel <- cfa(
+> ##D   'f1 =~ gq6_1 + gq6_2 + gq6_3 + gq6_4 + gq6_5',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE,
+> ##D   group.equal = c("loadings", "residuals", "lv.variances"))
+> ##D anova(gq6_congeneric, gq6_tauequivalent, gq6_parallel)
+> ##D t(sapply(
+> ##D   list(gq6_congeneric, gq6_tauequivalent, gq6_parallel),
+> ##D   function(m) fitMeasures(m)[c("chisq", "df", "cfi", "srmr")]
+> ##D ))
+> ##D 
+> ##D ## GAC
+> ##D gac_congeneric <- cfa(
+> ##D   'f1 =~ gac_1 + gac_2 + gac_3',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE)
+> ##D gac_tauequivalent <- cfa(
+> ##D   'f1 =~ gac_1 + gac_2 + gac_3',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE,
+> ##D   group.equal = "loadings")
+> ##D gac_parallel <- cfa(
+> ##D   'f1 =~ gac_1 + gac_2 + gac_3',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE,
+> ##D   group.equal = c("loadings", "residuals", "lv.variances"))
+> ##D anova(gac_congeneric, gac_tauequivalent, gac_parallel)
+> ##D t(sapply(
+> ##D   list(gac_congeneric, gac_tauequivalent, gac_parallel),
+> ##D   function(m) fitMeasures(m)[c("chisq", "df", "cfi", "srmr")]
+> ##D ))
+> ##D 
+> ##D ## GRAT
+> ##D grat_congeneric <- cfa(
+> ##D   'f1 =~ losd_2 + losd_3 + losd_4 + losd_5 + losd_6
+> ##D    f2 =~ sa_1 + sa_2 + sa_3 + sa_4 + sa_5 + sa_6
+> ##D    f3 =~ ao_1 + ao_2 + ao_3 + ao_4',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE)
+> ##D grat_tauequivalent <- cfa(
+> ##D   'f1 =~ losd_2 + losd_3 + losd_4 + losd_5 + losd_6
+> ##D    f2 =~ sa_1 + sa_2 + sa_3 + sa_4 + sa_5 + sa_6
+> ##D    f3 =~ ao_1 + ao_2 + ao_3 + ao_4',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE,
+> ##D   group.equal = "loadings")
+> ##D grat_parallel <- cfa(
+> ##D   'f1 =~ losd_2 + losd_3 + losd_4 + losd_5 + losd_6
+> ##D    f2 =~ sa_1 + sa_2 + sa_3 + sa_4 + sa_5 + sa_6
+> ##D    f3 =~ ao_1 + ao_2 + ao_3 + ao_4',
+> ##D   data = yg, group = "agegroup", meanstructure = TRUE,
+> ##D   group.equal = c("loadings", "residuals", "lv.variances"))
+> ##D anova(grat_congeneric, grat_tauequivalent, grat_parallel)
+> ##D t(sapply(
+> ##D   list(grat_congeneric, grat_tauequivalent, grat_parallel),
+> ##D   function(m) fitMeasures(m)[c("chisq", "df", "cfi", "srmr")]
+> ##D ))
+> ## End(Not run)
 > 
 > 
 > 
@@ -776,7 +916,7 @@ Tokyo         North
 > ### * <FOOTER>
 > ###
 > cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  1.008 0.096 1.136 0 0 
+Time elapsed:  0.976 0.048 1.026 0 0 
 > grDevices::dev.off()
 null device 
           1 

@@ -1,16 +1,13 @@
 Package: psychotools
 Title: Infrastructure for Psychometric Modeling
-Version: 0.1-3
-Date: 2012-05-14
+Version: 0.1-4
+Date: 2012-10-23
 Authors@R: c(person(given = "Achim", family = "Zeileis", role =
         c("aut", "cre"), email = "Achim.Zeileis@R-project.org"),
         person(given = "Carolin", family = "Strobl", role = "aut",
         email = "Carolin.Strobl@psychologie.uzh.ch"), person(given =
         "Florian", family = "Wickelmaier", role = "aut", email =
         "Florian.Wickelmaier@uni-tuebingen.de"))
-Author: Achim Zeileis [aut, cre], Carolin Strobl [aut], Florian
-        Wickelmaier [aut]
-Maintainer: Achim Zeileis <Achim.Zeileis@R-project.org>
 Depends: R (>= 2.10.0), stats
 Imports: graphics, stats
 Description: Infrastructure for psychometric modeling such as data
@@ -20,6 +17,9 @@ Description: Infrastructure for psychometric modeling such as data
         mixture models in package "psychomix" and psychometric tree
         models in package "psychotree".
 License: GPL-2
-Packaged: 2012-05-14 21:25:43 UTC; zeileis
+Packaged: 2012-10-23 07:18:46 UTC; zeileis
+Author: Achim Zeileis [aut, cre], Carolin Strobl [aut], Florian
+        Wickelmaier [aut]
+Maintainer: Achim Zeileis <Achim.Zeileis@R-project.org>
 Repository: CRAN
-Date/Publication: 2012-05-14 22:33:31
+Date/Publication: 2012-10-23 07:23:56
