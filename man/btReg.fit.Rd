@@ -19,7 +19,8 @@
 
 \usage{
 btReg.fit(y, weights = NULL, type = c("loglin", "logit"), ref = NULL,
-  undecided = NULL, position = NULL, \dots)
+  undecided = NULL, position = NULL, start = NULL, vcov = TRUE, estfun = TRUE,
+  \dots)
 }
 
 \arguments{
@@ -32,12 +33,17 @@ btReg.fit(y, weights = NULL, type = c("loglin", "logit"), ref = NULL,
     category, i.e., constrained to zero?}
   \item{undecided}{logical. Should an undecided parameter be estimated?}
   \item{position}{logical. Should a position effect be estimated?}
+  \item{start}{numeric. Starting values when calling \code{\link[stats]{glm.fit}}.}
+  \item{vcov}{logical. Should the estimated variance-covariance be included in
+    the fitted model object?}
+  \item{estfun}{logical. Should the empirical estimating functions (score/gradient
+    contributions be included in the fitted model object?}
   \item{\dots}{further arguments passed to functions.}
 }
 
 \details{
-  \code{btReg.fit} provides a basic fitting function for simple Rasch models,
-  intended as a building block for fitting Rasch trees and Rasch mixtures
+  \code{btReg.fit} provides a basic fitting function for Bradley-Terry models,
+  intended as a building block for fitting Bradley-Terry trees and Bradley-Terry mixtures
   in the \pkg{psychotree} package, respectively.
   
   \code{btReg.fit} returns an object of class \code{"btReg"} for which
@@ -63,7 +69,7 @@ btReg.fit(y, weights = NULL, type = c("loglin", "logit"), ref = NULL,
   \item{labels}{character labels of the objects compared.}
 }
 
-\seealso{\code{\link{RaschModel.fit}}}
+\seealso{\code{\link{PCModel.fit}}, \code{\link{RSModel.fit}}, \code{\link{RaschModel.fit}}}
 
 \examples{
 ## data

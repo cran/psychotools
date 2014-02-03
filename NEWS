@@ -1,3 +1,33 @@
+Changes in Version 0.2-0
+
+  o Major update with new model fitting functions (partial credit and
+    rating scale model) and improved infrastructure for conditional
+    maximum likelihood estimation (C implementation of elementary
+    symmetric functions).
+    
+  o Partial credit models (PCMs) can be fitted with the function
+    PCModel.fit(). The interface and return value is similar to that
+    of RaschModel.fit().
+
+  o Rating scale models (RSMs) can be fitted with the function
+    RSModel.fit(). The interface and return value is similar to that
+    of RaschModel.fit() and PCModel.fit().
+
+  o The function elementary_symmetric_functions() for computing ESFs
+    is extended and now part of the exported user interface. The
+    R implementation for binary items up to order 2 is complemented
+    by a C implementation for both binary and polytomous items
+    up to order 1.
+
+  o Due to numerical instabilities in the coefficients and standard 
+    errors between different architectures, the optimization method
+    for Rasch/RSModel/PCModel.fit() was changed from nlm(...) to 
+    optim(..., method = "BFGS"). Consequently, the arguments "reltol"
+    and "maxit" are used now instead of "gradtol" and "iterlim". For
+    backward compatibility RaschModel.fit() still supports the old
+    arguments but might cease to do so in future releases.
+
+
 Changes in Version 0.1-4
 
   o Added YouthGratitude data from Froh, Fan, Emmons, Bono, Huebner, Watkins

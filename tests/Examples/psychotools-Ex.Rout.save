@@ -1,8 +1,7 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
-Platform: x86_64-pc-linux-gnu (64-bit)
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -21,7 +20,7 @@ Type 'q()' to quit R.
 > options(warn = 1)
 > library('psychotools')
 > 
-> assign(".oldSearch", search(), pos = 'CheckExEnv')
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 > cleanEx()
 > nameEx("FirstNames")
 > ### * FirstNames
@@ -99,6 +98,178 @@ CDU/CSU : FDP     106  86
 > 
 > 
 > cleanEx()
+> nameEx("MemoryDeficits")
+> ### * MemoryDeficits
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: MemoryDeficits
+> ### Title: Memory Deficits in Psychiatric Patients
+> ### Aliases: MemoryDeficits
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("MemoryDeficits", package = "psychotools")
+> aggregate(cbind(E1, E2, E3, E4) ~ trial + group, MemoryDeficits, sum)
+   trial      group  E1 E2  E3  E4
+1      1     Schizo  31 15 154 380
+2      2     Schizo  79 45 163 293
+3      3     Schizo 127 63 160 230
+4      4     Schizo 148 74 149 209
+5      5     Schizo 176 73 152 179
+6      6     Schizo 198 67 138 177
+7      1  SchizoCtl  49 31 149 271
+8      2  SchizoCtl 116 66 151 167
+9      3  SchizoCtl 190 66 136 108
+10     4  SchizoCtl 243 68 108  81
+11     5  SchizoCtl 269 77  81  73
+12     6  SchizoCtl 301 76  71  52
+13     1 OrganicAlc  20  9  91 300
+14     2 OrganicAlc  34 18 102 266
+15     3 OrganicAlc  43 30 102 245
+16     4 OrganicAlc  57 25 114 224
+17     5 OrganicAlc  58 35  98 229
+18     6 OrganicAlc  65 29 100 226
+19     1     AlcCtl  45 24  97 254
+20     2     AlcCtl 106 41 107 166
+21     3     AlcCtl 171 40 110  99
+22     4     AlcCtl 202 50  79  89
+23     5     AlcCtl 217 64  69  70
+24     6     AlcCtl 243 64  65  48
+> 
+> 
+> 
+> cleanEx()
+> nameEx("PCModel.fit")
+> ### * PCModel.fit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PCModel.fit
+> ### Title: Partial Credit Model Fitting Function
+> ### Aliases: PCModel.fit print.PCModel summary.PCModel
+> ###   print.summary.PCModel coef.PCModel logLik.PCModel vcov.PCModel
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Partial credit model for the other-to-blame situations
+> pcm <- PCModel.fit(VerbalAggression$resp[, 1:12])
+> summary(pcm)
+
+Partial credit model
+
+Item category parameters:
+               Estimate Std. Error z value Pr(>|z|)    
+S1WantCurse-C2  0.43145    0.25453   1.695 0.090062 .  
+S1DoCurse-C1   -0.10659    0.21858  -0.488 0.625811    
+S1DoCurse-C2    0.59544    0.35874   1.660 0.096954 .  
+S1WantScold-C1  0.56366    0.21616   2.608 0.009118 ** 
+S1WantScold-C2  1.25444    0.35762   3.508 0.000452 ***
+S1DoScold-C1    0.58144    0.21183   2.745 0.006053 ** 
+S1DoScold-C2    1.70747    0.36228   4.713 2.44e-06 ***
+S1WantShout-C1  0.76676    0.20960   3.658 0.000254 ***
+S1WantShout-C2  2.30309    0.36960   6.231 4.63e-10 ***
+S1DoShout-C1    1.62445    0.21789   7.455 8.97e-14 ***
+S1DoShout-C2    3.47896    0.38894   8.945  < 2e-16 ***
+S2WantCurse-C1 -0.56274    0.22857  -2.462 0.013818 *  
+S2WantCurse-C2 -0.07855    0.36200  -0.217 0.828213    
+S2DoCurse-C1    0.24407    0.21621   1.129 0.258966    
+S2DoCurse-C2    0.95149    0.35768   2.660 0.007809 ** 
+S2WantScold-C1  0.39773    0.21547   1.846 0.064912 .  
+S2WantScold-C2  1.14034    0.35789   3.186 0.001441 ** 
+S2DoScold-C1    0.91216    0.21077   4.328 1.51e-05 ***
+S2DoScold-C2    2.41128    0.37018   6.514 7.33e-11 ***
+S2WantShout-C1  0.94530    0.21337   4.430 9.41e-06 ***
+S2WantShout-C2  2.11747    0.36503   5.801 6.60e-09 ***
+S2DoShout-C1    2.12473    0.22734   9.346  < 2e-16 ***
+S2DoShout-C2    4.40992    0.41996  10.501  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Log-likelihood: -2475 (df = 23) 
+Number of iterations in BFGS optimization: 32 
+
+> plot(pcm)
+> 
+> ## Get data of situation 1 ('A bus fails to
+> ## stop for me') and induce a null category in item 2.
+> pcd <- VerbalAggression$resp[, 1:6, drop = FALSE]
+> pcd[pcd[, 2] == 1, 2] <- NA
+> 
+> ## fit pcm to these data, comparing downcoding and keeping strategy
+> pcm_va_keep  <- PCModel.fit(pcd, nullcats = "keep")
+Warning in PCModel.fit(pcd, nullcats = "keep") :
+  There are items with null categories (I2).
+> pcm_va_down  <- PCModel.fit(pcd, nullcats = "downcode")
+Warning in PCModel.fit(pcd, nullcats = "downcode") :
+  There are items with null categories (I2).
+> 
+> plot(x = coef(pcm_va_keep), y = coef(pcm_va_down),
++      xlab = "Threshold Parameters (Downcoding)",
++      ylab = "Threshold Parameters (Keeping)",
++      main = "Comparison of two null category strategies (I2 with null category)", 
++      pch = rep(as.character(1:6), each = 2)[-3])
+> abline(b = 1, a = 0)
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("RSModel.fit")
+> ### * RSModel.fit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RSModel.fit
+> ### Title: Rating Scale Model Fitting Function
+> ### Aliases: RSModel.fit print.RSModel summary.RSModel
+> ###   print.summary.RSModel coef.RSModel logLik.RSModel vcov.RSModel
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Rating scale model for the other-to-blame situations
+> rsm <- RSModel.fit(VerbalAggression$resp[, 1:12])
+> summary(rsm)
+
+Rating scale model
+
+Item location and threshold parameters:
+            Estimate Std. Error z value Pr(>|z|)    
+S1DoCurse    0.08993    0.11766   0.764 0.444669    
+S1WantScold  0.42045    0.11812   3.560 0.000371 ***
+S1DoScold    0.63786    0.11936   5.344 9.09e-08 ***
+S1WantShout  0.91614    0.12201   7.509 5.96e-14 ***
+S1DoShout    1.56572    0.13298  11.774  < 2e-16 ***
+S2WantCurse -0.21823    0.11886  -1.836 0.066365 .  
+S2DoCurse    0.26187    0.11768   2.225 0.026062 *  
+S2WantScold  0.35824    0.11790   3.039 0.002377 ** 
+S2DoScold    0.98491    0.12284   8.018 1.08e-15 ***
+S2WantShout  0.86353    0.12141   7.112 1.14e-12 ***
+S2DoShout    2.05975    0.14660  14.050  < 2e-16 ***
+C2           0.50240    0.08499   5.911 3.40e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Log-likelihood: -2481 (df = 12) 
+Number of iterations in BFGS optimization: 19 
+
+> plot(rsm)
+> 
+> 
+> 
+> 
+> cleanEx()
 > nameEx("RaschModel.fit")
 > ### * RaschModel.fit
 > 
@@ -116,7 +287,7 @@ CDU/CSU : FDP     106  86
 > ## Verbal aggression data
 > data("VerbalAggression", package = "psychotools")
 > 
-> ## Rasch model for the self-to-blame situations
+> ## Rasch model for the other-to-blame situations
 > m <- RaschModel.fit(VerbalAggression$resp2[, 1:12])
 > summary(m)
 
@@ -124,22 +295,22 @@ Rasch model
 
 Difficulty parameters:
               Estimate Std. Error z value Pr(>|z|)    
-S1DoCurse    1.910e-06  2.042e-01   0.000  0.99999    
+S1DoCurse   -1.556e-08  2.042e-01   0.000  1.00000    
 S1WantScold  6.857e-01  1.995e-01   3.436  0.00059 ***
 S1DoScold    8.727e-01  1.994e-01   4.376 1.21e-05 ***
 S1WantShout  1.208e+00  2.003e-01   6.032 1.62e-09 ***
 S1DoShout    2.294e+00  2.131e-01  10.766  < 2e-16 ***
-S2WantCurse -5.394e-01  2.135e-01  -2.527  0.01152 *  
-S2DoCurse    3.614e-01  2.009e-01   1.799  0.07199 .  
+S2WantCurse -5.393e-01  2.135e-01  -2.527  0.01152 *  
+S2DoCurse    3.614e-01  2.009e-01   1.799  0.07200 .  
 S2WantScold  5.345e-01  2.000e-01   2.673  0.00753 ** 
 S2DoScold    1.359e+00  2.012e-01   6.755 1.42e-11 ***
 S2WantShout  1.283e+00  2.007e-01   6.395 1.61e-10 ***
 S2DoShout    3.067e+00  2.343e-01  13.088  < 2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Log-likelihood: -1255 (df = 11) 
-Number of iterations in nlm optimization: 9 
+Number of iterations in BFGS optimization: 19 
 
 > plot(m)
 > 
@@ -202,6 +373,38 @@ after  1                    39          39        39    39
 > 
 > 
 > cleanEx()
+> nameEx("SourceMonitoring")
+> ### * SourceMonitoring
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SourceMonitoring
+> ### Title: Performance in a Source-Monitoring Experiment
+> ### Aliases: SourceMonitoring
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("SourceMonitoring", package = "psychotools")
+> xtabs(~ gender + I(age >= 30) + sources, SourceMonitoring)
+, , sources = think-say
+
+        I(age >= 30)
+gender   FALSE TRUE
+  female    16   16
+  male      16   16
+
+, , sources = write-say
+
+        I(age >= 30)
+gender   FALSE TRUE
+  female    16   16
+  male      16   16
+
+> 
+> 
+> 
+> cleanEx()
 > nameEx("StereotypeThreat")
 > ### * StereotypeThreat
 > 
@@ -254,7 +457,7 @@ Model 2: cbind(numerical, abstract, verbal) ~ ethnicity + condition
 1    291      7.5292                                          
 2    292  1   7.5714 0.026692   2.6419      3    289 0.04961 *
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > ## corresponding univariate results
 > printCoefmat(t(sapply(summary(m),
 +   function(x) x$coefficients["ethnicityminority:conditionthreat", ])))
@@ -263,77 +466,62 @@ Response numerical -0.33844    0.57424 -0.5894  0.55607
 Response abstract   1.71660    0.72798  2.3580  0.01903 *
 Response verbal     0.80439    0.70783  1.1364  0.25672  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > 
 > ## MGCFA (Table 3, p. 704)
 > ## can be replicated using package lavaan
 > ## Not run: 
+> ##D ## convenience function for multi-group CFA on this data
+> ##D mgcfa <- function(model, ...) cfa(model, data = StereotypeThreat,
+> ##D   group = "group", likelihood = "wishart", start = "simple", ...)
+> ##D 		 
+> ##D ## list of all 9 models
+> ##D m <- vector("list", length = 9)
+> ##D names(m) <- c("m2", "m2a", "m3", "m3a", "m4", "m5", "m5a", "m5b", "m6")
+> ##D 
 > ##D ## Step 2: Fix loadings across groups
-> ##D m2  <- c(
-> ##D 'ability   =~ label(rep("load_n", 4)) * numerical  + 1 * abstract + label(rep("load_v", 4)) * verbal',
-> ##D 'ability   ~  0 * 1',
-> ##D 'ability   ~~ label(c("lvar:maj_c", "lvar:min_c", "lvar:maj_t", "lvar:min_t")) * ability',
+> ##D f <- 'ability =~ abstract + verbal + numerical'
+> ##D m$m2 <- mgcfa(f, group.equal = "loadings")
 > ##D 
-> ##D 'numerical ~  label(c("mean_n:maj_c", "mean_n:min_c", "mean_n:maj_t", "mean_n:min_t")) * 1',
-> ##D 'abstract  ~  label(c("mean_a:maj_c", "mean_a:min_c", "mean_a:maj_t", "mean_a:min_t")) * 1',
-> ##D 'verbal    ~  label(c("mean_v:maj_c", "mean_v:min_c", "mean_v:maj_t", "mean_v:min_t")) * 1',
-> ##D 
-> ##D 'numerical ~~ label(c("var_n:maj_c", "var_n:min_c", "var_n:maj_t", "var_n:min_t")) * numerical',
-> ##D 'abstract  ~~ label(c("var_a:maj_c", "var_a:min_c", "var_a:maj_t", "var_a:min_t")) * abstract',
-> ##D 'verbal    ~~ label(c("var_v:maj_c", "var_v:min_c", "var_v:maj_t", "var_v:min_t")) * verbal')
-> ##D 
-> ##D ## Step 2a: Free numerical loading in group min_t (minority.threat)
-> ##D m2a <- m2
-> ##D m2a[1] <- 'ability   =~ label(c(rep("load_n", 3), "load_n:min_t")) * numerical  + 1 * abstract + label(rep("load_v", 4)) * verbal'
+> ##D ## Step 2a: Free numerical loading in group 4 (minority.threat)
+> ##D f <- 'ability =~ abstract + verbal + c(l1, l1, l1, l4) * numerical'
+> ##D m$m2a <- mgcfa(f, group.equal = "loadings")
 > ##D 
 > ##D ## Step 3: Fix variances across groups
-> ##D m3 <- m2a
-> ##D m3[7:9] <- c(
-> ##D 'numerical ~~ label(rep("var_n", 4)) * numerical',
-> ##D 'abstract  ~~ label(rep("var_a", 4)) * abstract',
-> ##D 'verbal    ~~ label(rep("var_v", 4)) * verbal')
+> ##D m$m3 <- mgcfa(f, group.equal = c("loadings", "residuals"))
 > ##D 
-> ##D ## Step 3a: Free numerical variance in group min_t
-> ##D m3a <- m3
-> ##D m3a[7] <- 'numerical ~~ label(c(rep("var_n", 3), "var_n:min_t")) * numerical'
+> ##D ## Step 3a: Free numerical variance in group 4
+> ##D f <- c(f, 'numerical ~~ c(e1, e1, e1, e4) * numerical')
+> ##D m$m3a <- mgcfa(f, group.equal = c("loadings", "residuals"))
 > ##D 
 > ##D ## Step 4: Fix latent variances within conditions
-> ##D m4 <- m3a
-> ##D m4[3] <- 'ability   ~~ label(c("lvar:maj", "lvar:min", "lvar:maj", "lvar:min")) * ability'
+> ##D f <- c(f, 'ability ~~ c(vmaj, vmin, vmaj, vmin) * ability')
+> ##D m$m4 <- mgcfa(f, group.equal = c("loadings", "residuals"))
 > ##D 
 > ##D ## Step 5: Fix certain means, free others
-> ##D m5 <- m4
-> ##D m5[c(2, 4:6)] <- c(
-> ##D 'ability   ~  label(c(NA, "lmean:min_c", "lmean:maj_t", "lmean:min_t")) * 1 + c(0, NA, NA, NA) * 1',
-> ##D 'numerical ~  label(c(rep("mean_n", 3), "mean_n:min_t")) * 1',
-> ##D 'abstract  ~  label(rep("mean_a", 4)) * 1',
-> ##D 'verbal    ~  label(rep("mean_v", 4)) * 1')
+> ##D f <- c(f, 'numerical ~ c(na1, na1, na1, na4) * 1')
+> ##D m$m5 <- mgcfa(f, group.equal = c("loadings", "residuals", "intercepts"))
 > ##D 
-> ##D ## Step 5a: Free ability mean in group maj_c
-> ##D m5a <- m5
-> ##D m5a[5] <- 'abstract  ~  label(c("mean_a:maj_c", rep("mean_a", 3))) * 1'
+> ##D ## Step 5a: Free ability mean in group majority.control
+> ##D f <- c(f, 'abstract ~ c(ar1, ar2, ar2, ar2) * 1')
+> ##D m$m5a <- mgcfa(f, group.equal = c("loadings", "residuals", "intercepts"))
 > ##D 
-> ##D ## Step 5b: Free ability mean in group min_c
-> ##D m5b <- m5a
-> ##D m5b[5] <- 'abstract  ~  label(c("mean_a:maj_c", "mean_a:min_c", rep("mean_a", 2))) * 1'
+> ##D ## Step 5b: Free also ability mean in group minority.control
+> ##D f <- c(f[1:4], 'abstract ~ c(ar1, ar2, ar3, ar3) * 1')
+> ##D m$m5b <- mgcfa(f, group.equal = c("loadings", "residuals", "intercepts"))
 > ##D 
 > ##D ## Step 6: Different latent mean structure
-> ##D m6 <- m5b
-> ##D m6[2] <- 'ability   ~  label(c("lmean:maj", NA, "lmean:maj", NA)) * 1 + c(NA, 0, NA, 0) * 1'
-> ##D 
-> ##D ## Fit all models
-> ##D m <- list(m2, m2a, m3, m3a, m4, m5, m5a, m5b, m6)
-> ##D names(m) <- c("2", "2a", "3", "3a", "4", "5", "5a", "5b", "6")
-> ##D fm <- lapply(m, function(f)
-> ##D   lavaan(f, data = StereotypeThreat, meanstructure = TRUE, group = "group", likelihood = "wishart"))
+> ##D f <- c(f, 'ability ~  c(maj, min1, maj, min2) * 1 + c(NA, 0, NA, 0) * 1')
+> ##D m$m6 <- mgcfa(f, group.equal = c("loadings", "residuals", "intercepts"))
 > ##D 
 > ##D ## Extract measures of fit
-> ##D tab <- t(sapply(fm, fitMeasures, c("chisq", "df", "pvalue", "rmsea", "cfi")))
+> ##D tab <- t(sapply(m, fitMeasures, c("chisq", "df", "pvalue", "rmsea", "cfi")))
 > ##D tab <- rbind("1" = c(0, 0, 1, 0, 1), tab)
 > ##D tab <- cbind(tab,
 > ##D   delta_chisq = c(NA, abs(diff(tab[, "chisq"]))),
 > ##D   delta_df = c(NA, diff(tab[, "df"])))
-> ##D tab <- cbind(tab, "pvalue2" = pchisq(tab[, "delta_chisq"], abs(tab[, "delta_df"]), lower.tail = FALSE))
+> ##D tab <- cbind(tab, "pvalue2" = pchisq(tab[, "delta_chisq"],
+> ##D   abs(tab[, "delta_df"]), lower.tail = FALSE))
 > ##D tab <- tab[, c(2, 1, 3, 7, 6, 8, 4, 5)]
 > ##D round(tab, digits = 3)
 > ## End(Not run)
@@ -363,22 +551,22 @@ Rasch model
 
 Difficulty parameters:
               Estimate Std. Error z value Pr(>|z|)    
-S1DoCurse    1.910e-06  2.042e-01   0.000  0.99999    
+S1DoCurse   -1.556e-08  2.042e-01   0.000  1.00000    
 S1WantScold  6.857e-01  1.995e-01   3.436  0.00059 ***
 S1DoScold    8.727e-01  1.994e-01   4.376 1.21e-05 ***
 S1WantShout  1.208e+00  2.003e-01   6.032 1.62e-09 ***
 S1DoShout    2.294e+00  2.131e-01  10.766  < 2e-16 ***
-S2WantCurse -5.394e-01  2.135e-01  -2.527  0.01152 *  
-S2DoCurse    3.614e-01  2.009e-01   1.799  0.07199 .  
+S2WantCurse -5.393e-01  2.135e-01  -2.527  0.01152 *  
+S2DoCurse    3.614e-01  2.009e-01   1.799  0.07200 .  
 S2WantScold  5.345e-01  2.000e-01   2.673  0.00753 ** 
 S2DoScold    1.359e+00  2.012e-01   6.755 1.42e-11 ***
 S2WantShout  1.283e+00  2.007e-01   6.395 1.61e-10 ***
 S2DoShout    3.067e+00  2.343e-01  13.088  < 2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Log-likelihood: -1255 (df = 11) 
-Number of iterations in nlm optimization: 9 
+Number of iterations in BFGS optimization: 19 
 
 > plot(m)
 > 
@@ -555,7 +743,7 @@ Gruene   1.18576    0.09507  12.473  < 2e-16 ***
 SPD      0.81310    0.09067   8.967  < 2e-16 ***
 CDU/CSU  0.17562    0.08750   2.007   0.0447 *  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Log-likelihood: -1717 (df = 5) 
 
@@ -590,6 +778,33 @@ NULL
 a foo
 b bar
 c bar
+> 
+> 
+> 
+> cleanEx()
+> nameEx("elementary_symmetric_functions")
+> ### * elementary_symmetric_functions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: elementary_symmetric_functions
+> ### Title: Calculation of the Elementary Symmetric Functions and Their
+> ###   Derivatives
+> ### Aliases: elementary_symmetric_functions
+> ### Keywords: misc
+> 
+> ### ** Examples
+> 
+> 
+>  ## calculate zero and first order elementary symmetric functions
+>  ## for 10 polytomous items with three categories each.
+>  pi <- split(rnorm(20), rep(1:10, each = 2))
+>  x <- elementary_symmetric_functions(pi)
+> 
+>  ## use difference algorithm instead and compare results
+>  y <- elementary_symmetric_functions(pi, diff = TRUE)
+>  all.equal(x, y)
+[1] TRUE
 > 
 > 
 > 
@@ -653,6 +868,7 @@ c bar
 > pc
 [1] {a > b, a > c, b = c} {a > b, a > c, b < c} {a > b, a < c, b < c}
 [4] {a = b, a = c, b = c}
+> 
 > 
 > 
 > 
@@ -786,13 +1002,89 @@ Tokyo         North
 > 
 > 
 > cleanEx()
+> nameEx("plot.PCModel")
+> ### * plot.PCModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot.PCModel
+> ### Title: Visualizing Partial Credit Models
+> ### Aliases: plot.PCModel
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Partial credit model for the first other-to-blame
+> ## situation: 'A bus fails to stop for me'
+> pcm <- PCModel.fit(VerbalAggression$resp[, 1:6])
+> 
+> ## Effect plot with modus as cutpoint and custom labels.
+> lab <- paste(rep(c("Curse", "Scold", "Shout"), each = 2),
++              rep(c("Want", "Do"), 3 ), sep = "-")
+> plot(pcm, names = lab)
+> 
+> ## Compare the cutpoints (with ylim specified manually)
+> ylim <- c(-2, 2)
+> layout(matrix(1:3, ncol = 1))
+> plot(pcm, type = "mode", main = "Modus as Cutpoint", ylim = ylim) 
+> plot(pcm, type = "median", main = "Median as Cutpoint", ylim = ylim)
+> plot(pcm, type = "mean", main = "Mean as Cutpoint", ylim = ylim)
+> 
+> ## Partial credit model for full VerbalAggression data set
+> pcm_va <- PCModel.fit(VerbalAggression$resp)
+> plot(pcm_va)
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot.RSModel")
+> ### * plot.RSModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot.RSModel
+> ### Title: Visualizing Rating Scale Models
+> ### Aliases: plot.RSModel
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Rating scale model for the first other-to-blame
+> ## situation: 'A bus fails to stop for me'
+> rsm <- RSModel.fit(VerbalAggression$resp[, 1:6])
+> 
+> ## Basic plot with parameter patterns and custom labels.
+> lab <- c(paste(rep(c("Curse", "Scold", "Shout"), each = 2),
++              rep(c("Want", "Do"), 3 ), sep = "-"), "Tau 1", "Tau 2")
+> plot(rsm, names = lab)
+> 
+> ## Basic plot again, but omitting reference and connection lines
+> plot(rsm, refline = FALSE, lty = c(0, 0))
+> 
+> ## Effects plot, similar to effect plots for PCModel's, with
+> ## 'modus' as cutpoint via additional argument 'type'.
+> plot(rsm, pattern = FALSE, type = "mode")
+> 
+> 
+> 
+> 
+> cleanEx()
 > nameEx("plot.btReg")
 > ### * plot.btReg
 > 
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: plot.btReg
-> ### Title: Visualizing Simple Rasch Models
+> ### Title: Visualizing Bradley-Terry Models
 > ### Aliases: plot.btReg
 > ### Keywords: hplot
 > 
@@ -915,8 +1207,9 @@ Tokyo         North
 > 
 > ### * <FOOTER>
 > ###
-> cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  0.976 0.048 1.026 0 0 
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  3.223 0.027 3.259 0 0 
 > grDevices::dev.off()
 null device 
           1 

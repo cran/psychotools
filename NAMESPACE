@@ -4,25 +4,65 @@ import(
   "graphics"
 )
 
+## C code
+useDynLib("psychotools", "esf")
+
 export(
-  ## paircomp class and new generics
+  ## itemresp/paircomp classes and new generics
+##  "itemresp",
+##  "is.itemresp",
   "paircomp",
   "covariates",
   "covariates<-",
   "labels<-",
   "mscale",
   "mscale<-",
+##  "itempar",
+##  "personpar",
+##  "threshold",
 
   ## psychometric model fitters
   "RaschModel.fit",
+  "RSModel.fit",
+  "PCModel.fit",
   "btReg.fit",
-
+##  "mptModel.fit",
+  
   ## tools
   "elementary_symmetric_functions",
 
   ## auxiliary generics
   "worth"
+  ## "plotCCC"
 )
+
+## methods for itemresp objects
+## S3method("[", "itemresp")
+## S3method("as.character", "itemresp")
+## S3method("as.data.frame", "itemresp")
+## S3method("as.double", "itemresp")
+## S3method("as.integer", "itemresp")
+## S3method("as.list", "itemresp")
+## S3method("as.matrix", "itemresp")
+## S3method("c", "itemresp")
+## S3method("format", "itemresp")
+## S3method("is.na", "itemresp")
+## S3method("labels", "itemresp")
+## S3method("labels<-", "itemresp")
+## S3method("length", "itemresp")
+## S3method("levels", "itemresp")
+## S3method("merge", "itemresp")
+## S3method("mscale", "itemresp")
+## S3method("mscale<-", "itemresp")
+## S3method("names", "itemresp")
+## S3method("names<-", "itemresp")
+## S3method("plot", "itemresp")
+## S3method("print", "itemresp")
+## S3method("rep", "itemresp")
+## S3method("str", "itemresp")
+## S3method("subset", "itemresp")
+## S3method("summary", "itemresp")
+## S3method("xtfrm", "itemresp")
 
 ## methods for paircomp objects
 S3method("[", "paircomp")
@@ -54,14 +94,47 @@ S3method("xtfrm", "paircomp")
 
 ## methods for RaschModel objects
 S3method("coef", "RaschModel")
+## S3method("itempar", "RaschModel")
 S3method("logLik", "RaschModel")
+## S3method("personpar", "RaschModel")
 S3method("plot", "RaschModel")
+## S3method("predict", "RaschModel")
 S3method("print", "RaschModel")
 S3method("print", "summary.RaschModel")
 S3method("summary", "RaschModel")
+## S3method("threshold", "RaschModel")
 S3method("vcov", "RaschModel")
 S3method("weights", "RaschModel")
 S3method("worth", "RaschModel")
+
+## methods for RSModel objects
+S3method("coef", "RSModel")
+## S3method("itempar", "RSModel")
+S3method("logLik", "RSModel")
+## S3method("personpar", "RSModel")
+S3method("plot", "RSModel")
+## S3method("predict", "RSModel")
+S3method("print", "RSModel")
+S3method("print", "summary.RSModel")
+S3method("summary", "RSModel")
+## S3method("threshold", "RSModel")
+S3method("vcov", "RSModel")
+S3method("weights", "RSModel")
+
+## methods for PCModel objects
+S3method("coef", "PCModel")
+## S3method("itempar", "PCModel")
+S3method("logLik", "PCModel")
+## S3method("personpar", "PCModel")
+S3method("plot", "PCModel")
+## S3method("plotCCC", "PCModel")
+## S3method("predict", "PCModel")
+S3method("print", "PCModel")
+S3method("print", "summary.PCModel")
+S3method("summary", "PCModel")
+## S3method("threshold", "PCModel")
+S3method("vcov", "PCModel")
+S3method("weights", "PCModel")
 
 ## methods for btReg objects
 S3method("coef", "btReg")
@@ -73,3 +146,30 @@ S3method("print", "summary.btReg")
 S3method("summary", "btReg")
 S3method("vcov", "btReg")
 S3method("worth", "btReg")
+
+## methods for mptModel objects
+## S3method("deviance", "mptModel")
+## S3method("logLik", "mptModel")
+## S3method("plot", "mptModel")
+## S3method("print", "mptModel")
+## S3method("print", "summary.mptModel")
+## S3method("summary", "mptModel")
+## S3method("vcov", "mptModel")
+
+## ## methods for itempar objects
+## S3method("coef", "itempar")
+## S3method("print", "itempar")
+## S3method("print", "summary.itempar")
+## S3method("summary", "itempar")
+## S3method("vcov", "itempar")
+
+## ## methods for personpar objects
+## S3method("coef", "personpar")
+## S3method("print", "personpar")
+## S3method("print", "summary.personpar")
+## S3method("summary", "personpar")
+## S3method("vcov", "personpar")
+
+## ## methods for threshold objects
+## S3method("coef", "threshold")
+## S3method("print", "threshold")

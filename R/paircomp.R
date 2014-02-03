@@ -473,13 +473,28 @@ as.double.paircomp <- function(x, ...) {
   return(rval)
 }
 
-as.data.frame.paircomp <- function(x, ...) {
-  rval <- as.data.frame(numeric(length(x)), ...)
-  rval[[1]] <- x
-  names(rval)[1] <- paste(deparse(substitute(x), width.cutoff = 500), collapse = " ")
-  return(rval)
+as.data.frame.paircomp <- function(x, row.names = NULL, optional = FALSE, ...,
+  nm = paste(deparse(substitute(x), width.cutoff = 500L), collapse = " "))
+{
+  force(nm)
+  nrows <- length(x)
+  if(is.null(row.names)) {
+    if(nrows == 0L) { 
+      row.names <- character()
+    } else {
+      if(length(row.names <- names(x)) == nrows && !anyDuplicated(row.names)) {
+      } else {
+        row.names <- .set_row_names(nrows)
+      }
+    }
+  }
+  if(!is.null(names(x))) names(x) <- NULL
+  value <- list(x)
+  if(!optional) names(value) <- nm
+  attr(value, "row.names") <- row.names
+  class(value) <- "data.frame"
+  value
 }
-
 
 ## visualization of aggregated data
 plot.paircomp <- function(x, off = 0.05,

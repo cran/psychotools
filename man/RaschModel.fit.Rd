@@ -18,9 +18,9 @@
 }
 
 \usage{
-RaschModel.fit(y, weights = NULL, start = NULL, gradtol = 1e-6,
+RaschModel.fit(y, weights = NULL, start = NULL, reltol = 1e-10,
   deriv = c("sum", "diff", "numeric"), hessian = TRUE,
-  iterlim = 100, \dots)
+  maxit = 100L, full = TRUE, gradtol = reltol, iterlim = maxit, \dots)
 }
 
 \arguments{
@@ -34,7 +34,11 @@ RaschModel.fit(y, weights = NULL, start = NULL, gradtol = 1e-6,
   \item{hessian}{logical. Should the Hessian of the final model be computed?
     If set to \code{FALSE}, the \code{vcov} method can only return \code{NA}s
     and consequently no standard errors or tests are available in the \code{summary}.}
-  \item{gradtol, iterlim, \dots}{further arguments passed to \code{\link[stats]{nlm}}.}
+  \item{reltol, maxit, \dots}{further arguments passed to \code{\link[stats]{optim}}.}
+  \item{full}{logical. Should a full model object be returned? If set to \code{FALSE},
+    no variance-covariance matrix and no matrix of estimating functions are computed.}
+  \item{gradtol, iterlim}{numeric. For backward compatibility with previous versions
+    these arguments are mapped to \code{reltol} and \code{maxit}, respectively.}
 }
 
 \details{
@@ -62,18 +66,20 @@ RaschModel.fit(y, weights = NULL, start = NULL, gradtol = 1e-6,
   \item{na}{logical indicating whether the data contains NAs,}
   \item{elementary_symmetric_functions}{List of elementary symmetric functions
     for estimated parameters (up to order 2; or 1 in case of numeric derivatives),}
-  \item{nlm_code}{convergence code from \code{nlm},}
-  \item{iterations}{number of iterations used by \code{nlm},}
-  \item{gradtol}{tolerance passed to \code{nlm}.}
+  \item{code}{convergence code from \code{optim},}
+  \item{iterations}{number of iterations used by \code{optim},}
+  \item{reltol}{tolerance passed to \code{optim},}
+  \item{deriv}{type of derivatives used for computing gradient and
+  Hessian matrix.}
 }
 
-\seealso{\code{\link{btReg.fit}}}
+\seealso{\code{\link{PCModel.fit}}, \code{\link{RSModel.fit}}, \code{\link{btReg.fit}}}
 
 \examples{
 ## Verbal aggression data
 data("VerbalAggression", package = "psychotools")
 
-## Rasch model for the self-to-blame situations
+## Rasch model for the other-to-blame situations
 m <- RaschModel.fit(VerbalAggression$resp2[, 1:12])
 summary(m)
 plot(m)

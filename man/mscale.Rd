@@ -35,6 +35,7 @@ mscale(pc)
 ## replace (collapse to >/=/< scale)
 mscale(pc) <- sign(mscale(pc))
 pc
+
 }
 
 \keyword{classes}

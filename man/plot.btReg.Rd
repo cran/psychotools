@@ -1,10 +1,10 @@
 \name{plot.btReg}
 \alias{plot.btReg}
 
-\title{Visualizing Simple Rasch Models}
+\title{Visualizing Bradley-Terry Models}
 
 \description{
-  Base graphics plotting function for Rasch models.
+  Base graphics plotting function for Bradley-Terry models.
 }
 
 \usage{

@@ -2,7 +2,7 @@
 btReg.fit <- function(y, weights = NULL,
   type = c("loglin", "logit"), ref = NULL,
   undecided = NULL, position = NULL,
-  ...)
+  start = NULL, vcov = TRUE, estfun = TRUE, ...)
 {
   ## main arguments
   if(missing(y)) stop("response missing")
@@ -14,8 +14,8 @@ btReg.fit <- function(y, weights = NULL,
   nobj <- length(lab)
   npc <- nobj * (nobj - 1)/2
   mscale <- mscale(y)
-  if(max(abs(mscale)) > 1) stop("comparisons on likert scales not yet implemented")
-  has_ties <- mscale[2] == 0
+  if(max(abs(mscale)) > 1L) stop("comparisons on likert scales not yet implemented")
+  has_ties <- mscale[2L] == 0L
   ix <- which(upper.tri(diag(nobj)), arr.ind = TRUE)
   
   ## weights
@@ -36,38 +36,44 @@ btReg.fit <- function(y, weights = NULL,
   
   ## basic aggregation quantities
   ytab <- summary(y, weights = weights)
-  if(has_ties) ytab <- ytab[, c(1, 3, 2), drop = FALSE]
-  if(!undecided) ytab <- ytab[, 1:2, drop = FALSE]
+  if(has_ties) ytab <- ytab[, c(1L, 3L, 2L), drop = FALSE]
+  if(!undecided) ytab <- ytab[, 1L:2L, drop = FALSE]
     
   ## set up auxiliary model
   if(type == "loglin") {
     famaux <- poisson()
     yaux <- as.vector(t(ytab))
-    xaux <- matrix(0, nrow = 3 * npc, ncol = nobj + npc)
-    for(i in 1:nrow(ix)) {
-      ## xaux[i*3 - (2:1), ix[i,1:2]] <- c(1, -1, -1, 1) ## DHK parametrization
-      xaux[i*3 - (2:0), ix[i,1:2]] <- c(1, 0, 0.5, 0, 1, 0.5)
-      xaux[i*3 - (2:0), nobj + i] <- 1
+    xaux <- matrix(0, nrow = 3L * npc, ncol = nobj + npc)
+    for(i in 1L:nrow(ix)) {
+      ## xaux[i*3L - (2:1), ix[i, 1L:2L]] <- c(1, -1, -1, 1) ## DHK parametrization
+      xaux[i*3L - (2L:0L), ix[i,1L:2L]] <- c(1, 0, 0.5, 0, 1, 0.5)
+      xaux[i*3L - (2L:0L), nobj + i] <- 1
     }
-    xaux[,1:nobj] <- xaux[,c((1:nobj)[-ref], ref)]    
+    xaux[,1L:nobj] <- xaux[,c((1L:nobj)[-ref], ref)]    
     xaux[,nobj] <- rep(c(0, 0, 1), npc)
     if(!undecided) {
       xaux <- xaux[,-nobj]
-      xaux <- xaux[-((1:npc) * 3),]
+      xaux <- xaux[-((1L:npc) * 3L),]
     }
   } else {
     famaux <- binomial(link = type)
     yaux <- ytab
     xaux <- matrix(0, nrow = npc, ncol = nobj)
-    for(i in 1:nrow(ix)) xaux[i, ix[i,1:2]] <- c(1, -1)
+    for(i in 1L:nrow(ix)) xaux[i, ix[i, 1L:2L]] <- c(1, -1)
     xaux <- xaux[,-ref]    
   }
 
   ## fit auxiliary model and extract information
-  fm <- suppressWarnings(glm.fit(xaux, yaux, family = famaux, control = glm.control(...)))
-  par <- fm$coefficients[1:npar]
-  vc <- summary.glm(fm, correlation = FALSE)$cov.unscaled[1:npar, 1:npar, drop = FALSE]
-  names(par) <- rownames(vc) <- colnames(vc) <- c(lab[-ref], if(undecided) "(undecided)" else NULL)
+  fm <- suppressWarnings(glm.fit(xaux, yaux, family = famaux, control = glm.control(...), start = start))
+  par <- fm$coefficients[1L:npar]
+  nam <- c(lab[-ref], if(undecided) "(undecided)" else NULL)
+  names(par) <- nam
+  if(vcov) {
+    vc <- summary.glm(fm, correlation = FALSE)$cov.unscaled[1L:npar, 1L:npar, drop = FALSE]
+    rownames(vc) <- colnames(vc) <- nam
+  } else {
+    vc <- matrix(NA_real_, nrow = npar, ncol = npar, dimnames = list(nam, nam))
+  }
 
   ## log-probabilities and log-likelihood
   par2logprob <- switch(type,
@@ -84,7 +90,7 @@ btReg.fit <- function(y, weights = NULL,
       plogis(c(-1, 1) * diff(p[ix[i,]]), log.p = TRUE)
     }
   )
-  logp <- t(sapply(1:npc, par2logprob))
+  logp <- t(sapply(1L:npc, par2logprob))
   loglik <- sum(logp * ytab)
 
   ## raw original data
@@ -92,19 +98,24 @@ btReg.fit <- function(y, weights = NULL,
   ymat <- as.matrix(y)
 
   ## estimating functions
-  if(!undecided) logp <- cbind(logp, -Inf) ## ties impossible
-  gradp <- matrix(0, nrow = npc * 3, ncol = nobj)
-  cf <- -matrix(c(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1), ncol = 3)
-  ct <- matrix(c(1, 0, 0.5, 0, 1, 0.5, 0, 0, 1), ncol = 3)
-  for(i in 1:npc) gradp[i*3 - (2:0), c(ix[i,], nobj)] <- t(t(ct) + as.vector(cf %*% exp(logp[i,])))
-  ef <- t(sapply(1:length(y), function(i) {
-    wi <- (0:(npc - 1)) * 3 + c(2, 3, 1)[ymat[i,] + 2]
-    colSums(gradp[wi,, drop = FALSE], na.rm = TRUE)
-  }))
-  if(!undecided) ef <- ef[, -nobj, drop = FALSE]
-  dimnames(ef) <- list(names(y), names(par))
+  if(estfun) {
+    if(!undecided) logp <- cbind(logp, -Inf) ## ties impossible
+    gradp <- matrix(0, nrow = npc * 3, ncol = nobj)
+    cf <- -matrix(c(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1), ncol = 3)
+    ct <- matrix(c(1, 0, 0.5, 0, 1, 0.5, 0, 0, 1), ncol = 3)
+    for(i in 1L:npc) gradp[i*3 - (2:0), c(ix[i,], nobj)] <- t(t(ct) + as.vector(cf %*% exp(logp[i,])))
+    ef <- t(sapply(1L:length(y), function(i) {
+      wi <- (0:(npc - 1)) * 3 + c(2, 3, 1)[ymat[i,] + 2]
+      colSums(gradp[wi,, drop = FALSE], na.rm = TRUE)
+    }))
+    if(!undecided) ef <- ef[, -nobj, drop = FALSE]
+    dimnames(ef) <- list(names(y), nam)
 
-  if(!is.null(weights)) ef <- ef * weights  
+    if(!is.null(weights)) ef <- ef * weights  
+  } else {
+    ef <- NULL
+  }
+
   
   ## collect, class, and return
   rval <- list(
