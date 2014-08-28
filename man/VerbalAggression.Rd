@@ -58,13 +58,13 @@ Smits, D.J.M., De Boeck, P., Vansteelandt, K. (2004).
   doi:10.1002/per.529
 }
 
-\seealso{\code{\link{RaschModel.fit}}}
+\seealso{\code{\link{raschmodel}}}
 
 \examples{
 data("VerbalAggression", package = "psychotools")
 
 ## Rasch model for the self-to-blame situations
-m <- RaschModel.fit(VerbalAggression$resp2[, 1:12])
+m <- raschmodel(VerbalAggression$resp2[, 1:12])
 summary(m)
 plot(m)
 }

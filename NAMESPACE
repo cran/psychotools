@@ -9,60 +9,89 @@ useDynLib("psychotools", "esf")
 
 export(
   ## itemresp/paircomp classes and new generics
-##  "itemresp",
-##  "is.itemresp",
+  "itemresp",
+  "is.itemresp",
   "paircomp",
   "covariates",
   "covariates<-",
   "labels<-",
   "mscale",
   "mscale<-",
-##  "itempar",
-##  "personpar",
-##  "threshold",
+  "itempar",
+  "threshpar",
+  "discrpar",
+  "personpar",
 
   ## psychometric model fitters
+  "raschmodel",
+  "rsmodel",
+  "pcmodel",
+  "btmodel",
+##  "mptModel.fit",
+
+  ## wrapper to model fitters
   "RaschModel.fit",
   "RSModel.fit",
   "PCModel.fit",
-  "btReg.fit",
-##  "mptModel.fit",
-  
+  "btReg.fit",    
+
+  ## anchor methods
+  "anchor",  
+  "anchortest",
+
   ## tools
   "elementary_symmetric_functions",
 
+  ## estfun methods
+  "estfun.btmodel",
+  "estfun.raschmodel",
+  "estfun.rsmodel",
+  "estfun.pcmodel", 
+
+  ## bread methods
+  "bread.raschmodel",
+  "bread.rsmodel",
+  "bread.pcmodel", 
+
+
+  ## graphical functions
+  "curveplot",
+  "infoplot",
+  "piplot",
+  "profileplot",
+  "regionplot",
+
   ## auxiliary generics
   "worth"
-  ## "plotCCC"
 )
 
 ## methods for itemresp objects
-## S3method("[", "itemresp")
-## S3method("as.character", "itemresp")
-## S3method("as.data.frame", "itemresp")
-## S3method("as.double", "itemresp")
-## S3method("as.integer", "itemresp")
-## S3method("as.list", "itemresp")
-## S3method("as.matrix", "itemresp")
-## S3method("c", "itemresp")
-## S3method("format", "itemresp")
-## S3method("is.na", "itemresp")
-## S3method("labels", "itemresp")
-## S3method("labels<-", "itemresp")
-## S3method("length", "itemresp")
-## S3method("levels", "itemresp")
-## S3method("merge", "itemresp")
-## S3method("mscale", "itemresp")
-## S3method("mscale<-", "itemresp")
-## S3method("names", "itemresp")
-## S3method("names<-", "itemresp")
-## S3method("plot", "itemresp")
-## S3method("print", "itemresp")
-## S3method("rep", "itemresp")
-## S3method("str", "itemresp")
-## S3method("subset", "itemresp")
-## S3method("summary", "itemresp")
-## S3method("xtfrm", "itemresp")
+S3method("[", "itemresp")
+S3method("as.character", "itemresp")
+S3method("as.data.frame", "itemresp")
+S3method("as.double", "itemresp")
+S3method("as.integer", "itemresp")
+S3method("as.list", "itemresp")
+S3method("as.matrix", "itemresp")
+S3method("c", "itemresp")
+S3method("format", "itemresp")
+S3method("is.na", "itemresp")
+S3method("labels", "itemresp")
+S3method("labels<-", "itemresp")
+S3method("length", "itemresp")
+S3method("levels", "itemresp")
+S3method("merge", "itemresp")
+S3method("mscale", "itemresp")
+S3method("mscale<-", "itemresp")
+S3method("names", "itemresp")
+S3method("names<-", "itemresp")
+S3method("plot", "itemresp")
+S3method("print", "itemresp")
+S3method("rep", "itemresp")
+S3method("str", "itemresp")
+S3method("subset", "itemresp")
+S3method("summary", "itemresp")
+S3method("xtfrm", "itemresp")
 
 ## methods for paircomp objects
 S3method("[", "paircomp")
@@ -92,60 +121,66 @@ S3method("subset", "paircomp")
 S3method("summary", "paircomp")
 S3method("xtfrm", "paircomp")
 
-## methods for RaschModel objects
-S3method("coef", "RaschModel")
-## S3method("itempar", "RaschModel")
-S3method("logLik", "RaschModel")
-## S3method("personpar", "RaschModel")
-S3method("plot", "RaschModel")
-## S3method("predict", "RaschModel")
-S3method("print", "RaschModel")
-S3method("print", "summary.RaschModel")
-S3method("summary", "RaschModel")
-## S3method("threshold", "RaschModel")
-S3method("vcov", "RaschModel")
-S3method("weights", "RaschModel")
-S3method("worth", "RaschModel")
+## methods for raschmodel objects
+S3method("coef", "raschmodel")
+S3method("discrpar", "raschmodel")
+S3method("itempar", "raschmodel")
+S3method("logLik", "raschmodel")
+S3method("nobs", "raschmodel")
+S3method("personpar", "raschmodel")
+S3method("plot", "raschmodel")
+S3method("predict", "raschmodel")
+S3method("print", "raschmodel")
+S3method("print", "summary.raschmodel")
+S3method("summary", "raschmodel")
+S3method("threshpar", "raschmodel")
+S3method("vcov", "raschmodel")
+S3method("weights", "raschmodel")
+S3method("worth", "raschmodel")
 
-## methods for RSModel objects
-S3method("coef", "RSModel")
-## S3method("itempar", "RSModel")
-S3method("logLik", "RSModel")
-## S3method("personpar", "RSModel")
-S3method("plot", "RSModel")
-## S3method("predict", "RSModel")
-S3method("print", "RSModel")
-S3method("print", "summary.RSModel")
-S3method("summary", "RSModel")
-## S3method("threshold", "RSModel")
-S3method("vcov", "RSModel")
-S3method("weights", "RSModel")
+## methods for rsmodel objects
+S3method("coef", "rsmodel")
+S3method("discrpar", "rsmodel")
+S3method("itempar", "rsmodel")
+S3method("logLik", "rsmodel")
+S3method("nobs", "rsmodel")
+S3method("personpar", "rsmodel")
+S3method("plot", "rsmodel")
+S3method("predict", "rsmodel")
+S3method("print", "rsmodel")
+S3method("print", "summary.rsmodel")
+S3method("summary", "rsmodel")
+S3method("threshpar", "rsmodel")
+S3method("vcov", "rsmodel")
+S3method("weights", "rsmodel")
 
-## methods for PCModel objects
-S3method("coef", "PCModel")
-## S3method("itempar", "PCModel")
-S3method("logLik", "PCModel")
-## S3method("personpar", "PCModel")
-S3method("plot", "PCModel")
-## S3method("plotCCC", "PCModel")
-## S3method("predict", "PCModel")
-S3method("print", "PCModel")
-S3method("print", "summary.PCModel")
-S3method("summary", "PCModel")
-## S3method("threshold", "PCModel")
-S3method("vcov", "PCModel")
-S3method("weights", "PCModel")
+## methods for pcmodel objects
+S3method("coef", "pcmodel")
+S3method("discrpar", "pcmodel")
+S3method("itempar", "pcmodel")
+S3method("logLik", "pcmodel")
+S3method("nobs", "pcmodel")
+S3method("personpar", "pcmodel")
+S3method("plot", "pcmodel")
+S3method("predict", "pcmodel")
+S3method("print", "pcmodel")
+S3method("print", "summary.pcmodel")
+S3method("summary", "pcmodel")
+S3method("threshpar", "pcmodel")
+S3method("vcov", "pcmodel")
+S3method("weights", "pcmodel")
 
-## methods for btReg objects
-S3method("coef", "btReg")
-S3method("deviance", "btReg")
-S3method("logLik", "btReg")
-S3method("plot", "btReg")
-S3method("print", "btReg")
-S3method("print", "summary.btReg")
-S3method("summary", "btReg")
-S3method("vcov", "btReg")
-S3method("worth", "btReg")
+## methods for btmodel objects
+S3method("coef", "btmodel")
+S3method("deviance", "btmodel")
+S3method("itempar", "btmodel")
+S3method("logLik", "btmodel")
+S3method("nobs", "btmodel")
+S3method("plot", "btmodel")
+S3method("print", "btmodel")
+S3method("print", "summary.btmodel")
+S3method("summary", "btmodel")
+S3method("vcov", "btmodel")
 
 ## methods for mptModel objects
 ## S3method("deviance", "mptModel")
@@ -156,20 +191,41 @@ S3method("worth", "btReg")
 ## S3method("summary", "mptModel")
 ## S3method("vcov", "mptModel")
 
-## ## methods for itempar objects
-## S3method("coef", "itempar")
-## S3method("print", "itempar")
-## S3method("print", "summary.itempar")
-## S3method("summary", "itempar")
-## S3method("vcov", "itempar")
+## methods for discrpar objects
+S3method("coef", "discrpar")
+S3method("print", "discrpar")
+S3method("vcov", "discrpar")
 
-## ## methods for personpar objects
-## S3method("coef", "personpar")
-## S3method("print", "personpar")
-## S3method("print", "summary.personpar")
-## S3method("summary", "personpar")
-## S3method("vcov", "personpar")
+## methods for itempar objects
+S3method("coef", "itempar")
+S3method("print", "itempar")
+#S3method("print", "summary.itempar")
+#S3method("summary", "itempar")
+S3method("vcov", "itempar")
 
-## ## methods for threshold objects
-## S3method("coef", "threshold")
-## S3method("print", "threshold")
+## methods for personpar objects
+S3method("coef", "personpar")
+S3method("print", "personpar")
+#S3method("print", "summary.personpar")
+#S3method("summary", "personpar")
+S3method("vcov", "personpar")
+
+## methods for threshpar objects
+S3method("coef", "threshpar")
+S3method("print", "threshpar")
+S3method("vcov", "threshpar")
+
+## methods for anchor objects
+S3method("anchor", "default")
+S3method("anchor", "formula")
+S3method("print", "anchor")
+S3method("summary", "anchor")
+S3method("print", "summary.anchor")
+
+## methods for anchortest objects
+S3method("anchortest", "default")
+S3method("anchortest", "formula")
+S3method("print", "anchortest")
+S3method("summary", "anchortest")
+S3method("print", "summary.anchortest")
+

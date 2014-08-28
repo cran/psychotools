@@ -1,3 +1,68 @@
+Changes in Version 0.3-0
+
+  o Infrastructure for IRT modeling in "psychotools" is greatly enhanced.
+    Therefore the main modeling functions are now called raschmodel()
+    for Rasch models, rsmodel() for rating scale models, pcmodel()
+    for partial credit models, and btmodel() for Bradley-Terry models.
+    The old *.fit() functions from previous versions of the package still
+    exist but now internally call the new *model() functions. Also, the
+    classes returned have the same names as the *model functions.
+
+  o A unified visualization framework for fitted IRT models has been added:
+    For all types of models (Rasch, RSM, PCM) one can visualize profiles
+    of the item parameters, regions for the most likely response, item
+    or category characteristic curves, item information, and person-item
+    plots. All of these rely on the unified framework for extracting
+    parameters and predictions (see below).
+
+  o New functions and eponymous classes itempar(), threshpar(), and
+    discrpar() to extract/represent item, threshold, and discrimination
+    parameters of item response models. Methods for the IRT models (Rasch,
+    RSM, PCM) are provided. In addition, several methods for standard generic
+    functions (print(), coef(), vcov()) are available.
+
+  o The worth() generic now internally calls the methods for itempar().
+
+  o Estimation of person parameters for a given item response model is
+    now available via the generic function personpar(). Specific methods for
+    Rasch, rating scale and partial credit models allow the estimatation of
+    person parameters via joint maximum likelihood estimation. Methods for
+    standard generic functions (print(), coef(), vcov()) are
+    available for the resulting objects of class "personpar".
+
+  o predict() methods for Rasch, rating scale and partial credit models
+    have been added. For a given fitted model object, these can be 
+    used to predict various types of response probabilities or actual 
+    reponses.
+
+  o New functions anchor() and anchortest() provide a variety of anchor 
+    methods for the detection of uniform differential item functioning 
+    (DIF) between two pre-specified groups in the Rasch model. To test 
+    for DIF, the itemwise Wald test is implemented.
+
+  o itemresp() is the class constructor for responses of n subjects
+    to k items which can be polytomous and have different measurement
+    scales. A wide range of methods to standard generics is provided
+    as well as to generics created for the "paircomp" class. Thus,
+    features can be easily extracted/replaced, summaries/visualizations
+    can be produced, subsetting/merging/etc. is facilitated.
+
+  o The handling of argument 'ref' when producing a region plot (previously
+    called effect plot) was changed. Whereas in the previous implementation,
+    the restriction specified in this argument was applied to the cumulative
+    absolute item threshold parameters, it now is applied to the absolute
+    item threshold parameters.    
+
+  o A bug occuring in pcmodel() when null categories are present and 
+    nullcats = "keep" was fixed. (Thanks to Oliver Prosperi for reporting
+    this.)
+
+  o The processing of the minimal category zero in the function rsmodel() 
+    was changed. Only if for all items, the minimal category is above zero,
+    downcoding takes place. Otherwise, the missing minimal categories are 
+    treated as not observed, i.e., with a frequency of zero.
+
+
 Changes in Version 0.2-0
 
   o Major update with new model fitting functions (partial credit and

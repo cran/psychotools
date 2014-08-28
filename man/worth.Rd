@@ -17,14 +17,19 @@
   \item{\dots}{arguments passed to methods.}
 }
 
-\seealso{\code{\link{btReg.fit}}, \code{\link{RaschModel.fit}}}
+\details{
+  Since version 0.3-0, calls to \code{worth} are
+  internally passed over to \code{itempar}.
+}
+
+\seealso{\code{\link{btmodel}}, \code{\link{raschmodel}}}
 
 \examples{
 ## data
 data("GermanParties2009", package = "psychotools")
 
 ## Bradley-Terry model
-bt <- btReg.fit(GermanParties2009$preference)
+bt <- btmodel(GermanParties2009$preference)
 
 ## worth parameters
 worth(bt)

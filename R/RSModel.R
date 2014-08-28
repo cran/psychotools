@@ -1,7 +1,6 @@
-### Function to fit a rating scale modell via nlm.  See e.g. Andrich (1978), Andersen (1995)
-RSModel.fit <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
-                         deriv = c("sum", "diff"), hessian = TRUE, maxit = 100L,
-                         full = TRUE, ...)
+## Function to fit a rating scale modell, see e.g. Andrich (1978), Andersen (1995)
+rsmodel <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
+  deriv = c("sum", "diff"), hessian = TRUE, maxit = 100L, full = TRUE, ...)
 {
   ## argument matching
   deriv <- match.arg(deriv)
@@ -22,8 +21,8 @@ RSModel.fit <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
 
   ## move categories to zero if necessary, get number of categories per item
   mincat <- apply(y, 2, min, na.rm = TRUE)
-  if(any(mincat > 0)) {
-    warning("Minimum score is not zero for all items (", paste("I", which(mincat > 0), sep = "", collapse = ", "), "). These items are scaled to zero.")
+  if(all(mincat > 0)) {
+    warning("The minimum score is above zero for all items. Items are scaled down to zero.")
     y[, mincat > 0] <- scale.default(y[, mincat > 0], center = mincat[mincat > 0], scale = FALSE)
   }
   oj <- apply(y, 2, max, na.rm = TRUE)
@@ -41,14 +40,14 @@ RSModel.fit <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
 
   ## stop if not all oj equal or oj = 1 (dichotomous items).
   o <- max(oj)
-  if (any(oj != o)) warning("Not all items have the same number of categories. Consider using PCModel.fit() for data with a variable number of categories per item.")
+  if (any(oj != o)) warning("Not all items have the same number of categories. Consider using pcmodel() for data with a variable number of categories per item.")
   oj <- rep.int(o, m)
-  if (o == 1) stop("Rating scale model requires polytomous items. Use RaschModel.fit() for dichotomous items.")
+  if (o == 1) stop("Rating scale model requires polytomous items. Use raschmodel() for dichotomous items.")
 
   ## check for 'total' null categories (null for all items), if present, stop, because tau is assessable
   cat_freq <- apply(y + 1, 2, tabulate, nbins = o + 1)
   if (any(rowSums(cat_freq) == 0)) stop("There are categories which are null for all items. ",
-                   "Please use PCModel.fit() instead (see argument nullcats in ?PCModel.fit).")
+                   "Please use pcmodel() instead (see argument nullcats in ?pcmodel).")
 
   ## check for missing
   y_na <- is.na(y)
@@ -283,25 +282,25 @@ RSModel.fit <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
               code = opt$convergence,
               iterations = tail(na.omit(opt$counts), 1L),
               reltol = reltol)
-  class(res) <- c("RSModel", "PCModel")
+  class(res) <- c("rsmodel")
   return(res )
 }
 
-print.RSModel <- function (x, digits = max(3, getOption("digits") - 3), ...) {
+print.rsmodel <- function (x, digits = max(3, getOption("digits") - 3), ...) {
   cat("RSM item and threshold parameters:\n")
   print(coef(x), digits = digits)
   invisible(x)
 }
 
-coef.RSModel <- function (object, ...) object$coefficients
+coef.rsmodel <- function (object, ...) object$coefficients
 
-vcov.RSModel <- function (object, ...) object$vcov
+vcov.rsmodel <- function (object, ...) object$vcov
 
-logLik.RSModel <- function (object, ...) structure(object$loglik, df = object$df, class = "logLik")
+logLik.rsmodel <- function (object, ...) structure(object$loglik, df = object$df, class = "logLik")
 
-weights.RSModel <- function (object, ...) if (is.null(object$weights)) rep.int(1L, object$n_org) else object$weights
+weights.rsmodel <- function (object, ...) if (is.null(object$weights)) rep.int(1L, object$n_org) else object$weights
 
-summary.RSModel <- function (object, vcov. = NULL, ...) {
+summary.rsmodel <- function (object, vcov. = NULL, ...) {
   ## coefficients
   cf <- coef(object)
 
@@ -318,12 +317,12 @@ summary.RSModel <- function (object, vcov. = NULL, ...) {
   colnames(cf) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
 
   object$coefficients <- cf      
-  class(object) <- "summary.RSModel"
+  class(object) <- "summary.rsmodel"
   return(object)
 }
 
 
-print.summary.RSModel <- function (x, digits = max(3, getOption("digits") - 3),
+print.summary.rsmodel <- function (x, digits = max(3, getOption("digits") - 3),
                                    signif.stars = getOption("show.signif.stars"), ...)
 {
   if (is.null(x$call)) {
@@ -345,250 +344,64 @@ print.summary.RSModel <- function (x, digits = max(3, getOption("digits") - 3),
   invisible(x)
 }
 
-plot.RSModel <- function (x, pattern = TRUE, names = NULL, ref = NULL, main = NULL,
-                          ylab = "Latent trait", ylim = NULL, col = c("gray", "gray"), pch = c(21, 22),
-                          lty = c(2, 3), refline = TRUE, reflinecol = "lightgray", ...)
+plot.rsmodel <- function (x, type = c("regions", "profile", "curves", "information", "piplot"), ...)
 {
-  ## pattern = FALSE -> goto plot.PCModel()
-  if (!pattern) plot.PCModel(x, ...)
-  else {
-
-    ## check input
-    stopifnot(length(col) == 2)
-    stopifnot(length(pch) == 2)
-    stopifnot(length(lty) == 2)
-    
-    ## setup basic data
-    m <- sum(x$items)
-    mvec <- which(x$items)
-    o <- x$categories[1]
-
-    ## setup parameters
-    cf <- itempar.RSModel(x, ref = ref, vcov = FALSE, simplify = FALSE)
-    ipar <- cf[[1]]
-    cpar <- cf[[2]]
-
-    ## setup y-axis and labels
-    if (is.null(ylim)) ylim <- extendrange(c(ipar, cpar), f = 0.25)
-    if (is.null(names)) names <- c(paste("Item", mvec), paste("Tau", 1:o)) else stopifnot(length(names) == m + o)
-
-    ## setup plotting parameters and par
-    par(mar = c(2.5, 4.5, 2.5, 1.5))
-    ix <- 1:(m + o)
-
-    ## setup plotting window and (if requested) reference line
-    plot(ix, unlist(cf, use.names = FALSE), main = main, ylab = ylab, type = "n", axes = FALSE, ylim = ylim)
-    if (refline) lines(x = c(0, ix[m] + 0.49), y = rep(mean(ipar), 2), col = reflinecol, ...)
-    axis(2)
-    axis(1, at = ix, labels = names)
-    box()
-
-    ## plot item parameters
-    lines(x = ix[1:m], y = ipar, type = "l", lty = lty[1], ...)
-    points(x = ix[1:m], y = ipar, pch = pch[1], bg = col[1], ...)
-
-    ## plot seperation line and threshold parameters
-    abline(v = ix[m] + c(0.49, 0.51))
-    lines(x = ix[(m + 1):(m + o)], y = cpar, type = "l", lty = lty[2], ...)
-    points(x = ix[(m + 1):(m + o)], y = cpar, pch = pch[2], bg = col[2], ...)
-  }
-}
-
-itempar.RSModel <- function (object, ref = NULL, vcov = TRUE, simplify = TRUE, ...) {
-
-  ## extract cf and labels, include restricted parameters
-  cf <- coef(object)
-  k <- length(cf)
-  m <- sum(object$items)
-  icf <- c(0.00, cf[1:(m-1)])
-  ccf <- c("C1" = 0.00, cf[m:k])
-  ilbs <- names(icf)
-  clbs <- names(ccf)
-  names(cf)[1] <- names(icf)[1] <- ilbs[1] <- if (ilbs[2] == "I2") "I1" else colnames(object$data)[1]
-  
-  ## process ref
-  if (is.null(ref)) {
-    ref <- 1:m
-  } else if (is.character(ref)) {
-    stopifnot(all(ref %in% ilbs))
-    ref <- which(ilbs %in% ref)
-  } else if (is.numeric(ref)) {
-    ref <- as.integer(ref)
-    stopifnot(all(ref %in% 1:m))
-  } else stop("Argument 'ref' can only be a character vector with item labels or a numeric vector with item indices.")
-
-  ## create contrast matrix
-  D <- diag(m)
-  D[, ref] <- D[, ref] - 1/length(ref)
-  
-  ## impose restriction
-  icf <- D %*% icf
-  names(icf) <- ilbs
-
-  ## adjust vcov if requested
-  if (vcov) {
-    k <- k + 2
-    vc <- matrix(0.00, nrow = k, ncol = k)
-    vc[c(2:m, (m+2):k), c(2:m, (m+2):k)] <- vcov(object)
-
-    ## create new D to include covariances of ip and taus in transformation
-    D2 <- diag(k)                       
-    D2[1:m, 1:m] <- D
-    vc <- D2 %*% vc %*% t(D2)
-    colnames(vc) <- rownames(vc) <- c(ilbs, clbs)
-  }
-
-  ## create list if requested
-  cf <- if (simplify) c(icf, ccf) else list(icf, ccf)
-
-  ## return results
-  rval <- structure(cf, class = "itempar", model = "RSM", ref = ref, vcov = if (vcov) vc else NULL)
-  return(rval)
-}
-
-threshold.RSModel <- function (object, type = c("mode", "median", "mean", "unmodified"), ref = NULL, simplify = TRUE, ...) {
-
-  ## check type, extract item parameters, add names, backup attributes
+  ## check input
   type <- match.arg(type)
-  ip <- itempar.RSModel(object, ref = ref, vcov = FALSE, simplify = FALSE)
-  lbs <- lapply(names(ip[[1]]), paste, names(ip[[2]]), sep = "-")
-  mdl <- attr(ip, "model")
-  ref <- attr(ip, "ref")
-  ip <- lapply(as.list(ip[[1]]), function (beta) diff(0:length(ip[[2]]) * beta + c(0, ip[[2]]))) ## convert to pcm parameters, rest as before
-  ip <- mapply("names<-", ip, lbs, SIMPLIFY = FALSE)
-  names(ip) <- NULL
 
-  ## calculate threshold parameters (if necessary)
-  if (type == "mode") {
-   ## check if all threshold parameters are in order, if not, calculate sorted ones
-    us <- sapply(ip, is.unsorted)
-    if (any(us)) {
-      usj <- which(us)
-      for (j in usj) {
-        ipj <- ip[[j]]
-        nj <- length(ipj)
-        
-        ## check if there is a point with a biggest parameter, if yes, take mean
-        for (i in 1:nj) {
-          if (all(ipj[i] > ipj[(i+1):nj])) {
-            ipj[i] <- mean(ipj[i:nj])
-            ipj <- ipj[-(i+1:nj)]
-            break
-          }
-        }
-        
-        ## recursive sorting if there is still unorder (e.g. 4, 2, 3, 1)
-        while(is.unsorted(ipj)) {
-          uo_pos <- which(diff(ipj) < 0)                             # locate unordered parameters, returns position of the first
-          ipj[uo_pos] <- (ipj[uo_pos] + ipj[uo_pos + 1]) / 2 # replace first with location of intersection of ccc curves (= (eps1 + eps2)/ 2)
-          ipj <- ipj[-(uo_pos + 1)]                              # remove second
-        }
-
-        ip[[j]] <- ipj
-      }
-    }
-  } else {
-    oj <- sapply(ip, length)
-
-    if (type == "median") {
-      ## function to find locations on theta axis
-      zmedian <- function (theta = NULL, delta = NULL, geq = NULL, ncat = NULL) {
-        rowSums(ppcm(theta = theta, delta = delta)[, (geq + 1):ncat, drop = FALSE]) - 0.5
-      }
-      
-      ## loop though items and find locations by means of zmedian() and uniroot()
-      for (j in seq_along(ip)) {
-        ip[[j]] <- sapply(1:oj[j], function (geq) uniroot(f = zmedian, interval = c(-10, 10), delta = ip[[j]], geq = geq, ncat = oj[j] + 1)$root)
-      }
-    } else if (type == "mean") {
-      ## function to find locations on theta axis
-      xpct <- lapply(oj, function (oj) 1:oj - 0.5)
-      zexpct <- function (theta = NULL, delta = NULL, expct = NULL) ppcm(theta = theta, delta = delta) %*% 0:length(delta) - expct
-      
-      ## loop though items and find locations by means of zexpct() and uniroot()
-      for (j in seq_along(ip)) {
-        ip[[j]] <- sapply(xpct[[j]], function (xp) uniroot(f = zexpct, interval = c(-10, 10), delta = ip[[j]], expct = xp)$root)
-      }
-    }
-
-    ## add labels again
-    ip <- mapply("names<-", ip, lbs, SIMPLIFY = FALSE)
-  }
-  
-  ## backup attributes, simplify if requested, then set attributes again
-  if (simplify) ip <- unlist(ip)
-  return(structure(ip, "class" = "threshold", "model" = mdl, "ref" = ref, "type" = type))
+  ## just call requested plotting function and pass arguments on
+  switch(type,
+         "curves" = curveplot(x, ...),
+         "regions" = regionplot(x, ...),
+         "profile" = profileplot(x, ...),
+         "information" = infoplot(x, ...),
+         "piplot" = piplot(x, ...))
 }
 
-personpar.RSModel <- function (object, ref = NULL, vcov = TRUE, start = NULL, tol = 1e-6, ...) {
-
-  ## extract item parameters and relevant informations #FIXME: constrained parameter included?
-  ipar <- itempar.RSModel(object, ref = ref, vcov = FALSE, simplify = FALSE)
-  m <- length(ipar[[1]])
-  o <- length(ipar[[2]])
-  os <- 1:o
-  osv <- rep.int(os, m)
-  ipar <- lapply(as.list(ipar[[1]]), function (beta) os * beta + ipar[[2]]) ## convert to pcm parameters
-  rng <- 1:(m * o - 1)
-  
-  ## if vcov is requested, fetch relevant data for loglik
-  if (vcov) {
-    y <- object$data[weights(object) > 0, , drop = FALSE]
-    rs <- rowSums(y)
-    rf <- tabulate(rs, nbins = m * o - 1)
-    cs <- apply(y, 2, tabulate, nbins = o)
-
-    ## remove unidentified parameters
-    rs <- rs[rf != 0]
-    rng <- rng[rf != 0]
-    rf <- rf[rf != 0]
-
-    ## transform ipar to matrix (o x m)
-    ipar <- do.call("cbind", ipar)
-  }
-
-  ## start values / range of person parameters
-  if(is.null(start)) start <- if (vcov) numeric(length(rng)) else c(-1, 1) * qlogis(1/m * 1e-3) #FIXME: 1e3 enough?
-
-  if (vcov) {
-    ## objective function
-    cloglik <- function (ppar) {
-      pparx <- outer(os, ppar) # l * theta_i
-      - sum(rf * rng * ppar) + sum(cs * ipar) + sum(rf * colSums(log(1 + apply(pparx, 2, function (x) colSums(exp(x - ipar))))))
-    }
-    ## optimization & target variables
-    opt <- nlm(cloglik, start, gradtol = tol, hessian = TRUE, check.analyticals = FALSE, ...)
-    ppar <- opt$estimate
-    vc <- solve(opt$hessian)
-  } else {
-    ## iterate over raw scores (from 1 until rmax-1)
-    ppar <- sapply(1:(m * o - 1), function(rawscore) {
-      uniroot(function(ppar) rawscore - sum(osv * exp(osv * ppar - unlist(ipar)) / unlist(lapply(ipar, function (beta) rep.int(1 + sum(exp(os * ppar - beta)), o)))), interval = start, tol = tol)$root
-    })
-  }
-  
-  ## return named vector of thetas
-  return(structure(ppar, .Names = rng, class = "personpar", model = "RSM"))
-}
-
-predict.RSModel <- function (object, newdata = NULL, type = c("probability", "cumprobability", "mode", "median", "mean"),
-                             ref = NULL, ...) {
-  
+predict.rsmodel <- function (object, newdata = NULL, type = c("probability",
+  "cumprobability", "mode", "median", "mean", "category-information",
+  "item-information", "test-information"), ref = NULL, ...)
+{
   ## check type, process newdata, if NULL, use person parameters of given model object
   type <- match.arg(type)
   if (is.null(newdata)) {
     rs <- rowSums(object$data, na.rm = TRUE)
-    rs <- rs[0 < rs & rs < ncol(object$data)]
-    newdata <- personpar.RSModel(object, ref = ref, vcov = FALSE)[rs]
+    rs <- rs[0 < rs & rs < (max(object$data) * ncol(object$data))]
+    newdata <- personpar(object, vcov = FALSE)[rs]
     names(newdata) <- NULL
   }
   nms <- names(newdata)
 
   ## itempars and raw probabilities
-  ip <- itempar.RSModel(object, ref = ref, vcov = FALSE, simplify = FALSE)
-  ilbs <- names(ip[[1]])
-  os <- 0:length(ip[[2]])
-  probs <- prsm(theta = newdata, beta = ip[[1]], tau = ip[[2]])
+  ip <- itempar(object, ref = ref, vcov = FALSE)
+  tp <- threshpar(object, type = "mode", ref = ref, relative = TRUE, vcov = FALSE)[[1]]
+  ilbs <- names(ip)
+  os <- 0:length(tp)
+  o <- max(os) + 1
+  probs <- prsm(theta = newdata, beta = ip, tau = tp)
+
+  ## if requested: compute test/item/category information (see Muraki, 1993, for details and further references)
+  if (grepl("information", type)) {
+    m <- length(ilbs)
+    if (type == "category-information") {
+      info <- matrix(NA, nrow = length(newdata), ncol = m * o)
+      colnames(info) <- as.vector(t(outer(ilbs, os, paste, sep = "-C")))
+    } else {
+      info <- matrix(NA, nrow = length(newdata), ncol = m)
+      colnames(info) <- ilbs
+    }
+
+    for (j in 1:m) {
+      ojm <- matrix(rep(os, each = length(newdata)), nrow = length(newdata), ncol = ncol(probs[[j]]))
+      iteminfo <- rowSums((ojm - rowSums(ojm * probs[[j]]))^2 * probs[[j]])
+      if (type == "category-information") {
+        info[, (j - 1) * o + os + 1] <- probs[[j]] * iteminfo
+      } else {
+        info[, j] <- iteminfo
+      }
+    }
+  }
+  
 
   ## return as requested in type, for RM mode, median, mean is the same
   switch(type,
@@ -611,9 +424,466 @@ predict.RSModel <- function (object, newdata = NULL, type = c("probability", "cu
            },
          "mode" = sapply(probs, apply, 1, which.max) - 1,
          "median" = sapply(probs, function (probsj) apply(probsj, 1, which.max) - 1),
-         "mean" = round(sapply(probs, function (probsj) apply(probsj, 1, function (j) sum(j * 0:(length(j) - 1))))),round(probs))
+         "mean" = round(sapply(probs, function (probsj) apply(probsj, 1, function (j) sum(j * 0:(length(j) - 1))))),round(probs),
+         "category-information" = info,
+         "item-information" = info,
+         "test-information" = matrix(rowSums(info), ncol = 1))
 }
 
+itempar.rsmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
+{
+  ## extract cf and labels, include restricted parameters
+  m <- sum(object$items)
+  ip <- c(0.00, coef(object)[1:(m - 1)])
+  ctp <- c(0.00, coef(object)[-(1:(m - 1))])
+  cf <- c(ip, ctp)
+  o <- length(ctp)  
+  lbs <- names(ip)
+  lbs[1] <- if (lbs[2] == "I2") "I1" else colnames(object$data)[1]
+
+  ## process ref
+  if (is.null(ref)) {
+    ref <- 1:m
+  } else if (is.vector(ref) && is.character(ref)) {
+    stopifnot(all(ref %in% lbs))
+    ref <- which(lbs %in% ref)
+  } else if (is.vector(ref) && is.numeric(ref)) {
+    ref <- as.integer(ref)
+    stopifnot(all(ref %in% 1:m))
+  } else if (is.matrix(ref) && (is.numeric(ref))) {
+    stopifnot(nrow(ref) == m & ncol(ref) == m)
+  } else stop("Argument 'ref' is misspecified (see ?itempar for possible values).")
+
+  ## if not given, specify contrast matrix from ref
+  if (is.matrix(ref)) {
+    D <- ref
+  } else {
+    D <- diag(m)
+    D[, ref] <- D[, ref] - 1/length(ref)
+  }
+  
+  ## transform estimated item-specific parameters and estimated
+  ## cumulative threshold parameters to mean absolute threshold parameters ...
+  C <- matrix(0, nrow = m, ncol = m + o)
+  C[1:m, 1:m] <- diag(m)
+  C[, m + o] <- 1/o
+  cf <- as.vector(C %*% cf)
+
+  ## if requested: create adjusted vcov
+  if (vcov) {
+    vc <- matrix(0, nrow = m + o, ncol = m + o)
+    vc[2:m, 2:m] <- vcov(object)[1:(m-1), 1:(m-1)]
+    vc[2:m, (m + 2):(m + o)] <- vcov(object)[1:(m - 1), m:(m + o - 2)]
+    vc[(m + 2):(m + o), 2:m] <- vcov(object)[m:(m + o - 2), 1:(m - 1)]
+    vc[(m + 2):(m + o), (m + 2):(m + o)] <- vcov(object)[m:(m + o - 2), m:(m + o - 2)]
+    vc <- C %*% vc %*% t(C)
+  }
+  
+  ## finally apply ref
+  ## if vcov requested: adjust existing vcov
+  cf <- as.vector(D %*% cf)
+  if (vcov) {
+    vc <- D %*% vc %*% t(D)
+  } else { # else return NA matrix
+    vc <- matrix(NA, nrow = m, ncol = m)
+  }
+  
+  ## set labels
+  names(cf) <- rownames(vc) <- colnames(vc) <- lbs
+
+  ## process argument alias
+  if (!alias) {
+    if (is.matrix(ref)) {
+      ## FIXME: Implement alias when ref is a specific constrast matrices -> detect linear dependent columns?
+      stop("Processing of argument 'alias' not implemented with a contrast matrix given in argument 'ref'.")
+    } else {
+      cf <- cf[-ref[1]]
+      vc <- vc[-ref[1], -ref[1]]
+      alias <- paste0("I", ref[1])
+      names(alias) <- lbs[ref[1]]
+    }
+  }
+
+  ## setup and return result object
+  rv <- structure(cf, class = "itempar", model = "RSM", ref = ref, vcov = vc)
+  return(rv)
+}
+
+threshpar.rsmodel <- function (object, type = c("mode", "median", "mean"), ref = NULL,
+                               alias = TRUE, relative = FALSE, cumulative = FALSE, vcov = TRUE, ...)
+{
+  ## check input
+  type <- match.arg(type)
+
+  ## extract relevant informations
+  m <- sum(object$items)
+  ip <- c(0.00, coef(object)[1:(m - 1)])     # item specific parameters
+  tp <- c(0.00, coef(object)[-c(1:(m - 1))]) # cumulative relative threshold parameters
+  o <- length(tp)
+  b <- m * o
+  ilbs <- names(ip)
+  ilbs[1] <- if (ilbs[2] == "I2") "I1" else colnames(object$data)[1]
+  clbs <- paste0("C", 1:o)
+  lbs <- as.vector(outer(clbs, ilbs, function (i, j) paste(j, i, sep = "-")))
+
+  ## process argument relative
+  if (relative) {
+
+    if (type == "mode") {
+
+      ## process ref
+      if (is.null(ref)) {
+        ref <- 1:o
+      } else if (is.vector(ref) && is.character(ref)) {
+        stopifnot(all(ref %in% clbs))
+        ref <- which(clbs %in% ref)
+      } else if (is.vector(ref) && is.numeric(ref)) {
+        ref <- as.integer(ref)
+        stopifnot(all(ref %in% 1:o))
+      } else if (is.matrix(ref) && is.numeric(ref)) {
+        stopifnot(nrow(ref) == o && ncol(ref) == o)
+      } else stop("Argument 'ref' is misspecified (see ?threshpar for possible values).")
+
+      ## transform estimated cumulative relative item threshold parameters to relative item threshold parameters
+      C <- diag(o)
+      for (i in 2:o) C[i, i - 1] <- -1
+      tp <- as.vector(C %*% tp)
+      ## if vcov requested: create adjusted vcov
+      if (vcov) {
+        vc0 <- rbind(0, cbind(0, vcov(object)))[-c(1:(m - 1)), -c(1:(m - 1))]
+        vc0 <- C %*% vc0 %*% t(C)
+      }
+
+      ## if not given, specify contrast matrix
+      if (is.matrix(ref)) {
+        D <- ref
+      } else {
+        D <- diag(o)
+        D[, ref] <- D[, ref] - 1/length(ref)
+      }
+      
+      ## apply ref
+      ## if vcov requested: adjust vcov too
+      tp <- as.vector(D %*% tp)
+      tp <- split(rep(tp, m), rep(1:m, each = o))
+      if (vcov) {
+        vc0 <- D %*% vc0 %*% t(D)
+        vc <- matrix(0, nrow = m * o, ncol = m * o)
+        for (i in 1:m) vc[1:o + (i - 1) * o, 1:o + (i - 1) * o] <- vc0
+      } else { # else return NA matrix
+        vc <- matrix(NA, nrow = m * o, ncol = m * o)
+      }
+
+      ## if cumulative relative threshold parameters are requested: transform relative item
+      ## threshold parameters back to cumulative relative item threshold parameters
+      if (cumulative) {
+        tp <- lapply(tp, cumsum)
+        if (vcov) {
+          C <- matrix(0, nrow = o, ncol = o)
+          for (k in 1:o) C[k, 1:k] <- 1
+          for (i in 1:m) vc[1:o + (i - 1) * o, 1:o + (i - 1) * o] <- C %*% vc[1:o + (i - 1) * o, 1:o + (i - 1) * o] %*% t(C)
+        }
+      }
+      
+    } else stop("Relative threshold parameters not implemented for types other than mode.")
+    
+  } else {
+
+    if (type == "mode") {
+
+      ## process ref
+      if (is.null(ref)) {
+        ref <- 1:b
+      } else if (is.vector(ref) && is.character(ref)) {
+        stopifnot(all(ref %in% clbs))
+        ref <- which(lbs %in% ref)
+      } else if (is.vector(ref) && is.numeric(ref)) {
+        ref <- as.integer(ref)
+        stopifnot(all(ref %in% 1:b))
+      } else if (is.matrix(ref) && is.numeric(ref)) {
+        stopifnot(ncol(ref) == b && nrow(ref) == b)
+      } else stop("Argument 'ref' is misspecified (see ?threshpar for possible values).")
+      
+      ## transform estimated item-specific parameters and estimated cumulative
+      ## relative item threshold parameters to absolute item threshold parameters
+      C <- matrix(0, nrow = b, ncol = m + o)
+      for (j in 1:m) {
+        C[(j - 1) * o + 1:o, j] <- 1
+        C[(j - 1) * o + 1:o, m + 1:o] <- diag(o)
+        for (k in 2:o) C[(j - 1) * o + k, m  + k - 1] <- -1
+      }
+      tp <- C %*% c(ip, tp)
+      if (vcov) {
+        vc <- matrix(0, nrow = m + o, ncol = m + o)
+        vc[2:m, 2:m] <- vcov(object)[1:(m-1), 1:(m-1)]
+        vc[2:m, (m + 2):(m + o)] <- vcov(object)[1:(m - 1), m:(m + o - 2)]
+        vc[(m + 2):(m + o), 2:m] <- vcov(object)[m:(m + o - 2), 1:(m - 1)]
+        vc[(m + 2):(m + o), (m + 2):(m + o)] <- vcov(object)[m:(m + o - 2), m:(m + o - 2)]
+        vc <- C %*% vc %*% t(C)
+      }
+      
+      ## if not given, specify contrast matrix
+      if (is.matrix(ref)) {
+        D <- ref
+      } else {
+        D <- diag(b)
+        D[, ref] <- D[, ref] - 1/length(ref)
+      }
+      
+      ## apply ref
+      ## if vcov requested: adjust existing vcov
+      tp <- as.vector(D %*% tp)
+      tp <- split(tp, rep(1:m, each = o))
+      if (vcov) {
+        vc <- D %*% vc %*% t(D)
+      } else { # else return NA matrix
+        vc <- matrix(NA, nrow = b, ncol = b)
+      }
+
+      ## if cumulative absolute item threshold parameters are requested:
+      ## cumulate calculated absolute item threshold parameters and adjust vcov if requested ...
+      if (cumulative) {
+        tp <- lapply(tp, cumsum)
+        if (vcov) {
+          C <- matrix(0, nrow = m * o, ncol = m * o)
+          for (j in 1:m) {
+            for (k in 1:o) C[(j - 1) * o + k, (j - 1) * o + 1:k] <- 1
+          }
+          vc <- C %*% vc %*% t(C)
+        }
+      }
+
+    } else {
+
+      ## process ref and setup NA vcov
+      if (!is.null(ref)) warning("Argument 'ref' is not processed for types other than mode.")
+      if (!alias) warning("Argument 'alias' is not processed for types other than mode.")
+      tp <- lapply(ip, "+", tp)
+      vc <- matrix(NA, nrow = b, ncol = b)
+
+      if (type == "mean") {
+
+        ## setup threshold parameters, expected scores, function to find locations on theta axis
+        xpct <- 1:o - 0.5
+        zexpct <- function (theta = NULL, delta = NULL, expct = NULL) ppcm(theta = theta, delta = delta) %*% 0:length(delta) - expct
+        
+        ## loop though items and find locations by means of zexpct() and uniroot()
+        for (j in 1:m) tp[[j]] <- sapply(xpct, function (xp) uniroot(f = zexpct, interval = c(-10, 10), delta = tp[[j]], expct = xp)$root)
+
+      }
+
+      if (type == "median") {
+
+        ## setup threshold parameters, expected scores, function to find locations on theta axis
+        zmedian <- function (theta = NULL, delta = NULL, geq = NULL, ncat = NULL) rowSums(ppcm(theta = theta, delta = delta)[, (geq + 1):ncat, drop = FALSE]) - 0.5
+
+        ## loop though items and find locations by means of zmedian() and uniroot()
+        for (j in 1:m) tp[[j]] <- sapply(1:o, function (geq) uniroot(f = zmedian, interval = c(-10, 10), delta = tp[[j]], geq = geq, ncat = o + 1)$root)
+        
+      }
+
+      ## if cumulative absolute item threshold parameters are requsted, just cumulate ...
+      if (cumulative) tp <- lapply(tp, cumsum)
+    }
+    
+  }
+
+  ## set labels
+  names(tp) <- ilbs
+  rownames(vc) <- colnames(vc) <- lbs
+  for (i in 1:m) names(tp[[i]]) <- paste0("C", 1:o)
+
+  ## process argument alias
+  if (!alias && type == "mode") {
+    if (is.matrix(ref)) {
+      ## FIXME: Implement alias when ref is a specific constrast matrices -> detect linear dependent columns?
+      stop("Processing of argument 'alias' not implemented with a contrast matrix given in argument 'ref'.")
+    } else {
+      if (relative) {
+        tp <- lapply(tp, function (j) j[-ref[1]])
+        s <- -seq(from = ref[1], by = o, length.out = m)
+        vc <- vc[-s, -s]
+        alias <- as.list(rep(ref[1], m))
+        names(alias) <- ilbs
+      } else {
+        ref1 <- ref[1]
+        i <- split(1:b, rep(1:m, each = o))
+        item <- which(sapply(i, function (j) ref1 %in% j))
+        tp[[item]] <- tp[[item]][-which(ref1 == i[[item]])]
+        vc <- vc[-ref1, -ref1]
+        alias <- paste0("I", item, "-C", which(ref1 == i[[item]]))
+        names(alias) <- ilbs[item]
+      }
+    }
+  }
+
+  ## setup and return result object
+  rv <- structure(tp, class = "threshpar", model = "RSM", type = type, ref = ref, relative = relative, alias = alias, vcov = vc)
+  return(rv)  
+}
+
+discrpar.rsmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
+{
+  ## check input
+  if (!is.null(ref)) warning("Argument 'ref' is currently not processed.")  ## FIXME: Implement argument ref for discrimination parameters
+
+  ## extract labels and number of items
+  m <- sum(object$items)
+  lbs <- c("", names(coef(object)[1:(m - 1)]))
+  lbs[1] <- if (lbs[2] == "I2") "I1" else colnames(object$data)[1]
+
+  ## process argument alias
+  if (alias) {
+      dp <- rep.int(1, m)
+      vc <- if (vcov) matrix(0, nrow = m, ncol = m, dimnames = list(lbs, lbs)) else matrix(NA, nrow = m, ncol = m, dimnames = list(lbs, lbs))
+  } else {
+      dp <- numeric()
+      vc <- matrix(0, nrow = 0, ncol = 0)
+      alias <- rep.int(1, m)
+      names(alias) <- lbs
+  }
+
+  ## setup and return result object
+  rv <- structure(dp, .Names = if (is.logical(alias)) lbs, class = "discrpar", model = "RSM", ref = ref, alias = alias, vcov = vc)
+  return(rv)
+}
+
+personpar.rsmodel <- function (object, ref = NULL, vcov = TRUE, interval = NULL, tol = 1e-8, ...)
+{
+  ## extract item parameters in pcm formulation
+  tp <- threshpar(object, ref = ref, type = "mode", alias = TRUE, vcov = FALSE)
+  tp <- lapply(tp, cumsum)
+  m <- length(tp)
+  o <- length(tp[[1]])
+  os <- 1:o
+  osv <- rep.int(os, m)
+  rng <- 1:(m * o - 1)
+  
+  ## iterate over raw scores (from 1 until rmax-1), see Fischer & Molenaar, 1995, p.286, Eq. (15.43)
+  if(is.null(interval)) interval <- c(-1, 1) * qlogis(1/m * 1e-3) #FIXME: 1e3 enough?
+  pp <- sapply(rng, function(rawscore) uniroot(function(pp) rawscore - sum(osv * exp(osv * pp - unlist(tp)) / unlist(lapply(tp, function (beta) rep.int(1 + sum(exp(os * pp - beta)), o)))),
+    interval = interval, tol = tol)$root)
+
+  ## calculate person parameters
+  if (vcov) {
+    ## relevant data for joint loglik approach
+    y <- object$data[weights(object) > 0, , drop = FALSE]
+    rs <- rowSums(y)
+    rf <- tabulate(rs, nbins = m * o - 1)
+    cs <- apply(y, 2, tabulate, nbins = o)
+    
+    ## remove unidentified parameters
+    rs <- rs[rf != 0]
+    rng <- rng[rf != 0]
+    pp <- pp[rf != 0]
+    rf <- rf[rf != 0]
+
+    ## transform ip to matrix (o x m)
+    tp <- do.call("cbind", tp)
+
+    ## obtain Hessian from objective function: joint log likelihood
+    cloglik <- function (pp) - sum(rf * rng * pp) + sum(cs * tp) + sum(rf * colSums(log(1 + apply(outer(os, pp), 2, function (x) colSums(exp(x - tp))))))
+    vc <- solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)
+  } else {
+    vc <- matrix(NA, nrow = length(rng), ncol = length(rng))
+  }
+  colnames(vc) <- rownames(vc) <- rng
+  
+  ## setup and return result object
+  rv <- structure(pp, .Names = rng, class = "personpar", model = "RSM", vcov = vc)
+  return(rv)
+}
+
+nobs.rsmodel <- function (object, ...)
+{
+  return(object$n)
+}
+
+bread.rsmodel <- function(x, ...) x$vcov * x$n
+
+estfun.rsmodel <- function(x, ...) {
+  ## get relevant informations
+  dat <- x$data                    # completely cleaned (downcoded, null cats treatment, weights) data.
+  weights_org <- weights(x)
+  weights <- weights_org[weights_org > 0]
+  n <- nrow(dat)
+  m <- ncol(dat)
+  o <- max(dat, na.rm = TRUE)
+  npar <- x$df
+  ptot <- rowSums(dat, na.rm = TRUE) + 1 # +1 because gamma of score 0 is in row 1.
+  ctot <- t(apply(dat, 1, tabulate, nbins = o))
+  
+  ## helper variables for first derivative calculation
+  mv <- 1:m
+  ov <- 1:o
+  beta_index <- rep.int(mv,  rep.int(o, m))
+  tau_index <- rep.int(ov, m)
+
+  ## calculate gradient (matrix with 1:(m-1) cols for beta_j, j = 2, m, and o - 1 cols for tau^*_k, k = 2, ..o)
+  if (!x$na) {
+    
+    ## select zero and first derivatives of gamma functions
+    ## transform derivatives with item-category parameters to derivatives of RSM-parameters
+    gamma0 <- x$esf[[1]][ptot]
+    gamma1_pcm <- x$esf[[2]]
+  
+    ## calculate transformed derivatives, select relevant derivatives with ptot, drop unindentified parameters.
+    gamma1 <- matrix(0, nrow = nrow(gamma1_pcm), ncol = m + o)
+    for (j in mv) gamma1[, j] <- gamma1_pcm[, beta_index == j, drop = FALSE] %*% ov
+    for (k in ov) gamma1[, k + m] <- rowSums(gamma1_pcm[, tau_index == k, drop = FALSE])
+    gamma1 <- apply(gamma1, 2, "[", ptot)
+
+    ## finally: the gradient
+    agrad <- matrix(0, nrow = n, ncol = m + o)
+    agrad[, mv] <- weights * (- dat + (gamma1 / gamma0)[, mv, drop = FALSE])
+    agrad[, m + ov] <- weights * (- ctot + (gamma1 / gamma0)[, m + ov, drop = FALSE])
+
+  } else {
+
+    ## return value
+    agrad <- matrix(0, nrow = n, ncol = m + o)
+
+    ## observed NA patterns
+    na_patterns <- factor(apply(is.na(dat), 1, function(z) paste(which(z), collapse = "\r")))
+
+    ## loop through na patterns, select derivatives and calculate gradient
+    for(i in seq_len(nlevels(na_patterns))) {
+
+      ## parse NA patterns
+      lev_i <- levels(na_patterns)[i]
+      na_i <- which(na_patterns == lev_i)
+      mv_i <- as.integer(strsplit(lev_i, "\r")[[1]])
+      mv_i <- if(length(mv_i) < 1) mv else mv[-mv_i]
+      m_i <- length(mv_i)
+      mv_i_1 <- 1:m_i
+
+      ## calculate/fetch necessary stuff for gradient
+      weights_i <- weights[na_i]
+      ptot_i <- ptot[na_i]
+      gamma0 <- x$esf[[i]][[1]][ptot_i]
+      gamma1_pcm <- x$esf[[i]][[2]]
+      beta_index_i <- rep.int(mv_i, rep.int(o, m_i))
+      tau_index_i <- rep.int(ov, m_i)
+
+      ## calculate transformed derivatives, select relevant derivatives with ptot, drop unindentified parameters.
+      gamma1 <- matrix(0, nrow = nrow(gamma1_pcm), ncol = m_i + o)
+      for (j in mv_i_1) gamma1[, j] <- gamma1_pcm[, beta_index_i == mv_i[j], drop = FALSE] %*% ov
+      for (k in ov) gamma1[, k + m_i] <- rowSums(gamma1_pcm[, tau_index_i == k, drop = FALSE])
+      gamma1 <- apply(gamma1, 2, "[", ptot_i)
+      if (!is.matrix(gamma1)) gamma1 <- matrix(gamma1, nrow = 1)
+
+      ## finally: the gradient for NA group i
+      agrad[na_i, mv_i] <- weights_i * (- dat[na_i, mv_i, drop = FALSE] + (gamma1 / gamma0)[, mv_i_1, drop = FALSE])
+      agrad[na_i, m_i + ov] <- weights_i * (- ctot[na_i, , drop = FALSE] + (gamma1 / gamma0)[, m_i + ov, drop = FALSE])
+    }
+
+  }
+
+  ## collect and return matrix of initial size with gradients plugged in.
+  grad <- matrix(0, ncol = npar, nrow = length(weights_org))
+  grad[weights_org > 0, ] <- agrad[, -c(1, m + 1)]
+  return(grad)
+}
 
 
 ### misc. internal functions

@@ -1,7 +1,7 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
-Platform: x86_64-unknown-linux-gnu (64-bit)
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -137,182 +137,6 @@ CDU/CSU : FDP     106  86
 22     4     AlcCtl 202 50  79  89
 23     5     AlcCtl 217 64  69  70
 24     6     AlcCtl 243 64  65  48
-> 
-> 
-> 
-> cleanEx()
-> nameEx("PCModel.fit")
-> ### * PCModel.fit
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: PCModel.fit
-> ### Title: Partial Credit Model Fitting Function
-> ### Aliases: PCModel.fit print.PCModel summary.PCModel
-> ###   print.summary.PCModel coef.PCModel logLik.PCModel vcov.PCModel
-> ### Keywords: regression
-> 
-> ### ** Examples
-> 
-> 
-> ## Verbal aggression data
-> data("VerbalAggression", package = "psychotools")
-> 
-> ## Partial credit model for the other-to-blame situations
-> pcm <- PCModel.fit(VerbalAggression$resp[, 1:12])
-> summary(pcm)
-
-Partial credit model
-
-Item category parameters:
-               Estimate Std. Error z value Pr(>|z|)    
-S1WantCurse-C2  0.43145    0.25453   1.695 0.090062 .  
-S1DoCurse-C1   -0.10659    0.21858  -0.488 0.625811    
-S1DoCurse-C2    0.59544    0.35874   1.660 0.096954 .  
-S1WantScold-C1  0.56366    0.21616   2.608 0.009118 ** 
-S1WantScold-C2  1.25444    0.35762   3.508 0.000452 ***
-S1DoScold-C1    0.58144    0.21183   2.745 0.006053 ** 
-S1DoScold-C2    1.70747    0.36228   4.713 2.44e-06 ***
-S1WantShout-C1  0.76676    0.20960   3.658 0.000254 ***
-S1WantShout-C2  2.30309    0.36960   6.231 4.63e-10 ***
-S1DoShout-C1    1.62445    0.21789   7.455 8.97e-14 ***
-S1DoShout-C2    3.47896    0.38894   8.945  < 2e-16 ***
-S2WantCurse-C1 -0.56274    0.22857  -2.462 0.013818 *  
-S2WantCurse-C2 -0.07855    0.36200  -0.217 0.828213    
-S2DoCurse-C1    0.24407    0.21621   1.129 0.258966    
-S2DoCurse-C2    0.95149    0.35768   2.660 0.007809 ** 
-S2WantScold-C1  0.39773    0.21547   1.846 0.064912 .  
-S2WantScold-C2  1.14034    0.35789   3.186 0.001441 ** 
-S2DoScold-C1    0.91216    0.21077   4.328 1.51e-05 ***
-S2DoScold-C2    2.41128    0.37018   6.514 7.33e-11 ***
-S2WantShout-C1  0.94530    0.21337   4.430 9.41e-06 ***
-S2WantShout-C2  2.11747    0.36503   5.801 6.60e-09 ***
-S2DoShout-C1    2.12473    0.22734   9.346  < 2e-16 ***
-S2DoShout-C2    4.40992    0.41996  10.501  < 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Log-likelihood: -2475 (df = 23) 
-Number of iterations in BFGS optimization: 32 
-
-> plot(pcm)
-> 
-> ## Get data of situation 1 ('A bus fails to
-> ## stop for me') and induce a null category in item 2.
-> pcd <- VerbalAggression$resp[, 1:6, drop = FALSE]
-> pcd[pcd[, 2] == 1, 2] <- NA
-> 
-> ## fit pcm to these data, comparing downcoding and keeping strategy
-> pcm_va_keep  <- PCModel.fit(pcd, nullcats = "keep")
-Warning in PCModel.fit(pcd, nullcats = "keep") :
-  There are items with null categories (I2).
-> pcm_va_down  <- PCModel.fit(pcd, nullcats = "downcode")
-Warning in PCModel.fit(pcd, nullcats = "downcode") :
-  There are items with null categories (I2).
-> 
-> plot(x = coef(pcm_va_keep), y = coef(pcm_va_down),
-+      xlab = "Threshold Parameters (Downcoding)",
-+      ylab = "Threshold Parameters (Keeping)",
-+      main = "Comparison of two null category strategies (I2 with null category)", 
-+      pch = rep(as.character(1:6), each = 2)[-3])
-> abline(b = 1, a = 0)
-> 
-> 
-> 
-> 
-> cleanEx()
-> nameEx("RSModel.fit")
-> ### * RSModel.fit
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: RSModel.fit
-> ### Title: Rating Scale Model Fitting Function
-> ### Aliases: RSModel.fit print.RSModel summary.RSModel
-> ###   print.summary.RSModel coef.RSModel logLik.RSModel vcov.RSModel
-> ### Keywords: regression
-> 
-> ### ** Examples
-> 
-> 
-> ## Verbal aggression data
-> data("VerbalAggression", package = "psychotools")
-> 
-> ## Rating scale model for the other-to-blame situations
-> rsm <- RSModel.fit(VerbalAggression$resp[, 1:12])
-> summary(rsm)
-
-Rating scale model
-
-Item location and threshold parameters:
-            Estimate Std. Error z value Pr(>|z|)    
-S1DoCurse    0.08993    0.11766   0.764 0.444669    
-S1WantScold  0.42045    0.11812   3.560 0.000371 ***
-S1DoScold    0.63786    0.11936   5.344 9.09e-08 ***
-S1WantShout  0.91614    0.12201   7.509 5.96e-14 ***
-S1DoShout    1.56572    0.13298  11.774  < 2e-16 ***
-S2WantCurse -0.21823    0.11886  -1.836 0.066365 .  
-S2DoCurse    0.26187    0.11768   2.225 0.026062 *  
-S2WantScold  0.35824    0.11790   3.039 0.002377 ** 
-S2DoScold    0.98491    0.12284   8.018 1.08e-15 ***
-S2WantShout  0.86353    0.12141   7.112 1.14e-12 ***
-S2DoShout    2.05975    0.14660  14.050  < 2e-16 ***
-C2           0.50240    0.08499   5.911 3.40e-09 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Log-likelihood: -2481 (df = 12) 
-Number of iterations in BFGS optimization: 19 
-
-> plot(rsm)
-> 
-> 
-> 
-> 
-> cleanEx()
-> nameEx("RaschModel.fit")
-> ### * RaschModel.fit
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: RaschModel.fit
-> ### Title: Rasch Model Fitting Function
-> ### Aliases: RaschModel.fit print.RaschModel summary.RaschModel
-> ###   print.summary.RaschModel coef.RaschModel worth.RaschModel
-> ###   logLik.RaschModel vcov.RaschModel
-> ### Keywords: regression
-> 
-> ### ** Examples
-> 
-> ## Verbal aggression data
-> data("VerbalAggression", package = "psychotools")
-> 
-> ## Rasch model for the other-to-blame situations
-> m <- RaschModel.fit(VerbalAggression$resp2[, 1:12])
-> summary(m)
-
-Rasch model
-
-Difficulty parameters:
-              Estimate Std. Error z value Pr(>|z|)    
-S1DoCurse   -1.556e-08  2.042e-01   0.000  1.00000    
-S1WantScold  6.857e-01  1.995e-01   3.436  0.00059 ***
-S1DoScold    8.727e-01  1.994e-01   4.376 1.21e-05 ***
-S1WantShout  1.208e+00  2.003e-01   6.032 1.62e-09 ***
-S1DoShout    2.294e+00  2.131e-01  10.766  < 2e-16 ***
-S2WantCurse -5.393e-01  2.135e-01  -2.527  0.01152 *  
-S2DoCurse    3.614e-01  2.009e-01   1.799  0.07200 .  
-S2WantScold  5.345e-01  2.000e-01   2.673  0.00753 ** 
-S2DoScold    1.359e+00  2.012e-01   6.755 1.42e-11 ***
-S2WantShout  1.283e+00  2.007e-01   6.395 1.61e-10 ***
-S2DoShout    3.067e+00  2.343e-01  13.088  < 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Log-likelihood: -1255 (df = 11) 
-Number of iterations in BFGS optimization: 19 
-
-> plot(m)
 > 
 > 
 > 
@@ -544,7 +368,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > data("VerbalAggression", package = "psychotools")
 > 
 > ## Rasch model for the self-to-blame situations
-> m <- RaschModel.fit(VerbalAggression$resp2[, 1:12])
+> m <- raschmodel(VerbalAggression$resp2[, 1:12])
 > summary(m)
 
 Rasch model
@@ -713,41 +537,383 @@ Number of iterations in BFGS optimization: 19
 > 
 > 
 > cleanEx()
-> nameEx("btReg.fit")
-> ### * btReg.fit
+> nameEx("anchor")
+> ### * anchor
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: btReg.fit
-> ### Title: Bradley-Terry Model Fitting Function
-> ### Aliases: btReg.fit print.btReg summary.btReg print.summary.btReg
-> ###   coef.btReg worth.btReg deviance.btReg logLik.btReg vcov.btReg
+> ### Name: anchor
+> ### Title: Anchor Methods for the Detection of Uniform DIF the Rasch Model
+> ### Aliases: anchor anchor.default anchor.formula print.anchor
+> ###   print.summary.anchor summary.anchor
 > ### Keywords: regression
 > 
 > ### ** Examples
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Rasch model for the self-to-blame situations; gender DIF test
+> raschmodels <- with(VerbalAggression, lapply(levels(gender), function(i) 
++   raschmodel(resp2[gender == i, 1:12])))
+> 
+> ## four anchor items from constant anchor class using MPT-selection
+> canchor <- anchor(object = raschmodels[[1]], object2 = raschmodels[[2]], 
++   class = "constant", select = "MPT", length = 4)
+Loading required namespace: multcomp
+> canchor
+Anchor items:
+[1] 6 7 3 9
+
+Ranking order:
+ [1]  6  7  3  9  5  1  4  2 12 10  8 11
+
+Criterion values (not sorted):
+ [1] -5 -3 -5 -4 -5 -7 -6 -2 -5 -2 -1 -3
+> summary(canchor)
+Anchor items:
+6 7 3 9> 
+> ## iterative forward anchor class using MTT-selection
+> set.seed(1)
+> fanchor <- anchor(object = raschmodels[[1]], object2 = raschmodels[[2]],
++   class = "forward", select = "MTT", range = c(0.05, 1))
+> fanchor
+Anchor items:
+[1]  3  9  6  5  1  4 12
+
+Ranking order:
+ [1]  7  3  9  6  5  1  4 12 10  8  2 11
+
+Criterion values (not sorted):
+ [1]  6  9  6  7  6  6  5  9  6  9 10  9
+> 
+> ## the same using the formula interface
+> set.seed(1)
+> fanchor2 <- anchor(resp2[, 1:12] ~ gender , data = VerbalAggression,
++   class = "forward", select = "MTT", range = c(0.05, 1))
+> 
+> ## really the same?
+> all.equal(fanchor, fanchor2, check.attributes = FALSE)
+[1] TRUE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("anchortest")
+> ### * anchortest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: anchortest
+> ### Title: Anchor methods for the detection of uniform DIF the Rasch model
+> ### Aliases: anchortest anchortest.default anchortest.formula
+> ###   print.anchortest print.summary.anchortest summary.anchortest
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> o <- options(digits = 4)
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Rasch model for the self-to-blame situations; gender DIF test
+> raschmodels <- with(VerbalAggression, lapply(levels(gender), function(i) 
++   raschmodel(resp2[gender == i, 1:12])))
+> 
+> ## four anchor items from constant anchor class using MPT-selection
+> const1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]],
++   class = "constant", select = "MPT", length = 4)
+> const1
+Anchor items:
+[1] 6 7 3 9
+
+Anchored item parameters:
+S1WantCurse_1   S1DoCurse_1 S1WantScold_1   S1DoScold_1 S1WantShout_1 
+     -0.74701      -0.58351      -0.04436       0.39998       0.47407 
+S2WantCurse_1   S2DoCurse_1 S2WantScold_1   S2DoScold_1 S2WantShout_1 
+     -1.35148      -0.06928      -0.21997       0.97937       0.39998 
+  S2DoShout_1 S1WantCurse_2   S1DoCurse_2 S1WantScold_2   S1DoScold_2 
+      2.51449      -0.75471      -1.30591      -0.10200      -0.75471 
+S1WantShout_2 S2WantCurse_2   S2DoCurse_2 S2WantScold_2   S2DoScold_2 
+      0.45093      -1.11212      -1.51475      -0.18127      -0.50356 
+S2WantShout_2   S2DoShout_2 
+      1.03043       1.81021 
+
+Ranking order:
+ [1]  6  7  3  9  5  1  4  2 12 10  8 11
+
+Criterion values (not sorted):
+ [1] -5 -3 -5 -4 -5 -7 -6 -2 -5 -2 -1 -3
+
+Final DIF tests:
+
+	 Simultaneous Tests for General Linear Hypotheses
+
+Linear Hypotheses:
+                 Estimate Std. Error z value Pr(>|z|)    
+S1WantCurse == 0  0.00771    0.37887    0.02  0.98377    
+S1DoCurse == 0    0.72240    0.39811    1.81  0.06959 .  
+S1WantScold == 0  0.05765    0.28473    0.20  0.83956    
+S1DoScold == 0    1.15469    0.37457    3.08  0.00205 ** 
+S1WantShout == 0  0.02314    0.36610    0.06  0.94960    
+S2WantCurse == 0 -0.23936    0.30869   -0.78  0.43810    
+S2DoCurse == 0    1.44548    0.40739    3.55  0.00039 ***
+S2WantScold == 0 -0.03870    0.28547   -0.14  0.89216    
+S2DoScold == 0    1.48294    0.37142    3.99  6.5e-05 ***
+S2WantShout == 0 -0.63046    0.37762   -1.67  0.09501 .  
+S2DoShout == 0    0.70428    0.43901    1.60  0.10866    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+(Univariate p values reported)
+
+> summary(const1)
+Anchor items:
+6 7 3 9> 
+> ## iterative forward anchor class using MTT-selection
+> set.seed(1)
+> forw1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], 
++   class = "forward", select = "MTT", test = TRUE,
++   adjust = "none", range = c(0.05,1))
+> forw1
+Anchor items:
+[1]  3  9  6  5  1  4 12
+
+Anchored item parameters:
+S1WantCurse_1   S1DoCurse_1   S1DoScold_1 S1WantShout_1   S1DoShout_1 
+     -1.31744      -1.15394      -0.17045      -0.09636       1.04537 
+S2WantCurse_1   S2DoCurse_1 S2WantScold_1   S2DoScold_1 S2WantShout_1 
+     -1.92191      -0.63971      -0.79040       0.40894      -0.17045 
+  S2DoShout_1 S1WantCurse_2   S1DoCurse_2   S1DoScold_2 S1WantShout_2 
+      1.94406      -1.02097      -1.57217      -1.02097       0.18467 
+  S1DoShout_2 S2WantCurse_2   S2DoCurse_2 S2WantScold_2   S2DoScold_2 
+      1.12913      -1.37838      -1.78101      -0.44753      -0.76983 
+S2WantShout_2   S2DoShout_2 
+      0.76417       1.54394 
+
+Ranking order:
+ [1]  7  3  9  6  5  1  4 12 10  8  2 11
+
+Criterion values (not sorted):
+ [1]  6  9  6  7  6  6  5  9  6  9 10  9
+
+Final DIF tests:
+
+	 Simultaneous Tests for General Linear Hypotheses
+
+Linear Hypotheses:
+                 Estimate Std. Error z value Pr(>|z|)    
+S1WantCurse == 0  -0.2965     0.3165   -0.94  0.34892    
+S1DoCurse == 0     0.4182     0.3844    1.09  0.27657    
+S1DoScold == 0     0.8505     0.3118    2.73  0.00638 ** 
+S1WantShout == 0  -0.2810     0.3027   -0.93  0.35323    
+S1DoShout == 0    -0.0838     0.3311   -0.25  0.80030    
+S2WantCurse == 0  -0.5435     0.3854   -1.41  0.15843    
+S2DoCurse == 0     1.1413     0.3938    2.90  0.00375 ** 
+S2WantScold == 0  -0.3429     0.3038   -1.13  0.25906    
+S2DoScold == 0     1.1788     0.3549    3.32  0.00089 ***
+S2WantShout == 0  -0.9346     0.3600   -2.60  0.00944 ** 
+S2DoShout == 0     0.4001     0.3658    1.09  0.27409    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+(Univariate p values reported)
+
+> 
+> ## the same using the formula interface
+> set.seed(1)
+> forw2 <- anchortest(resp2[, 1:12] ~ gender, data = VerbalAggression,
++   class = "forward", select = "MTT", test = TRUE,
++   adjust = "none", range = c(0.05, 1))
+> 
+> ## compare both results
+> all.equal(forw1, forw2, check.attributes = FALSE)
+[1] TRUE
+> 
+> ## DIF test with fixed given anchor (arbitrarily selected to be items 1 and 2)
+> anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], select = 1:2)
+Anchor items:
+[1] 1 2
+
+Anchored item parameters:
+  S1DoCurse_1 S1WantScold_1   S1DoScold_1 S1WantShout_1   S1DoShout_1 
+      0.08175       0.62090       1.06524       1.13932       2.28106 
+S2WantCurse_1   S2DoCurse_1 S2WantScold_1   S2DoScold_1 S2WantShout_1 
+     -0.68622       0.59598       0.44529       1.64463       1.06524 
+  S2DoShout_1   S1DoCurse_2 S1WantScold_2   S1DoScold_2 S1WantShout_2 
+      3.17975      -0.27560       0.92831       0.27560       1.48124 
+  S1DoShout_2 S2WantCurse_2   S2DoCurse_2 S2WantScold_2   S2DoScold_2 
+      2.42570      -0.08181      -0.48444       0.84904       0.52674 
+S2WantShout_2   S2DoShout_2 
+      2.06074       2.84051 
+
+Ranking order:
+[1] NA
+
+Criterion values (not sorted):
+[1] NA
+
+Final DIF tests:
+
+	 Simultaneous Tests for General Linear Hypotheses
+
+Linear Hypotheses:
+                 Estimate Std. Error z value Pr(>|z|)   
+S1DoCurse == 0      0.357      0.245    1.46   0.1453   
+S1WantScold == 0   -0.307      0.407   -0.76   0.4501   
+S1DoScold == 0      0.790      0.414    1.91   0.0563 . 
+S1WantShout == 0   -0.342      0.411   -0.83   0.4053   
+S1DoShout == 0     -0.145      0.445   -0.33   0.7451   
+S2WantCurse == 0   -0.604      0.433   -1.39   0.1631   
+S2DoCurse == 0      1.080      0.441    2.45   0.0143 * 
+S2WantScold == 0   -0.404      0.408   -0.99   0.3218   
+S2DoScold == 0      1.118      0.412    2.71   0.0067 **
+S2WantShout == 0   -0.996      0.423   -2.35   0.0187 * 
+S2DoShout == 0      0.339      0.482    0.70   0.4819   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+(Univariate p values reported)
+
+> 
+> options(digits = o$digits)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("as.list.itemresp")
+> ### * as.list.itemresp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: as.list.itemresp
+> ### Title: Coercing Item Response Data
+> ### Aliases: is.itemresp as.list.itemresp as.character.itemresp
+> ###   as.data.frame.itemresp as.double.itemresp as.integer.itemresp
+> ###   as.matrix.itemresp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## item responses from binary matrix
+> x <- cbind(c(1, 0, 1, 0), c(1, 0, 0, 0), c(0, 1, 1, 1))
+> xi <- itemresp(x)
+> ## change mscale
+> mscale(xi) <- c("-", "+")
+> xi
+[1] {+,+,-} {-,-,+} {+,-,+} {-,-,+}
+> 
+> ## coercion to list of factors with levels taken from mscale
+> as.list(xi)
+$item1
+[1] + - + -
+Levels: - +
+
+$item2
+[1] + - - -
+Levels: - +
+
+$item3
+[1] - + + +
+Levels: - +
+
+> ## same but levels taken as integers 0, 1
+> as.list(xi, mscale = FALSE)
+$item1
+[1] 1 0 1 0
+Levels: 0 1
+
+$item2
+[1] 1 0 0 0
+Levels: 0 1
+
+$item3
+[1] 0 1 1 1
+Levels: 0 1
+
+> ## only for first two items
+> as.list(xi, items = 1:2)
+$item1
+[1] + - + -
+Levels: - +
+
+$item2
+[1] + - - -
+Levels: - +
+
+> ## result as data.frame
+> as.list(xi, df = TRUE)
+  item1 item2 item3
+1     +     +     -
+2     -     -     +
+3     +     -     +
+4     -     -     +
+> 
+> ## data frame with single itemresp column
+> as.data.frame(xi)
+       xi
+1 {+,+,-}
+2 {-,-,+}
+3 {+,-,+}
+4 {-,-,+}
+> 
+> ## integer matrix
+> as.matrix(xi)
+     item1 item2 item3
+[1,]     1     1     0
+[2,]     0     0     1
+[3,]     1     0     1
+[4,]     0     0     1
+> 
+> ## character vector
+> as.character(xi)
+[1] "{+,+,-}" "{-,-,+}" "{+,-,+}" "{-,-,+}"
+> 
+> ## check class of xi
+> is.itemresp(xi)
+[1] TRUE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("btmodel")
+> ### * btmodel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: btmodel
+> ### Title: Bradley-Terry Model Fitting Function
+> ### Aliases: btmodel btReg.fit print.btmodel summary.btmodel
+> ###   print.summary.btmodel coef.btmodel worth.btmodel deviance.btmodel
+> ###   logLik.btmodel vcov.btmodel estfun.btmodel
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> o <- options(digits = 4)
 > 
 > ## data
 > data("GermanParties2009", package = "psychotools")
 > 
 > ## Bradley-Terry model
-> bt <- btReg.fit(GermanParties2009$preference)
+> bt <- btmodel(GermanParties2009$preference)
 > summary(bt)
 
 Bradley-Terry regression model
 
 Parameters:
         Estimate Std. Error z value Pr(>|z|)    
-none    -0.37556    0.08902  -4.219 2.45e-05 ***
-Linke   -0.61607    0.09102  -6.768 1.30e-11 ***
-Gruene   1.18576    0.09507  12.473  < 2e-16 ***
-SPD      0.81310    0.09067   8.967  < 2e-16 ***
-CDU/CSU  0.17562    0.08750   2.007   0.0447 *  
+none     -0.3756     0.0890   -4.22  2.5e-05 ***
+Linke    -0.6161     0.0910   -6.77  1.3e-11 ***
+Gruene    1.1858     0.0951   12.47  < 2e-16 ***
+SPD       0.8131     0.0907    8.97  < 2e-16 ***
+CDU/CSU   0.1756     0.0875    2.01    0.045 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Log-likelihood: -1717 (df = 5) 
+Log-likelihood: -1720 (df = 5) 
 
 > plot(bt)
+> 
+> options(digits = o$digits)
 > 
 > 
 > 
@@ -782,6 +948,105 @@ c bar
 > 
 > 
 > cleanEx()
+> nameEx("curveplot")
+> ### * curveplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: curveplot
+> ### Title: Response Curve Plots for IRT Models
+> ### Aliases: curveplot
+> ### Keywords: aplot
+> 
+> ### ** Examples
+> 
+> ## Load Verbal Aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Fit Rasch, rating scale and partial credit
+> ## model to VerbalAggression data
+> rmmod <- raschmodel(VerbalAggression$resp2)
+> rsmod <- rsmodel(VerbalAggression$resp)
+> pcmod <- pcmodel(VerbalAggression$resp)
+> 
+> ## Curve plots of the dichotomous RM
+> plot(rmmod, type = "curves")
+> 
+> ## Curve plots under the rating scale model
+> ## for the first six items of the data set
+> plot(rsmod, type = "curves", items = 1:6)
+> 
+> ## Curve plots under the partial credit model
+> ## for the first six items of the data set
+> ## with custom labels
+> plot(pcmod, type = "curves", items = 1:6,
++   names = paste("Item", 1:6))
+> 
+> ## Compare the predicted probabilities under the rating
+> ## scale model and the partial credit model for a single item
+> plot(rsmod, type = "curves", item = 1)
+> plot(pcmod, type = "curves", item = 1, lty = 2, add = TRUE)
+> legend(x = "topleft", y = 1.0, legend = c("RSM", "PCM"), lty = 1:2, bty = "n")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("discrpar")
+> ### * discrpar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: discrpar
+> ### Title: Extract Discrimination Parameters of Item Response Models
+> ### Aliases: discrpar discrpar.raschmodel discrpar.rsmodel discrpar.pcmodel
+> ###   coef.discrpar print.discrpar vcov.discrpar
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## load verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## fit a rasch model to dichotomized verbal aggression data
+> rmod <- raschmodel(VerbalAggression$resp2)
+> 
+> ## extract the discrimination parameters
+> dp <- discrpar(rmod)
+> 
+> ## extract the variance-covariance matrix
+> head(vcov(dp))
+            S1WantCurse S1DoCurse S1WantScold S1DoScold S1WantShout S1DoShout
+S1WantCurse           0         0           0         0           0         0
+S1DoCurse             0         0           0         0           0         0
+S1WantScold           0         0           0         0           0         0
+S1DoScold             0         0           0         0           0         0
+S1WantShout           0         0           0         0           0         0
+S1DoShout             0         0           0         0           0         0
+            S2WantCurse S2DoCurse S2WantScold S2DoScold S2WantShout S2DoShout
+S1WantCurse           0         0           0         0           0         0
+S1DoCurse             0         0           0         0           0         0
+S1WantScold           0         0           0         0           0         0
+S1DoScold             0         0           0         0           0         0
+S1WantShout           0         0           0         0           0         0
+S1DoShout             0         0           0         0           0         0
+            S3WantCurse S3DoCurse S3WantScold S3DoScold S3WantShout S3DoShout
+S1WantCurse           0         0           0         0           0         0
+S1DoCurse             0         0           0         0           0         0
+S1WantScold           0         0           0         0           0         0
+S1DoScold             0         0           0         0           0         0
+S1WantShout           0         0           0         0           0         0
+S1DoShout             0         0           0         0           0         0
+            S4WantCurse S4DoCurse S4WantScold S4DoScold S4WantShout S4DoShout
+S1WantCurse           0         0           0         0           0         0
+S1DoCurse             0         0           0         0           0         0
+S1WantScold           0         0           0         0           0         0
+S1DoScold             0         0           0         0           0         0
+S1WantShout           0         0           0         0           0         0
+S1DoShout             0         0           0         0           0         0
+> 
+> 
+> 
+> cleanEx()
 > nameEx("elementary_symmetric_functions")
 > ### * elementary_symmetric_functions
 > 
@@ -805,6 +1070,453 @@ c bar
 >  y <- elementary_symmetric_functions(pi, diff = TRUE)
 >  all.equal(x, y)
 [1] TRUE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("infoplot")
+> ### * infoplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: infoplot
+> ### Title: Information Plots for IRT Models
+> ### Aliases: infoplot
+> ### Keywords: aplot
+> 
+> ### ** Examples
+> 
+> ## Load Verbal Aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Fit Rasch and partial credit
+> ## model to Verbal Aggression data
+> rmmod <- raschmodel(VerbalAggression$resp2)
+> pcmod <- pcmodel(VerbalAggression$resp)
+> 
+> ## Category information plots for all items under
+> ## the dichotomous Rasch model
+> plot(rmmod, type = "information", what = "categories")
+> 
+> ## Category information plots for all items under
+> ## the partial credit model
+> plot(pcmod, type = "information", what = "categories")
+> 
+> ## Overlayed item information plots for the first six
+> ## item of the Verbal Aggression data set under
+> ## the partial credit model
+> plot(pcmod, type = "information", what = "items",
++   items = 1:6)
+> 
+> ## A comparison of the item information for the first six
+> ## items under the dichotomous Rasch and the partial credit model
+> plot(pcmod, type = "information", what = "items",
++   items = 1:6, xlim = c(-5, 5))
+> plot(rmmod, type = "information", what = "items",
++   items = 1:6, lty = 2, add = TRUE)
+> legend(x = "topright", legend = c("PCM", "RM"), lty = 1:2, bty = "n")
+> 
+> ## A comparison of the test information based on all items
+> ## of the Verbal Aggression data set under the dichotomous Rasch
+> ## and the partial credit model
+> plot(pcmod, type = "information", what = "test",
++   items = 1:6, xlim = c(-5, 5))
+> plot(rmmod, type = "information", what = "test",
++   items = 1:6, lty = 2, add = TRUE)
+> legend(x = "topright", legend = c("PCM", "RM"), lty = 1:2, bty = "n")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("itempar")
+> ### * itempar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: itempar
+> ### Title: Extract Item Parameters of Item Response Models
+> ### Aliases: itempar itempar.btmodel itempar.raschmodel itempar.rsmodel
+> ###   itempar.pcmodel itempar.raschtree itempar.bttree coef.itempar
+> ###   print.itempar vcov.itempar
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> o <- options(digits = 4)
+> 
+> ## load verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## fit a rasch model to dichotomized verbal aggression data
+> raschmod <- raschmodel(VerbalAggression$resp2)
+> 
+> ## extract item parameters with sum zero or use last two items as anchor
+> ip1 <- itempar(raschmod)
+> ip2a <- itempar(raschmod, ref = 23:24) # with position indices
+> ip2b <- itempar(raschmod, ref = c("S4WantShout", "S4DoShout")) # with item label
+> 
+> ip1
+Item response item parameters (RM):
+S1WantCurse   S1DoCurse S1WantScold   S1DoScold S1WantShout   S1DoShout 
+    -1.3834     -1.3834     -0.7307     -0.5566     -0.2491      0.6981 
+S2WantCurse   S2DoCurse S2WantScold   S2DoScold S2WantShout   S2DoShout 
+    -1.9093     -1.0367     -0.8727     -0.1131     -0.1810      1.3120 
+S3WantCurse   S3DoCurse S3WantScold   S3DoScold S3WantShout   S3DoShout 
+    -0.6955      0.0403      0.5136      1.3348      1.3577      2.8709 
+S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout 
+    -1.2450     -0.8727      0.1779      0.2126      0.8711      1.8402 
+> ip2a
+Item response item parameters (RM):
+S1WantCurse   S1DoCurse S1WantScold   S1DoScold S1WantShout   S1DoShout 
+   -2.73904    -2.73905    -2.08637    -1.91227    -1.60471    -0.65752 
+S2WantCurse   S2DoCurse S2WantScold   S2DoScold S2WantShout   S2DoShout 
+   -3.26495    -2.39238    -2.22840    -1.46881    -1.53669    -0.04366 
+S3WantCurse   S3DoCurse S3WantScold   S3DoScold S3WantShout   S3DoShout 
+   -2.05119    -1.31534    -0.84209    -0.02087     0.00205     1.51526 
+S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout 
+   -2.60068    -2.22840    -1.17772    -1.14302    -0.48456     0.48456 
+> 
+> all.equal(ip2a, ip2b)
+[1] TRUE
+> 
+> ## extract vcov
+> vc1 <- vcov(ip1)
+> vc2 <- vcov(ip2a)
+> 
+> ## adjusted standard errors,
+> ## smaller with more items used as anchors
+> sqrt(diag(vc1))
+S1WantCurse   S1DoCurse S1WantScold   S1DoScold S1WantShout   S1DoShout 
+     0.1400      0.1400      0.1306      0.1294      0.1283      0.1349 
+S2WantCurse   S2DoCurse S2WantScold   S2DoScold S2WantShout   S2DoShout 
+     0.1535      0.1341      0.1321      0.1284      0.1283      0.1479 
+S3WantCurse   S3DoCurse S3WantScold   S3DoScold S3WantShout   S3DoShout 
+     0.1303      0.1287      0.1324      0.1485      0.1492      0.2219 
+S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout 
+     0.1374      0.1321      0.1294      0.1296      0.1378      0.1654 
+> sqrt(diag(vc2))
+S1WantCurse   S1DoCurse S1WantScold   S1DoScold S1WantShout   S1DoShout 
+     0.1822      0.1822      0.1739      0.1727      0.1715      0.1758 
+S2WantCurse   S2DoCurse S2WantScold   S2DoScold S2WantShout   S2DoShout 
+     0.1940      0.1770      0.1752      0.1714      0.1714      0.1861 
+S3WantCurse   S3DoCurse S3WantScold   S3DoScold S3WantShout   S3DoShout 
+     0.1736      0.1715      0.1740      0.1866      0.1872      0.2524 
+S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout 
+     0.1799      0.1752      0.1719      0.1720      0.1098      0.1098 
+> 
+> ## Wald confidence intervals
+> confint(ip1)
+               2.5 %    97.5 %
+S1WantCurse -1.65779 -1.108969
+S1DoCurse   -1.65780 -1.108975
+S1WantScold -0.98677 -0.474645
+S1DoScold   -0.81017 -0.303037
+S1WantShout -0.50057  0.002469
+S1DoShout    0.43369  0.962584
+S2WantCurse -2.21010 -1.608490
+S2DoCurse   -1.29956 -0.773879
+S2WantScold -1.13156 -0.613916
+S2DoScold   -0.36472  0.138425
+S2WantShout -0.43251  0.070440
+S2DoShout    1.02215  1.601865
+S3WantCurse -0.95101 -0.440049
+S3DoCurse   -0.21201  0.292654
+S3WantScold  0.25401  0.773120
+S3DoScold    1.04370  1.625879
+S3WantShout  1.06536  1.650059
+S3DoShout    2.43599  3.305848
+S4WantCurse -1.51430 -0.975743
+S4DoCurse   -1.13156 -0.613916
+S4WantScold -0.07573  0.431608
+S4DoScold   -0.04146  0.466738
+S4WantShout  0.60095  1.141248
+S4DoShout    1.51595  2.164496
+> confint(ip2a)
+              2.5 %  97.5 %
+S1WantCurse -3.0961 -2.3819
+S1DoCurse   -3.0962 -2.3819
+S1WantScold -2.4272 -1.7455
+S1DoScold   -2.2507 -1.5738
+S1WantShout -1.9408 -1.2686
+S1DoShout   -1.0022 -0.3129
+S2WantCurse -3.6451 -2.8848
+S2DoCurse   -2.7393 -2.0454
+S2WantScold -2.5717 -1.8850
+S2DoScold   -1.8047 -1.1329
+S2WantShout -1.8726 -1.2007
+S2DoShout   -0.4084  0.3211
+S3WantCurse -2.3915 -1.7109
+S3DoCurse   -1.6515 -0.9792
+S3WantScold -1.1831 -0.5011
+S3DoScold   -0.3866  0.3449
+S3WantShout -0.3648  0.3689
+S3DoShout    1.0206  2.0099
+S4WantCurse -2.9533 -2.2481
+S4DoCurse   -2.5717 -1.8850
+S4WantScold -1.5146 -0.8408
+S4DoScold   -1.4802 -0.8058
+S4WantShout -0.6998 -0.2694
+S4DoShout    0.2694  0.6998
+> 
+> options(digits = o$digits)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("itemresp")
+> ### * itemresp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: itemresp
+> ### Title: Data Structure for Item Response Data
+> ### Aliases: itemresp is.na.itemresp labels.itemresp labels<-.itemresp
+> ###   length.itemresp levels.itemresp mscale.itemresp mscale<-.itemresp
+> ###   names.itemresp names<-.itemresp rep.itemresp str.itemresp
+> ###   xtfrm.itemresp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## binary responses to three items, coded as matrix
+> x <- cbind(c(1, 0, 1, 0), c(1, 0, 0, 0), c(0, 1, 1, 1))
+> ## transformed to itemresp object
+> xi <- itemresp(x)
+> 
+> ## printing (see also ?print.itemresp)
+> print(xi)
+[1] {1,1,0} {0,0,1} {1,0,1} {0,0,1}
+> print(xi, labels = TRUE)
+[1] {item1:1,item2:1,item3:0} {item1:0,item2:0,item3:1}
+[3] {item1:1,item2:0,item3:1} {item1:0,item2:0,item3:1}
+> 
+> ## subsetting/indexing (see also ?subset.itemresp)
+> xi[2]
+[1] {0,0,1}
+> xi[c(TRUE, TRUE, FALSE, FALSE)]
+[1] {1,1,0} {0,0,1}
+> subset(xi, items = 1:2)
+[1] {1,1} {0,0} {1,0} {0,0}
+> dim(xi)
+[1] 4 3
+> length(xi)
+[1] 4
+> 
+> ## summary/visualization (see also ?summary.itemresp)
+> summary(xi)
+      0 1
+item1 2 2
+item2 3 1
+item3 1 3
+> plot(xi)
+> 
+> ## query/set measurement scale labels
+> ## extract mscale (tries to collapse to vector)
+> mscale(xi)
+[1] 0 1
+> ## extract as list
+> mscale(xi, simplify = FALSE)
+$item1
+[1] 0 1
+
+$item2
+[1] 0 1
+
+$item3
+[1] 0 1
+
+> ## replacement by list
+> mscale(xi) <- list(item1 = c("no", "yes"),
++   item2 = c("nay", "yae"), item3 = c("-", "+"))
+> xi
+[1] {yes,yae,-} {no,nay,+}  {yes,nay,+} {no,nay,+} 
+> mscale(xi)
+$item1
+[1] "no"  "yes"
+
+$item2
+[1] "nay" "yae"
+
+$item3
+[1] "-" "+"
+
+> ## replacement with partially named list plus default
+> mscale(xi) <- list(item1 = c("n", "y"), 0:1)
+> mscale(xi)
+$item1
+[1] "n" "y"
+
+$item2
+[1] "0" "1"
+
+$item3
+[1] "0" "1"
+
+> ## replacement by vector (if number of categories constant)
+> mscale(xi) <- c("-", "+")
+> mscale(xi, simplify = FALSE)
+$item1
+[1] "-" "+"
+
+$item2
+[1] "-" "+"
+
+$item3
+[1] "-" "+"
+
+> 
+> ## query/set item labels and subject names
+> labels(xi)
+[1] "item1" "item2" "item3"
+> labels(xi) <- c("i1", "i2", "i3")
+> names(xi)
+NULL
+> names(xi) <- c("John", "Joan", "Jen", "Jim")
+> print(xi, labels = TRUE)
+            John             Joan              Jen              Jim 
+{i1:+,i2:+,i3:-} {i1:-,i2:-,i3:+} {i1:+,i2:-,i3:+} {i1:-,i2:-,i3:+} 
+> 
+> ## coercion (see also ?as.list.itemresp)
+> ## to integer matrix
+> as.matrix(xi)
+     i1 i2 i3
+John  1  1  0
+Joan  0  0  1
+Jen   1  0  1
+Jim   0  0  1
+> ## to data frame with single itemresp column
+> as.data.frame(xi)
+          xi
+John {+,+,-}
+Joan {-,-,+}
+Jen  {+,-,+}
+Jim  {-,-,+}
+> ## to list of factors
+> as.list(xi)
+$i1
+John Joan  Jen  Jim 
+   +    -    +    - 
+Levels: - +
+
+$i2
+John Joan  Jen  Jim 
+   +    -    -    - 
+Levels: - +
+
+$i3
+John Joan  Jen  Jim 
+   -    +    +    + 
+Levels: - +
+
+> ## to data frame with factors
+> as.list(xi, df = TRUE)
+     i1 i2 i3
+John  +  +  -
+Joan  -  -  +
+Jen   +  -  +
+Jim   -  -  +
+> 
+> 
+> ## polytomous responses with missing values and a unequal number of
+> ## categories in a data frame
+> d <- data.frame(q1 = c(-2, 1, -1, 0, NA, 1, NA),
++                 q2 = c(3, 5, 2, 5, NA, 2, 3),
++                 q3 = factor(c(1, 2, 1, 2, NA, 3, 2), levels = 1:3,
++                             labels = c("disagree", "neutral", "agree")))
+> di <- itemresp(d)
+> di
+          1           2           3           4           5           6 
+{-2,3,dsgr}  {1,5,ntrl} {-1,2,dsgr}  {0,5,ntrl}  {NA,NA,NA}  {1,2,agre} 
+          7 
+{NA,3,ntrl} 
+> 
+> ## auto-completion of mscale: full range (-2, ..., 2) for q1, starting
+> ## from smallest observed (negative) value (-2) to the same (positive)
+> ## value (2), full (positive) range for q2, starting from smallest
+> ## observed value (2) to largest observed value (5), missing category of
+> ## 4 is detected, for q3 given factor levels are used
+> mscale(di)
+$q1
+[1] "-2" "-1" "0"  "1"  "2" 
+
+$q2
+[1] "2" "3" "4" "5"
+
+$q3
+[1] "disagree" "neutral"  "agree"   
+
+> 
+> ## set mscale for q2 and add category 1, q1 and q3 are auto-completed:
+> di <- itemresp(d, mscale = list(q2 = 1:5))
+> 
+> ## is.na.itemresp - only true for observation 5 (all missing)
+> is.na(di)
+    1     2     3     4     5     6     7 
+FALSE FALSE FALSE FALSE  TRUE FALSE FALSE 
+> 
+> ## illustration for larger data set
+> data("VerbalAggression", package = "psychotools")
+> r <- itemresp(VerbalAggression$resp[, 1:12])
+> str(r)
+ Item response data from 316 subjects for 12 items.
+ S1WantCurse: 0, 1, 2
+ S1DoCurse: 0, 1, 2
+ S1WantScold: 0, 1, 2
+ S1DoScold: 0, 1, 2
+ S1WantShout: 0, 1, 2
+ S1DoShout: 0, 1, 2
+ S2WantCurse: 0, 1, 2
+ S2DoCurse: 0, 1, 2
+ S2WantScold: 0, 1, 2
+ S2DoScold: 0, 1, 2
+ S2WantShout: 0, 1, 2
+ S2DoShout: 0, 1, 2
+> head(r)
+[1] {0,1,0,0,0,1,0,1,0,0,0,0} {0,0,0,0,0,0,0,0,0,0,0,0}
+[3] {1,0,1,1,1,1,1,0,0,0,1,1} {1,1,1,1,1,1,1,2,1,1,1,1}
+[5] {1,1,0,1,1,0,1,1,0,0,0,0} {2,2,2,0,0,0,2,2,0,0,0,0}
+> summary(r)
+              0   1   2
+S1WantCurse  91  95 130
+S1DoCurse    91 108 117
+S1WantScold 126  86 104
+S1DoScold   136  97  83
+S1WantShout 154  99  63
+S1DoShout   208  68  40
+S2WantCurse  67 112 137
+S2DoCurse   109  97 110
+S2WantScold 118  93 105
+S2DoScold   162  92  62
+S2WantShout 158  84  74
+S2DoShout   238  53  25
+> plot(r)
+> 
+> 
+> ## COPY BACK TO MSACLE.RD WHEN ITEMRESP IS RELEASED.
+> ## similar for "itemresp" data
+> ir <- itemresp(cbind(
++   c(-1, 0, 1, 1, 0),
++   c(0, 1, 2, 1, 2),
++   c(1, 2, 1, 1, 3)))
+> ir
+[1] {-1,0,1} {0,1,2}  {1,2,1}  {1,1,1}  {0,2,3} 
+> 
+> ## extract
+> mscale(ir)
+$item1
+[1] -1  0  1
+
+$item2
+[1] 0 1 2
+
+$item3
+[1] 1 2 3
+
+> 
+> ## replace (single scale for all items)
+> mscale(ir) <- 1:3
+> ir
+[1] {1,1,1} {2,2,2} {3,3,1} {3,2,1} {2,3,3}
 > 
 > 
 > 
@@ -1002,90 +1714,257 @@ Tokyo         North
 > 
 > 
 > cleanEx()
-> nameEx("plot.PCModel")
-> ### * plot.PCModel
+> nameEx("pcmodel")
+> ### * pcmodel
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: plot.PCModel
-> ### Title: Visualizing Partial Credit Models
-> ### Aliases: plot.PCModel
-> ### Keywords: hplot
+> ### Name: pcmodel
+> ### Title: Partial Credit Model Fitting Function
+> ### Aliases: pcmodel PCModel.fit print.pcmodel summary.pcmodel
+> ###   print.summary.pcmodel coef.pcmodel bread.pcmodel estfun.pcmodel
+> ###   logLik.pcmodel vcov.pcmodel
+> ### Keywords: regression
 > 
 > ### ** Examples
 > 
+> o <- options(digits = 4)
 > 
 > ## Verbal aggression data
 > data("VerbalAggression", package = "psychotools")
 > 
-> ## Partial credit model for the first other-to-blame
-> ## situation: 'A bus fails to stop for me'
-> pcm <- PCModel.fit(VerbalAggression$resp[, 1:6])
+> ## Partial credit model for the other-to-blame situations
+> pcm <- pcmodel(VerbalAggression$resp[, 1:12])
+> summary(pcm)
+
+Partial credit model
+
+Item category parameters:
+               Estimate Std. Error z value Pr(>|z|)    
+S1WantCurse-C2   0.4315     0.2545    1.70  0.09006 .  
+S1DoCurse-C1    -0.1066     0.2186   -0.49  0.62581    
+S1DoCurse-C2     0.5954     0.3587    1.66  0.09695 .  
+S1WantScold-C1   0.5637     0.2162    2.61  0.00912 ** 
+S1WantScold-C2   1.2544     0.3576    3.51  0.00045 ***
+S1DoScold-C1     0.5814     0.2118    2.74  0.00605 ** 
+S1DoScold-C2     1.7075     0.3623    4.71  2.4e-06 ***
+S1WantShout-C1   0.7668     0.2096    3.66  0.00025 ***
+S1WantShout-C2   2.3031     0.3696    6.23  4.6e-10 ***
+S1DoShout-C1     1.6244     0.2179    7.46  9.0e-14 ***
+S1DoShout-C2     3.4790     0.3889    8.94  < 2e-16 ***
+S2WantCurse-C1  -0.5627     0.2286   -2.46  0.01382 *  
+S2WantCurse-C2  -0.0786     0.3620   -0.22  0.82821    
+S2DoCurse-C1     0.2441     0.2162    1.13  0.25897    
+S2DoCurse-C2     0.9515     0.3577    2.66  0.00781 ** 
+S2WantScold-C1   0.3977     0.2155    1.85  0.06491 .  
+S2WantScold-C2   1.1403     0.3579    3.19  0.00144 ** 
+S2DoScold-C1     0.9122     0.2108    4.33  1.5e-05 ***
+S2DoScold-C2     2.4113     0.3702    6.51  7.3e-11 ***
+S2WantShout-C1   0.9453     0.2134    4.43  9.4e-06 ***
+S2WantShout-C2   2.1175     0.3650    5.80  6.6e-09 ***
+S2DoShout-C1     2.1247     0.2273    9.35  < 2e-16 ***
+S2DoShout-C2     4.4099     0.4200   10.50  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Log-likelihood: -2470 (df = 23) 
+Number of iterations in BFGS optimization: 32 
+
 > 
-> ## Effect plot with modus as cutpoint and custom labels.
-> lab <- paste(rep(c("Curse", "Scold", "Shout"), each = 2),
-+              rep(c("Want", "Do"), 3 ), sep = "-")
-> plot(pcm, names = lab)
+> ## visualizations
+> plot(pcm, type = "profile")
+> plot(pcm, type = "regions")
+> plot(pcm, type = "curves")
+> plot(pcm, type = "information")
+> plot(pcm, type = "piplot")
 > 
-> ## Compare the cutpoints (with ylim specified manually)
-> ylim <- c(-2, 2)
-> layout(matrix(1:3, ncol = 1))
-> plot(pcm, type = "mode", main = "Modus as Cutpoint", ylim = ylim) 
-> plot(pcm, type = "median", main = "Median as Cutpoint", ylim = ylim)
-> plot(pcm, type = "mean", main = "Mean as Cutpoint", ylim = ylim)
+> ## Get data of situation 1 ('A bus fails to
+> ## stop for me') and induce a null category in item 2.
+> pcd <- VerbalAggression$resp[, 1:6, drop = FALSE]
+> pcd[pcd[, 2] == 1, 2] <- NA
 > 
-> ## Partial credit model for full VerbalAggression data set
-> pcm_va <- PCModel.fit(VerbalAggression$resp)
-> plot(pcm_va)
+> ## fit pcm to these data, comparing downcoding and keeping strategy
+> pcm_va_keep  <- pcmodel(pcd, nullcats = "keep")
+Warning in pcmodel(pcd, nullcats = "keep") :
+  There are items with null categories (I2).
+> pcm_va_down  <- pcmodel(pcd, nullcats = "downcode")
+Warning in pcmodel(pcd, nullcats = "downcode") :
+  There are items with null categories (I2).
 > 
+> plot(x = coef(pcm_va_keep), y = coef(pcm_va_down),
++      xlab = "Threshold Parameters (Downcoding)",
++      ylab = "Threshold Parameters (Keeping)",
++      main = "Comparison of two null category strategies (I2 with null category)", 
++      pch = rep(as.character(1:6), each = 2)[-3])
+> abline(b = 1, a = 0)
+> 
+> options(digits = o$digits)
 > 
 > 
 > 
 > cleanEx()
-> nameEx("plot.RSModel")
-> ### * plot.RSModel
+> nameEx("personpar")
+> ### * personpar
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: plot.RSModel
-> ### Title: Visualizing Rating Scale Models
-> ### Aliases: plot.RSModel
-> ### Keywords: hplot
+> ### Name: personpar
+> ### Title: Extract Person Parameters of Item Response Models
+> ### Aliases: personpar personpar.raschmodel personpar.rsmodel
+> ###   personpar.pcmodel coef.personpar print.personpar vcov.personpar
+> ### Keywords: classes
 > 
 > ### ** Examples
 > 
+> o <- options(digits = 4)
+> 
+> ## load verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## fit a Rasch model to dichotomized verbal aggression data and
+> ram <- raschmodel(VerbalAggression$resp2)
+> 
+> ## extract person parameters
+> rap <- personpar(ram)
+> rap
+Item response person parameters (RM):
+      1       2       3       4       5       6       7       8       9      10 
+-3.6185 -2.8441 -2.3552 -1.9815 -1.6694 -1.3947 -1.1444 -0.9104 -0.6872 -0.4708 
+     11      12      13      14      15      16      17      18      19      20 
+-0.2581 -0.0464  0.1670  0.3845  0.6090  0.8438  1.0931  1.3629  1.6616  2.0035 
+     21      22      23 
+ 2.4140  2.9489  3.7813 
+> 
+> ## extract variance-covariance matrix and standard errors
+> vc <- vcov(rap)
+> sqrt(diag(vc))
+      1       2       3       4       5       6       7       8       9      10 
+0.51966 0.24130 0.24436 0.13692 0.14951 0.15399 0.11909 0.10416 0.10469 0.10614 
+     11      12      13      14      15      16      17      18      19      20 
+0.11883 0.10567 0.11972 0.09392 0.09979 0.12279 0.16944 0.15343 0.17813 0.24846 
+     21      22      23 
+0.22583 0.35604 0.61788 
+> 
+> ## Wald confidence intervals
+> confint(rap)
+      2.5 %   97.5 %
+1  -4.63698 -2.59993
+2  -3.31705 -2.37117
+3  -2.83415 -1.87627
+4  -2.24987 -1.71316
+5  -1.96243 -1.37636
+6  -1.69654 -1.09291
+7  -1.37782 -0.91099
+8  -1.11453 -0.70621
+9  -0.89236 -0.48199
+10 -0.67885 -0.26280
+11 -0.49103 -0.02524
+12 -0.25348  0.16072
+13 -0.06767  0.40163
+14  0.20043  0.56857
+15  0.41341  0.80458
+16  0.60312  1.08446
+17  0.76104  1.42522
+18  1.06215  1.66356
+19  1.31249  2.01076
+20  1.51649  2.49045
+21  1.97136  2.85659
+22  2.25108  3.64672
+23  2.57033  4.99237
+> 
+> ## person parameters for RSM/PCM fitted to original polytomous data
+> rsm <- rsmodel(VerbalAggression$resp)
+> pcm <- pcmodel(VerbalAggression$resp)
+> cbind(personpar(rsm, vcov = FALSE), personpar(pcm, vcov = FALSE))
+       [,1]     [,2]
+1  -3.76574 -3.78510
+2  -3.07212 -3.08660
+3  -2.66235 -2.67303
+4  -2.36718 -2.37489
+5  -2.13384 -2.13920
+6  -1.93895 -1.94245
+7  -1.77011 -1.77213
+8  -1.61995 -1.62079
+9  -1.48374 -1.48366
+10 -1.35826 -1.35744
+11 -1.24121 -1.23983
+12 -1.13089 -1.12907
+13 -1.02601 -1.02387
+14 -0.92556 -0.92319
+15 -0.82872 -0.82619
+16 -0.73483 -0.73220
+17 -0.64333 -0.64066
+18 -0.55375 -0.55109
+19 -0.46566 -0.46306
+20 -0.37871 -0.37621
+21 -0.29256 -0.29020
+22 -0.20692 -0.20473
+23 -0.12148 -0.11951
+24 -0.03597 -0.03426
+25  0.04987  0.05128
+26  0.13634  0.13740
+27  0.22369  0.22437
+28  0.31223  0.31248
+29  0.40228  0.40206
+30  0.49418  0.49345
+31  0.58830  0.58703
+32  0.68508  0.68325
+33  0.78502  0.78262
+34  0.88871  0.88575
+35  0.99683  0.99334
+36  1.11026  1.10630
+37  1.23004  1.22572
+38  1.35753  1.35300
+39  1.49447  1.48998
+40  1.64323  1.63911
+41  1.80705  1.80379
+42  1.99067  1.98894
+43  2.20134  2.20206
+44  2.45119  2.45561
+45  2.76292  2.77274
+46  3.18803  3.20541
+47  3.89319  3.92095
+> 
+> options(digits = o$digits)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("piplot")
+> ### * piplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: piplot
+> ### Title: Person-Item Plots for IRT Models
+> ### Aliases: piplot
+> ### Keywords: aplot
+> 
+> ### ** Examples
 > 
 > ## Verbal aggression data
 > data("VerbalAggression", package = "psychotools")
 > 
-> ## Rating scale model for the first other-to-blame
-> ## situation: 'A bus fails to stop for me'
-> rsm <- RSModel.fit(VerbalAggression$resp[, 1:6])
+> ## Fit a partial credit model to VerbalAggression data
+> pcmod <- pcmodel(VerbalAggression$resp)
 > 
-> ## Basic plot with parameter patterns and custom labels.
-> lab <- c(paste(rep(c("Curse", "Scold", "Shout"), each = 2),
-+              rep(c("Want", "Do"), 3 ), sep = "-"), "Tau 1", "Tau 2")
-> plot(rsm, names = lab)
+> ## Create a person-item plot visualization of the fitted PCM
+> plot(pcmod, type = "piplot")
 > 
-> ## Basic plot again, but omitting reference and connection lines
-> plot(rsm, refline = FALSE, lty = c(0, 0))
-> 
-> ## Effects plot, similar to effect plots for PCModel's, with
-> ## 'modus' as cutpoint via additional argument 'type'.
-> plot(rsm, pattern = FALSE, type = "mode")
-> 
+> ## Just visualize the first six items
+> plot(pcmod, type = "piplot", ref = 1:6)
 > 
 > 
 > 
 > cleanEx()
-> nameEx("plot.btReg")
-> ### * plot.btReg
+> nameEx("plot.btmodel")
+> ### * plot.btmodel
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: plot.btReg
+> ### Name: plot.btmodel
 > ### Title: Visualizing Bradley-Terry Models
-> ### Aliases: plot.btReg
+> ### Aliases: plot.btmodel
 > ### Keywords: hplot
 > 
 > ### ** Examples
@@ -1094,7 +1973,7 @@ Tokyo         North
 > data("GermanParties2009", package = "psychotools")
 > 
 > ## Bradley-Terry model
-> bt <- btReg.fit(GermanParties2009$preference)
+> bt <- btmodel(GermanParties2009$preference)
 > plot(bt)
 > plot(bt, worth = FALSE)
 > plot(bt, index = FALSE)
@@ -1121,6 +2000,214 @@ Tokyo         North
 > 
 > 
 > graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("predict.pcmodel")
+> ### * predict.pcmodel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: predict.pcmodel
+> ### Title: Predict Methods for Item Response Models
+> ### Aliases: predict.pcmodel predict.rsmodel predict.raschmodel
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> o <- options(digits = 4)
+> 
+> ## load verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## fit a partial credit model to first ten items
+> pcmod <- pcmodel(VerbalAggression$resp[, 1:10])
+> 
+> ## predicted response probabilities for each
+> ## subject and category (the default)
+> head(predict(pcmod))
+     S1WantCurse-C0 S1WantCurse-C1 S1WantCurse-C2 S1DoCurse-C0 S1DoCurse-C1
+[1,]        0.65128         0.2742        0.07457       0.6387       0.2991
+[2,]        0.39564         0.3749        0.22950       0.3927       0.4139
+[3,]        0.13668         0.3345        0.52886       0.1427       0.3885
+[4,]        0.39564         0.3749        0.22950       0.3927       0.4139
+[5,]        0.17458         0.3561        0.46933       0.1801       0.4087
+[6,]        0.02389         0.1724        0.80371       0.0266       0.2135
+     S1DoCurse-C2 S1WantScold-C0 S1WantScold-C1 S1WantScold-C2 S1DoScold-C0
+[1,]      0.06211        0.77573         0.1853        0.03895      0.78950
+[2,]      0.19342        0.55801         0.3001        0.14194      0.59170
+[3,]      0.46885        0.24476         0.3399        0.41531      0.29037
+[4,]      0.19342        0.55801         0.3001        0.14194      0.59170
+[5,]      0.41117        0.29972         0.3470        0.35333      0.34635
+[6,]      0.75986        0.05039         0.2063        0.74327      0.06941
+     S1DoScold-C1 S1DoScold-C2 S1WantShout-C0 S1WantShout-C1 S1WantShout-C2
+[1,]       0.1853      0.02522         0.8247         0.1607        0.01453
+[2,]       0.3125      0.09576         0.6545         0.2871        0.05843
+[3,]       0.3961      0.31349         0.3665         0.4153        0.21827
+[4,]       0.3125      0.09576         0.6545         0.2871        0.05843
+[5,]       0.3939      0.25979         0.4240         0.4005        0.17547
+[6,]       0.2792      0.65140         0.1051         0.3510        0.54394
+     S1DoShout-C0 S1DoShout-C1 S1DoShout-C2 S2WantCurse-C0 S2WantCurse-C1
+[1,]       0.9191      0.07589      0.00500        0.51720         0.3838
+[2,]       0.8241      0.15315      0.02271        0.27473         0.4589
+[3,]       0.6010      0.28848      0.11050        0.08487         0.3662
+[4,]       0.8241      0.15315      0.02271        0.27473         0.4589
+[5,]       0.6545      0.26186      0.08360        0.11002         0.3956
+[6,]       0.2492      0.35261      0.39821        0.01430         0.1818
+     S2WantCurse-C2 S2DoCurse-C0 S2DoCurse-C1 S2DoCurse-C2 S2WantScold-C0
+[1,]        0.09899      0.71569       0.2356      0.04868         0.7471
+[2,]        0.26638      0.47948       0.3553      0.16521         0.5208
+[3,]        0.54898      0.19185       0.3672      0.44097         0.2201
+[4,]        0.26638      0.47948       0.3553      0.16521         0.5208
+[5,]        0.49439      0.23853       0.3805      0.38093         0.2711
+[6,]        0.80385      0.03756       0.2120      0.75049         0.0447
+     S2WantScold-C1 S2WantScold-C2 S2DoScold-C0 S2DoScold-C1 S2DoScold-C2
+[1,]         0.2108        0.04206       0.8444       0.1423      0.01335
+[2,]         0.3307        0.14852       0.6852       0.2599      0.05490
+[3,]         0.3611        0.41879       0.3978       0.3897      0.21259
+[4,]         0.3307        0.14852       0.6852       0.2599      0.05490
+[5,]         0.3706        0.35830       0.4571       0.3732      0.16972
+[6,]         0.2162        0.73915       0.1172       0.3384      0.54439
+> 
+> ## predicted mode (most probable category)
+> ## for certain subjects whose person parameters
+> ## are given via argument 'newdata'
+> predict(pcmod, type = "mode",
++   newdata = c("Sarah" = 1.2, "Michael" = 0.1, "Arnd" = -0.8))
+        S1WantCurse S1DoCurse S1WantScold S1DoScold S1WantShout S1DoShout
+Sarah             2         2           2         2           2         2
+Michael           2         2           2         1           1         0
+Arnd              0         1           0         0           0         0
+        S2WantCurse S2DoCurse S2WantScold S2DoScold
+Sarah             2         2           2         2
+Michael           2         2           2         0
+Arnd              1         0           0         0
+> 
+> ## rounded expected category value for the same subjects
+> predict(pcmod, type = "mean",
++   newdata = c("Sarah" = 1.2, "Michael" = 0.1, "Arnd" = -0.8))
+        S1WantCurse S1DoCurse S1WantScold S1DoScold S1WantShout S1DoShout
+Sarah             2         2           2         2           1         1
+Michael           1         1           1         1           1         0
+Arnd              1         1           1         0           0         0
+        S2WantCurse S2DoCurse S2WantScold S2DoScold
+Sarah             2         2           2         1
+Michael           1         1           1         1
+Arnd              1         1           1         0
+> 
+> 
+> ## in the rasch model mode, mean and median are the same
+> raschmod <- raschmodel(VerbalAggression$resp2[, 1:10])
+> med <- predict(raschmod, type = "median")
+> mn <- predict(raschmod, type = "mean")
+> mod <- predict(raschmod, type = "mode")
+> 
+> head(med)
+     S1WantCurse S1DoCurse S1WantScold S1DoScold S1WantShout S1DoShout
+[1,]           0         0           0         0           0         0
+[2,]           1         1           1         1           0         0
+[3,]           1         1           1         1           0         0
+[4,]           1         1           0         0           0         0
+[5,]           0         0           0         0           0         0
+[6,]           1         1           0         0           0         0
+     S2WantCurse S2DoCurse S2WantScold S2DoScold
+[1,]           1         0           0         0
+[2,]           1         1           1         0
+[3,]           1         1           1         0
+[4,]           1         1           1         0
+[5,]           0         0           0         0
+[6,]           1         0           0         0
+> head(mn)
+     S1WantCurse S1DoCurse S1WantScold S1DoScold S1WantShout S1DoShout
+[1,]           0         0           0         0           0         0
+[2,]           1         1           1         1           0         0
+[3,]           1         1           1         1           0         0
+[4,]           1         1           0         0           0         0
+[5,]           0         0           0         0           0         0
+[6,]           1         1           0         0           0         0
+     S2WantCurse S2DoCurse S2WantScold S2DoScold
+[1,]           1         0           0         0
+[2,]           1         1           1         0
+[3,]           1         1           1         0
+[4,]           1         1           1         0
+[5,]           0         0           0         0
+[6,]           1         0           0         0
+> head(mod)
+     S1WantCurse S1DoCurse S1WantScold S1DoScold S1WantShout S1DoShout
+[1,]           0         0           0         0           0         0
+[2,]           1         1           1         1           0         0
+[3,]           1         1           1         1           0         0
+[4,]           1         1           0         0           0         0
+[5,]           0         0           0         0           0         0
+[6,]           1         1           0         0           0         0
+     S2WantCurse S2DoCurse S2WantScold S2DoScold
+[1,]           1         0           0         0
+[2,]           1         1           1         0
+[3,]           1         1           1         0
+[4,]           1         1           1         0
+[5,]           0         0           0         0
+[6,]           1         0           0         0
+> 
+> all.equal(med, mn)
+[1] TRUE
+> all.equal(mod, mn)
+[1] TRUE
+> 
+> options(digits = o$digits)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("print.itemresp")
+> ### * print.itemresp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: print.itemresp
+> ### Title: Formatting Item Response Data
+> ### Aliases: print.itemresp format.itemresp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## item responses from binary matrix
+> x <- cbind(c(1, 0, 1, 0), c(1, 0, 0, 0), c(0, 1, 1, 1))
+> xi <- itemresp(x)
+> ## change mscale
+> mscale(xi) <- c("-", "+")
+> xi
+[1] {+,+,-} {-,-,+} {+,-,+} {-,-,+}
+> 
+> ## flexible formatting
+> ## no/other brackets
+> print(xi, brackets = FALSE)
+[1] +,+,- -,-,+ +,-,+ -,-,+
+> print(xi, brackets = c(">>", "<<"))
+[1] >>+,+,-<< >>-,-,+<< >>+,-,+<< >>-,-,+<<
+> 
+> ## include item labels (with different separators)
+> print(xi, labels = TRUE)
+[1] {item1:+,item2:+,item3:-} {item1:-,item2:-,item3:+}
+[3] {item1:+,item2:-,item3:+} {item1:-,item2:-,item3:+}
+> print(xi, labels = TRUE, sep = c(" | ", ": "))
+[1] {item1: + | item2: + | item3: -} {item1: - | item2: - | item3: +}
+[3] {item1: + | item2: - | item3: +} {item1: - | item2: - | item3: +}
+> 
+> ## handling longer mscale categories
+> mscale(xi) <- c("disagree", "agree")
+> print(xi)
+[1] {agre,agre,dsgr} {dsgr,dsgr,agre} {agre,dsgr,agre} {dsgr,dsgr,agre}
+> print(xi, mscale = FALSE)
+[1] {1,1,0} {0,0,1} {1,0,1} {0,0,1}
+> print(xi, abbreviate = FALSE)
+[1] {agree,agree,disagree}    {disagree,disagree,agree}
+[3] {agree,disagree,agree}    {disagree,disagree,agree}
+> print(xi, abbreviate = FALSE, width = 23)
+[1] {agree,agree,disagree}  {disagree,disagree,...} {agree,disagree,agree} 
+[4] {disagree,disagree,...}
+> print(xi, abbreviate = 2)
+[1] {ag,ag,ds} {ds,ds,ag} {ag,ds,ag} {ds,ds,ag}
+> 
+> 
+> 
 > cleanEx()
 > nameEx("print.paircomp")
 > ### * print.paircomp
@@ -1157,6 +2244,267 @@ Tokyo         North
 > 
 > 
 > cleanEx()
+> nameEx("profileplot")
+> ### * profileplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: profileplot
+> ### Title: Profile Plots for IRT Models
+> ### Aliases: profileplot
+> ### Keywords: aplot
+> 
+> ### ** Examples
+> 
+> ## Load Verbal Aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Fit Rasch, rating scale and partial credit
+> ## model to VerbalAggression data
+> rmmod <- raschmodel(VerbalAggression$resp2)
+> rsmod <- rsmodel(VerbalAggression$resp)
+> pcmod <- pcmodel(VerbalAggression$resp)
+> 
+> ## Profile plots of the item parameters of
+> ## the three fitted IRT models
+> plot(rmmod, type = "profile", what = "items", col = 4)
+> plot(rsmod, type = "profile", what = "items", col = 2, add = TRUE)
+> plot(pcmod, type = "profile", what = "items", col = 3, add = TRUE)
+> legend(x = "topleft", legend = c("RM", "RSM", "PCM"),
++   col = 1, bg = c(4, 2, 3), pch = 21, bty = "n")
+> 
+> ## Profile plots of the threshold parameters of type 'mode'
+> plot(rmmod, type = "profile", what = "thresholds",
++   parg = list(type = "mode"))
+> plot(rsmod, type = "profile", what = "thresholds",
++   parg = list(type = "mode"))
+> plot(pcmod, type = "profile", what = "thresholds",
++   parg = list(type = "mode"))
+> 
+> ## Profile plot of the discrimination parameters
+> ## of a dichotomous Rasch model (all zero by definition)
+> plot(rmmod, type = "profile", what = "discrimination")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("raschmodel")
+> ### * raschmodel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: raschmodel
+> ### Title: Rasch Model Fitting Function
+> ### Aliases: raschmodel RaschModel.fit print.raschmodel summary.raschmodel
+> ###   print.summary.raschmodel coef.raschmodel bread.raschmodel
+> ###   estfun.raschmodel logLik.raschmodel vcov.raschmodel
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> o <- options(digits = 4)
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Rasch model for the other-to-blame situations
+> m <- raschmodel(VerbalAggression$resp2[, 1:12])
+> summary(m)
+
+Rasch model
+
+Difficulty parameters:
+             Estimate Std. Error z value Pr(>|z|)    
+S1DoCurse   -1.56e-08   2.04e-01    0.00  1.00000    
+S1WantScold  6.86e-01   2.00e-01    3.44  0.00059 ***
+S1DoScold    8.73e-01   1.99e-01    4.38  1.2e-05 ***
+S1WantShout  1.21e+00   2.00e-01    6.03  1.6e-09 ***
+S1DoShout    2.29e+00   2.13e-01   10.77  < 2e-16 ***
+S2WantCurse -5.39e-01   2.13e-01   -2.53  0.01152 *  
+S2DoCurse    3.61e-01   2.01e-01    1.80  0.07200 .  
+S2WantScold  5.34e-01   2.00e-01    2.67  0.00753 ** 
+S2DoScold    1.36e+00   2.01e-01    6.76  1.4e-11 ***
+S2WantShout  1.28e+00   2.01e-01    6.39  1.6e-10 ***
+S2DoShout    3.07e+00   2.34e-01   13.09  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Log-likelihood: -1260 (df = 11) 
+Number of iterations in BFGS optimization: 19 
+
+> 
+> ## visualizations
+> plot(m, type = "profile")
+> plot(m, type = "regions")
+> plot(m, type = "curves")
+> plot(m, type = "information")
+> plot(m, type = "piplot")
+> 
+> options(digits = o$digits)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("regionplot")
+> ### * regionplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: regionplot
+> ### Title: Region Plots for IRT Models
+> ### Aliases: regionplot
+> ### Keywords: aplot
+> 
+> ### ** Examples
+> 
+> ## Load Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Fit a Partial credit model to the items of the
+> ##  first other-to-blame situation: 'A bus fails to stop for me'
+> pcm <- pcmodel(VerbalAggression$resp[, 1:6])
+> 
+> ## A region plot with modus as cutpoint and custom labels.
+> lab <- paste(rep(c("Curse", "Scold", "Shout"), each = 2),
++              rep(c("Want", "Do"), 3 ), sep = "-")
+> plot(pcm, type = "regions", names = lab)
+> 
+> ## Compare the cutpoints (with ylim specified manually)
+> opar <- par(no.readonly = TRUE)
+> ylim <- c(-2, 2)
+> layout(matrix(1:3, ncol = 1))
+> plot(pcm, type = "regions", parg = list(type = "mode"),
++   main = "Modus as Cutpoint", ylim = ylim) 
+> plot(pcm, type = "regions", parg = list(type = "median"),
++   main = "Median as Cutpoint", ylim = ylim)
+> plot(pcm, type = "regions", parg = list(type = "mean"),
++   main = "Mean as Cutpoint", ylim = ylim)
+> par(opar)
+> 
+> ## Partial credit model for full VerbalAggression data set
+> pcm_va <- pcmodel(VerbalAggression$resp)
+> plot(pcm_va, type = "regions")
+> 
+> 
+> 
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("rsmodel")
+> ### * rsmodel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: rsmodel
+> ### Title: Rating Scale Model Fitting Function
+> ### Aliases: rsmodel RSModel.fit print.rsmodel summary.rsmodel
+> ###   print.summary.rsmodel coef.rsmodel bread.rsmodel estfun.rsmodel
+> ###   logLik.rsmodel vcov.rsmodel
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> o <- options(digits = 4)
+> 
+> ## Verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## Rating scale model for the other-to-blame situations
+> rsm <- rsmodel(VerbalAggression$resp[, 1:12])
+> summary(rsm)
+
+Rating scale model
+
+Item location and threshold parameters:
+            Estimate Std. Error z value Pr(>|z|)    
+S1DoCurse     0.0899     0.1177    0.76  0.44467    
+S1WantScold   0.4205     0.1181    3.56  0.00037 ***
+S1DoScold     0.6379     0.1194    5.34  9.1e-08 ***
+S1WantShout   0.9161     0.1220    7.51  6.0e-14 ***
+S1DoShout     1.5657     0.1330   11.77  < 2e-16 ***
+S2WantCurse  -0.2182     0.1189   -1.84  0.06636 .  
+S2DoCurse     0.2619     0.1177    2.23  0.02606 *  
+S2WantScold   0.3582     0.1179    3.04  0.00238 ** 
+S2DoScold     0.9849     0.1228    8.02  1.1e-15 ***
+S2WantShout   0.8635     0.1214    7.11  1.1e-12 ***
+S2DoShout     2.0598     0.1466   14.05  < 2e-16 ***
+C2            0.5024     0.0850    5.91  3.4e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Log-likelihood: -2480 (df = 12) 
+Number of iterations in BFGS optimization: 19 
+
+> 
+> ## visualizations
+> plot(rsm, type = "profile")
+> plot(rsm, type = "regions")
+> plot(rsm, type = "curves")
+> plot(rsm, type = "information")
+> plot(rsm, type = "piplot")
+> 
+> options(digits = o$digits)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("subset.itemresp")
+> ### * subset.itemresp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: subset.itemresp
+> ### Title: Subsetting Item Response Data
+> ### Aliases: subset.itemresp merge.itemresp c.itemresp [.itemresp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## binary responses to three items, coded as matrix
+> x <- cbind(c(1, 0, 1, 0), c(1, 0, 0, 0), c(0, 1, 1, 1))
+> xi <- itemresp(x)
+> 
+> ## subsetting/indexing
+> xi[2]
+[1] {0,0,1}
+> xi[-(3:4)]
+[1] {1,1,0} {0,0,1}
+> xi[c(TRUE, TRUE, FALSE, FALSE)]
+[1] {1,1,0} {0,0,1}
+> subset(xi, items = 1:2) # or xi[, 1:2]
+[1] {1,1} {0,0} {1,0} {0,0}
+> subset(xi, items = -2, subjects = 2:3)
+[1] {0,1} {1,1}
+> 
+> ## combine two itemresp vectors for different subjects but the same items
+> xi12 <- xi[1:2]
+> xi34 <- xi[3:4]
+> c(xi12, xi34)
+[1] {1,1,0} {0,0,1} {1,0,1} {0,0,1}
+> 
+> ## combine two itemresp vectors for the same subjects but different items
+> ## polytomous responses in a data frame
+> d <- data.frame(q1 = c(-2, 1, -1, 0), q2 = factor(c(1, 3, 1, 3),
++   levels = 1:3, labels = c("disagree", "neutral", "agree")))
+> di <-itemresp(d)
+> merge(xi, di)
+              1               2               3               4 
+{1,1,0,-2,dsgr}  {0,0,1,1,agre} {1,0,1,-1,dsgr}  {0,0,1,0,agre} 
+> 
+> ## if subjects have names/IDs, these are used for merging
+> names(xi) <- c("John", "Joan", "Jen", "Jim")
+> names(di) <-         c("Joan", "Jen", "Jim", "Jo")
+> merge(xi, di)
+           Joan             Jen             Jim 
+{0,0,1,-2,dsgr}  {1,0,1,1,agre} {0,0,1,-1,dsgr} 
+> merge(xi, di, all = TRUE)
+             John              Joan               Jen               Jim 
+    {1,1,0,NA,NA}   {0,0,1,-2,dsgr}    {1,0,1,1,agre}   {0,0,1,-1,dsgr} 
+               Jo 
+{NA,NA,NA,0,agre} 
+> 
+> 
+> 
+> cleanEx()
 > nameEx("subset.paircomp")
 > ### * subset.paircomp
 > 
@@ -1180,6 +2528,191 @@ Tokyo         North
 > 
 > 
 > cleanEx()
+> nameEx("summary.itemresp")
+> ### * summary.itemresp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: summary.itemresp
+> ### Title: Summarizing and Visualizing Item Response Data
+> ### Aliases: summary.itemresp plot.itemresp
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> ## summary/visualization for verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> r <- itemresp(VerbalAggression$resp[, 1:6])
+> mscale(r) <- c("no", "perhaps", "yes")
+> summary(r)
+             no perhaps yes
+S1WantCurse  91      95 130
+S1DoCurse    91     108 117
+S1WantScold 126      86 104
+S1DoScold   136      97  83
+S1WantShout 154      99  63
+S1DoShout   208      68  40
+> plot(r)
+> 
+> ## modify formatting of mscale
+> summary(r, abbreviate = 1)
+              n   p   y
+S1WantCurse  91  95 130
+S1DoCurse    91 108 117
+S1WantScold 126  86 104
+S1DoScold   136  97  83
+S1WantShout 154  99  63
+S1DoShout   208  68  40
+> summary(r, mscale = FALSE)
+              0   1   2
+S1WantCurse  91  95 130
+S1DoCurse    91 108 117
+S1WantScold 126  86 104
+S1DoScold   136  97  83
+S1WantShout 154  99  63
+S1DoShout   208  68  40
+> 
+> ## illustration for varying mscale across items
+> ## merge with additional random binary response
+> b <- itemresp(rep(c(-1, 1), length.out = length(r)),
++   mscale = c(-1, 1), labels = "Dummy")
+> rb <- merge(r[, 1:2], b)
+> head(rb, 2)
+[1] {no,prh,-1} {no,no,1}  
+> ## summary has NAs for non-existent response categories
+> summary(rb)
+                               0   1   2
+S1WantCurse (no,perhaps,yes)  91  95 130
+S1DoCurse (no,perhaps,yes)    91 108 117
+Dummy (-1,1)                 158 158  NA
+> summary(rb, mscale = FALSE)
+              0   1   2
+S1WantCurse  91  95 130
+S1DoCurse    91 108 117
+Dummy       158 158  NA
+> plot(rb)
+> plot(rb, mscale = FALSE)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("threshpar")
+> ### * threshpar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: threshpar
+> ### Title: Extract Threshold Parameters of Item Response Models
+> ### Aliases: threshpar threshpar.raschmodel threshpar.rsmodel
+> ###   threshpar.pcmodel coef.threshpar print.threshpar
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> o <- options(digits = 4)
+> 
+> ## load verbal aggression data
+> data("VerbalAggression", package = "psychotools")
+> 
+> ## fit a rasch model to dichotomized verbal aggression data
+> raschmod <- raschmodel(VerbalAggression$resp2)
+> 
+> ## extract threshold parameters with sum zero restriction
+> tr <- threshpar(raschmod)
+> tr
+Item response threshold parameters (RM, type mode):
+S1WantCurse-C1   S1DoCurse-C1 S1WantScold-C1   S1DoScold-C1 S1WantShout-C1 
+       -1.3834        -1.3834        -0.7307        -0.5566        -0.2491 
+  S1DoShout-C1 S2WantCurse-C1   S2DoCurse-C1 S2WantScold-C1   S2DoScold-C1 
+        0.6981        -1.9093        -1.0367        -0.8727        -0.1131 
+S2WantShout-C1   S2DoShout-C1 S3WantCurse-C1   S3DoCurse-C1 S3WantScold-C1 
+       -0.1810         1.3120        -0.6955         0.0403         0.5136 
+  S3DoScold-C1 S3WantShout-C1   S3DoShout-C1 S4WantCurse-C1   S4DoCurse-C1 
+        1.3348         1.3577         2.8709        -1.2450        -0.8727 
+S4WantScold-C1   S4DoScold-C1 S4WantShout-C1   S4DoShout-C1 
+        0.1779         0.2126         0.8711         1.8402 
+> 
+> ## compare to item parameters (again with sum zero restriction)
+> ip <- itempar(raschmod)
+> ip
+Item response item parameters (RM):
+S1WantCurse   S1DoCurse S1WantScold   S1DoScold S1WantShout   S1DoShout 
+    -1.3834     -1.3834     -0.7307     -0.5566     -0.2491      0.6981 
+S2WantCurse   S2DoCurse S2WantScold   S2DoScold S2WantShout   S2DoShout 
+    -1.9093     -1.0367     -0.8727     -0.1131     -0.1810      1.3120 
+S3WantCurse   S3DoCurse S3WantScold   S3DoScold S3WantShout   S3DoShout 
+    -0.6955      0.0403      0.5136      1.3348      1.3577      2.8709 
+S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout 
+    -1.2450     -0.8727      0.1779      0.2126      0.8711      1.8402 
+> 
+> all.equal(coef(tr), coef(ip))
+[1] "Names: 24 string mismatches"
+> 
+> ## rating scale model example
+> rsmod <- rsmodel(VerbalAggression$resp)
+> trmod <- threshpar(rsmod, type = "mode")
+> trmed <- threshpar(rsmod, type = "median")
+> trmn <- threshpar(rsmod, type = "mean")
+> 
+> ## compare different types of threshold parameters
+> cbind("Mode" = coef(trmod, type = "vector"),
++  "Median" = coef(trmod, type = "vector"),
++  "Mean" = coef(trmn, type = "vector"))
+                   Mode   Median     Mean
+S1WantCurse-C1 -1.36551 -1.36551 -0.63583
+S1WantCurse-C2 -0.78469 -0.78469  1.21667
+S1DoCurse-C1   -1.27784 -1.27784 -0.54819
+S1DoCurse-C2   -0.69702 -0.69702  1.30434
+S1WantScold-C1 -0.95781 -0.95781 -0.22816
+S1WantScold-C2 -0.37699 -0.37699  1.62440
+S1DoScold-C1   -0.74918 -0.74918 -0.01953
+S1DoScold-C2   -0.16836 -0.16836  1.83301
+S1WantShout-C1 -0.48394 -0.48394  0.24574
+S1WantShout-C2  0.09688  0.09688  2.09825
+S1DoShout-C1    0.13116  0.13116  0.86081
+S1DoShout-C2    0.71198  0.71198  2.71335
+S2WantCurse-C1 -1.57926 -1.57926 -0.84961
+S2WantCurse-C2 -0.99845 -0.99845  1.00292
+S2DoCurse-C1   -1.11091 -1.11091 -0.38126
+S2DoCurse-C2   -0.53009 -0.53009  1.47126
+S2WantScold-C1 -1.01776 -1.01776 -0.28811
+S2WantScold-C2 -0.43694 -0.43694  1.56439
+S2DoScold-C1   -0.41863 -0.41863  0.31102
+S2DoScold-C2    0.16219  0.16219  2.16355
+S2WantShout-C1 -0.53396 -0.53396  0.19567
+S2WantShout-C2  0.04686  0.04686  2.04823
+S2DoShout-C1    0.59875  0.59875  1.32841
+S2DoShout-C2    1.17957  1.17957  3.18094
+S3WantCurse-C1 -0.70132 -0.70132  0.02833
+S3WantCurse-C2 -0.12050 -0.12050  1.88086
+S3DoCurse-C1   -0.15887 -0.15887  0.57078
+S3DoCurse-C2    0.42194  0.42194  2.42328
+S3WantScold-C1  0.14953  0.14953  0.87919
+S3WantScold-C2  0.73035  0.73035  2.73172
+S3DoScold-C1    0.72406  0.72406  1.45372
+S3DoScold-C2    1.30488  1.30488  3.30625
+S3WantShout-C1  0.77736  0.77736  1.50703
+S3WantShout-C2  1.35818  1.35818  3.35956
+S3DoShout-C1    1.93477  1.93477  2.66442
+S3DoShout-C2    2.51559  2.51559  4.51694
+S4WantCurse-C1 -1.05771 -1.05771 -0.32806
+S4WantCurse-C2 -0.47689 -0.47689  1.52445
+S4DoCurse-C1   -0.85739 -0.85739 -0.12774
+S4DoCurse-C2   -0.27657 -0.27657  1.72479
+S4WantScold-C1 -0.19072 -0.19072  0.53893
+S4WantScold-C2  0.39009  0.39009  2.39144
+S4DoScold-C1   -0.13472 -0.13472  0.59493
+S4DoScold-C2    0.44610  0.44610  2.44750
+S4WantShout-C1  0.26366  0.26366  0.99331
+S4WantShout-C2  0.84448  0.84448  2.84584
+S4DoShout-C1    1.04642  1.04642  1.77607
+S4DoShout-C2    1.62724  1.62724  3.62860
+> 
+> options(digits = o$digits)
+> 
+> 
+> 
+> cleanEx()
 > nameEx("worth")
 > ### * worth
 > 
@@ -1196,12 +2729,13 @@ Tokyo         North
 > data("GermanParties2009", package = "psychotools")
 > 
 > ## Bradley-Terry model
-> bt <- btReg.fit(GermanParties2009$preference)
+> bt <- btmodel(GermanParties2009$preference)
 > 
 > ## worth parameters
 > worth(bt)
-      none      Linke     Gruene        SPD    CDU/CSU        FDP 
-0.07677476 0.06036248 0.36583889 0.25202703 0.13322747 0.11176938 
+Bradley-Terry model parameters (btmodel):
+   none   Linke  Gruene     SPD CDU/CSU     FDP 
+0.07677 0.06036 0.36584 0.25203 0.13323 0.11177 
 > 
 > 
 > 
@@ -1209,7 +2743,7 @@ Tokyo         North
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  3.223 0.027 3.259 0 0 
+Time elapsed:  13.588 0.108 13.714 0 0 
 > grDevices::dev.off()
 null device 
           1 

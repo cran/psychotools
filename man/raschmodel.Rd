@@ -1,31 +1,32 @@
-\name{RaschModel.fit}
+\name{raschmodel}
+\alias{raschmodel}
 \alias{RaschModel.fit}
 
-\alias{print.RaschModel}
-\alias{summary.RaschModel}
-\alias{print.summary.RaschModel}
+\alias{print.raschmodel}
+\alias{summary.raschmodel}
+\alias{print.summary.raschmodel}
 
-\alias{coef.RaschModel}
-\alias{worth.RaschModel}
-\alias{logLik.RaschModel}
-\alias{vcov.RaschModel}
-
+\alias{coef.raschmodel}
+\alias{bread.raschmodel}
+\alias{estfun.raschmodel}
+\alias{logLik.raschmodel}
+\alias{vcov.raschmodel}
 
 \title{Rasch Model Fitting Function}
 
 \description{
-  \code{RaschModel.fit} is a basic fitting function for simple Rasch models.
+  \code{raschmodel} is a basic fitting function for simple Rasch models.
 }
 
 \usage{
-RaschModel.fit(y, weights = NULL, start = NULL, reltol = 1e-10,
+raschmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
   deriv = c("sum", "diff", "numeric"), hessian = TRUE,
   maxit = 100L, full = TRUE, gradtol = reltol, iterlim = maxit, \dots)
 }
 
 \arguments{
   \item{y}{object that can be coerced (via \code{\link[base]{as.matrix}}) to a binary 0/1 matrix.}
-  \item{weights}{an optional vector of weights, interpreted as case weights (integer only).}
+  \item{weights}{an optional vector of weights (interpreted as case weights).}
   \item{start}{an optional vector of starting values.}
   \item{deriv}{character. Which type of derivatives should be used for computing
     gradient and Hessian matrix? Analytical with sum algorithm (\code{"sum"}),
@@ -42,18 +43,20 @@ RaschModel.fit(y, weights = NULL, start = NULL, reltol = 1e-10,
 }
 
 \details{
-  \code{RaschModel.fit} provides a basic fitting function for simple Rasch models,
+  \code{raschmodel} provides a basic fitting function for simple Rasch models,
   intended as a building block for fitting Rasch trees and Rasch mixtures
-  in the \pkg{psychotree} package, respectively.
+  in the \pkg{psychotree} and \pkg{psychomix} packages, respectively.
   
-  \code{RaschModel.fit} returns an object of class \code{"RaschModel"} for which
+  \code{raschmodel} returns an object of class \code{"raschmodel"} for which
   several basic methods are available, including \code{print}, \code{plot},
-  \code{summary}, \code{coef}, \code{vcov}, \code{logLik}, and \code{\link{worth}}.
+  \code{summary}, \code{coef}, \code{vcov}, \code{logLik}, \code{estfun},
+  \code{\link{discrpar}}, \code{\link{itempar}}, \code{\link{threshpar}},
+  and \code{\link{personpar}}.
 }
 
 \value{
-  \code{RaschModel.fit} returns an S3 object of class \code{"RaschModel"}, 
-  i.e., a list with components as follows.
+  \code{raschmodel} returns an S3 object of class \code{"raschmodel"}, 
+  i.e., a list with the following components:
   \item{coefficients}{estimated item difficulty parameters (without first item
     parameter which is always constrained to be 0),}
   \item{vcov}{covariance matrix of the parameters in the model,}
@@ -73,16 +76,26 @@ RaschModel.fit(y, weights = NULL, start = NULL, reltol = 1e-10,
   Hessian matrix.}
 }
 
-\seealso{\code{\link{PCModel.fit}}, \code{\link{RSModel.fit}}, \code{\link{btReg.fit}}}
+\seealso{\code{\link{pcmodel}}, \code{\link{rsmodel}}, \code{\link{btmodel}}}
 
 \examples{
+o <- options(digits = 4)
+
 ## Verbal aggression data
 data("VerbalAggression", package = "psychotools")
 
 ## Rasch model for the other-to-blame situations
-m <- RaschModel.fit(VerbalAggression$resp2[, 1:12])
+m <- raschmodel(VerbalAggression$resp2[, 1:12])
 summary(m)
-plot(m)
+
+## visualizations
+plot(m, type = "profile")
+plot(m, type = "regions")
+plot(m, type = "curves")
+plot(m, type = "information")
+plot(m, type = "piplot")
+
+options(digits = o$digits)
 }
 
 \keyword{regression}

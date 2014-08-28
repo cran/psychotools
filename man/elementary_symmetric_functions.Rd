@@ -75,18 +75,18 @@ elementary_symmetric_functions(par, order = 0L, log = TRUE,
   Rasch Model. \emph{Applied Psychological Measurement},
   \bold{18}, 53--62.
 
-  Paul G. W. Jansen (1984). Computing the second-order derivatives of
-  the symmetric functions in the Rasch Model. \emph{Kwantitatieve
+  Paul G. W. Jansen (1984). Computing the Second-Order Derivatives of
+  the Symmetric Functions in the Rasch Model. \emph{Kwantitatieve
   Methoden}, \bold{13}, 131--147.
 
-  Gerhard H. Fischer, and Ivo Ponocny (1994). An extension of the
-  partial credit model with an application to the measurement of
-  change. \emph{Psychometrika}, \bold{59}(2), 177-192.
+  Gerhard H. Fischer, and Ivo Ponocny (1994). An Extension of the
+  Partial Credit Model with an Application to the Measurement of
+  Change. \emph{Psychometrika}, \bold{59}(2), 177-192.
 
-  Gerhard H. Fischer, and Ivo Ponocny. Extended rating scale and partial
-  credit models for assessing change. In Gerhard H. Fischer, and Ivo
-  W. Molenaar, (1995). Rasch models: Foundations, recent developments,
-  and applications.  
+  Gerhard H. Fischer, and Ivo Ponocny. Extended Rating Scale and Partial
+  Credit Models for Assessing Change. In Gerhard H. Fischer, and Ivo
+  W. Molenaar, (1995). Rasch Models: Foundations, Recent Developments,
+  and Applications.  
 }
 
 \examples{
