@@ -11,23 +11,27 @@
 \usage{data("SourceMonitoring")}
 
 \format{
-A data frame containing 128 observations on 15 variables.
+A data frame containing 128 observations on four components.
 \describe{
   \item{sources}{Factor. Sources A and B.}
   \item{age}{Integer. Age of the respondents in years.}
   \item{gender}{Factor coding gender.}
-  \item{aa}{Number of source A items judged to be of source A.}
-  \item{ab}{Number of source A items judged to be of source B.}
-  \item{an}{Number of source A items judged to be new.}
-  \item{ba}{Number of source B items judged to be of source A.}
-  \item{bb}{Number of source B items judged to be of source B.}
-  \item{bn}{Number of source B items judged to be new.}
-  \item{na}{Number of new items judged to be of source A.}
-  \item{nb}{Number of new items judged to be of source B.}
-  \item{nn}{Number of new items judged to be new.}
+  \item{y}{Matrix containing the response frequencies. The column names
+    indicate the nine response categories:
+    \tabular{rl}{
+      \code{a.a} \tab Number of source A items judged to be of source A.\cr
+      \code{a.b} \tab Number of source A items judged to be of source B.\cr
+      \code{a.n} \tab Number of source A items judged to be new.\cr
+      \code{b.a} \tab Number of source B items judged to be of source A.\cr
+      \code{b.b} \tab Number of source B items judged to be of source B.\cr
+      \code{b.n} \tab Number of source B items judged to be new.\cr
+      \code{n.a} \tab Number of new items judged to be of source A.\cr
+      \code{n.b} \tab Number of new items judged to be of source B.\cr
+      \code{n.n} \tab Number of new items judged to be new.
+    }
+  }
 }
 }
-
 \details{
   In a source-monitoring experiment with two sources, participants study
   items from two different sources, A and B. The final memory test consists

@@ -306,6 +306,17 @@ levels.itemresp <- function(x, ...) mscale(x, ...)
   lclass <- sapply(ms, class)
   if(any(lclass != "integer")) ms <- lapply(ms, as.character)  
   
+  ## check for duplicated values (for collapsing responses)
+  dup <- sapply(ms, function(x) any(duplicated(x)))
+  if(any(dup)) {
+    object <- unclass(object)  
+    for(i in which(dup)) {
+      object[, i] <- as.integer(factor(ms[[i]], levels = unique(ms[[i]])))[object[, i] + 1L] - 1L
+      ms[[i]] <- unique(ms[[i]])
+    }
+    class(object) <- "itemresp"
+  }
+  
   ## actually replace attribute and return
   attr(object, "mscale") <- ms
   return(object)
@@ -532,11 +543,46 @@ summary.itemresp <- function(object, items = NULL, abbreviate = FALSE, mscale = 
   return(rval)
 }
 
-plot.itemresp <- function(x, xlab = "", ylab = "", items = NULL, abbreviate = FALSE, mscale = TRUE, sep = "\n", ...)
+plot.itemresp <- function(x, xlab = "", ylab = "", items = NULL, abbreviate = FALSE, mscale = TRUE, sep = "\n",
+  off = 2, axes = TRUE, names = TRUE, srt = 45, adj = c(1.1, 1.1), ...)
 {
+  ## summarize item response data
   tab <- summary(x, items = items, abbreviate = abbreviate, mscale = mscale, simplify = TRUE, sep = sep)
   tab[is.na(tab)] <- 0
-  spineplot(tab, xlab = xlab, ylab = ylab, ...)
+  n <- NROW(tab)
+
+  ## process labeling option for item names
+  if (isTRUE(names)) nms <- rownames(tab)
+  if (is.character(names)) {
+    nms <- names
+    names <- TRUE
+  }
+  if(!names) {
+    lab <- rep(NA, n)
+    lab[c(1, n)] <- c(1, n)
+    pr <- pretty(1:n)
+    pr <- pr[pr > 1 & pr < n]
+    lab[pr] <- pr    
+    nms <- lab
+  }
+  lab <- rownames(tab)
+  rownames(tab) <- rep.int("", n)
+
+  ## call spineplot
+  spineplot(tab, xlab = xlab, ylab = ylab, off = off, axes = axes, ...)
+
+  ## x-axis labels
+  ix <- rowSums(tab)/sum(tab)
+  ix <- cumsum(ix + off/100) - off/100 - ix/2
+  if(names) {
+    text(ix, par("usr")[3], labels = nms, srt = srt, adj = adj, xpd = TRUE, cex = 0.9)
+  } else {
+    axis(1, at = ix, labels = nms)
+  }
+
+  ## return summary table invisibly
+  rownames(tab) <- lab
+  invisible(tab)
 }
 
 

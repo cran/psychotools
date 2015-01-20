@@ -145,12 +145,13 @@ as.list(xi)
 as.list(xi, df = TRUE)
 
 
-## polytomous responses with missing values and a unequal number of
+## polytomous responses with missing values and unequal number of
 ## categories in a data frame
-d <- data.frame(q1 = c(-2, 1, -1, 0, NA, 1, NA),
-                q2 = c(3, 5, 2, 5, NA, 2, 3),
-                q3 = factor(c(1, 2, 1, 2, NA, 3, 2), levels = 1:3,
-                            labels = c("disagree", "neutral", "agree")))
+d <- data.frame(
+  q1 = c(-2, 1, -1, 0, NA, 1, NA),
+  q2 = c(3, 5, 2, 5, NA, 2, 3),
+  q3 = factor(c(1, 2, 1, 2, NA, 3, 2), levels = 1:3,
+    labels = c("disagree", "neutral", "agree")))
 di <- itemresp(d)
 di
 
@@ -172,24 +173,21 @@ data("VerbalAggression", package = "psychotools")
 r <- itemresp(VerbalAggression$resp[, 1:12])
 str(r)
 head(r)
-summary(r)
 plot(r)
+summary(r)
+prop.table(summary(r), 1)
 
+## dichotomize response
+r2 <- r
+mscale(r2) <- c(0, 1, 1)
+plot(r2)
 
-## COPY BACK TO MSACLE.RD WHEN ITEMRESP IS RELEASED.
-## similar for "itemresp" data
-ir <- itemresp(cbind(
-  c(-1, 0, 1, 1, 0),
-  c(0, 1, 2, 1, 2),
-  c(1, 2, 1, 1, 3)))
-ir
-
-## extract
-mscale(ir)
-
-## replace (single scale for all items)
-mscale(ir) <- 1:3
-ir
+## transform to "likert" package
+if(require("likert")) {
+lik <- likert(as.data.frame(as.list(r)))
+lik
+plot(lik)
+}
 }
 
 \keyword{classes}

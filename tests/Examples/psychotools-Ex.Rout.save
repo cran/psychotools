@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -1417,12 +1417,13 @@ Jen   +  -  +
 Jim   -  -  +
 > 
 > 
-> ## polytomous responses with missing values and a unequal number of
+> ## polytomous responses with missing values and unequal number of
 > ## categories in a data frame
-> d <- data.frame(q1 = c(-2, 1, -1, 0, NA, 1, NA),
-+                 q2 = c(3, 5, 2, 5, NA, 2, 3),
-+                 q3 = factor(c(1, 2, 1, 2, NA, 3, 2), levels = 1:3,
-+                             labels = c("disagree", "neutral", "agree")))
+> d <- data.frame(
++   q1 = c(-2, 1, -1, 0, NA, 1, NA),
++   q2 = c(3, 5, 2, 5, NA, 2, 3),
++   q3 = factor(c(1, 2, 1, 2, NA, 3, 2), levels = 1:3,
++     labels = c("disagree", "neutral", "agree")))
 > di <- itemresp(d)
 > di
           1           2           3           4           5           6 
@@ -1475,6 +1476,7 @@ FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
 [1] {0,1,0,0,0,1,0,1,0,0,0,0} {0,0,0,0,0,0,0,0,0,0,0,0}
 [3] {1,0,1,1,1,1,1,0,0,0,1,1} {1,1,1,1,1,1,1,2,1,1,1,1}
 [5] {1,1,0,1,1,0,1,1,0,0,0,0} {2,2,2,0,0,0,2,2,0,0,0,0}
+> plot(r)
 > summary(r)
               0   1   2
 S1WantCurse  91  95 130
@@ -1489,38 +1491,42 @@ S2WantScold 118  93 105
 S2DoScold   162  92  62
 S2WantShout 158  84  74
 S2DoShout   238  53  25
-> plot(r)
+> prop.table(summary(r), 1)
+                    0         1          2
+S1WantCurse 0.2879747 0.3006329 0.41139241
+S1DoCurse   0.2879747 0.3417722 0.37025316
+S1WantScold 0.3987342 0.2721519 0.32911392
+S1DoScold   0.4303797 0.3069620 0.26265823
+S1WantShout 0.4873418 0.3132911 0.19936709
+S1DoShout   0.6582278 0.2151899 0.12658228
+S2WantCurse 0.2120253 0.3544304 0.43354430
+S2DoCurse   0.3449367 0.3069620 0.34810127
+S2WantScold 0.3734177 0.2943038 0.33227848
+S2DoScold   0.5126582 0.2911392 0.19620253
+S2WantShout 0.5000000 0.2658228 0.23417722
+S2DoShout   0.7531646 0.1677215 0.07911392
 > 
+> ## dichotomize response
+> r2 <- r
+> mscale(r2) <- c(0, 1, 1)
+> plot(r2)
 > 
-> ## COPY BACK TO MSACLE.RD WHEN ITEMRESP IS RELEASED.
-> ## similar for "itemresp" data
-> ir <- itemresp(cbind(
-+   c(-1, 0, 1, 1, 0),
-+   c(0, 1, 2, 1, 2),
-+   c(1, 2, 1, 1, 3)))
-> ir
-[1] {-1,0,1} {0,1,2}  {1,2,1}  {1,1,1}  {0,2,3} 
-> 
-> ## extract
-> mscale(ir)
-$item1
-[1] -1  0  1
-
-$item2
-[1] 0 1 2
-
-$item3
-[1] 1 2 3
-
-> 
-> ## replace (single scale for all items)
-> mscale(ir) <- 1:3
-> ir
-[1] {1,1,1} {2,2,2} {3,3,1} {3,2,1} {2,3,3}
+> ## transform to "likert" package
+> if(require("likert")) {
++ lik <- likert(as.data.frame(as.list(r)))
++ lik
++ plot(lik)
++ }
+Loading required package: likert
+Loading required package: ggplot2
+Loading required package: xtable
 > 
 > 
 > 
 > cleanEx()
+
+detaching 'package:likert', 'package:xtable', 'package:ggplot2'
+
 > nameEx("labels")
 > ### * labels
 > 
@@ -1545,6 +1551,51 @@ $item3
 > pc
 [1] {ah > be, ah > ce, be > ce} {ah > be, ah > ce, be < ce}
 [3] {ah > be, ah < ce, be < ce} {ah > be, ah > ce, be > ce}
+> 
+> 
+> 
+> cleanEx()
+> nameEx("mptmodel")
+> ### * mptmodel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: mptmodel
+> ### Title: Multinomial Processing Tree (MPT) Model Fitting Function
+> ### Aliases: mptmodel coef.mptmodel deviance.mptmodel estfun.mptmodel
+> ###   logLik.mptmodel predict.mptmodel print.mptmodel summary.mptmodel
+> ###   print.summary.mptmodel vcov.mptmodel mptspec print.mptspec
+> ###   update.mptspec
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> o <- options(digits = 4)
+> 
+> ## data
+> data("SourceMonitoring", package = "psychotools")
+> 
+> ## source-monitoring MPT model
+> mpt1 <- mptmodel(SourceMonitoring$y, spec = mptspec("SourceMon"))
+> summary(mpt1)
+
+Coefficients:
+   Estimate Logit Estim. Std. Error z value Pr(>|z|)    
+D1    0.614       0.4651     0.0556    8.37   <2e-16 ***
+d1    0.379      -0.4927     0.1828   -2.70    0.007 ** 
+g     0.535       0.1392     0.0779    1.79    0.074 .  
+b     0.172      -1.5687     0.0427  -36.72   <2e-16 ***
+D2    0.675       0.7292     0.0568   12.84   <2e-16 ***
+d2    0.425      -0.3031     0.1428   -2.12    0.034 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Likelihood ratio G2: -5.11e-13 on 0 df, p-value: 1 
+AIC: 12478
+Number of trees: 3 
+> plot(mpt1)
+> 
+> options(digits = o$digits)
 > 
 > 
 > 
@@ -1581,6 +1632,31 @@ $item3
 [1] {a > b, a > c, b = c} {a > b, a > c, b < c} {a > b, a < c, b < c}
 [4] {a = b, a = c, b = c}
 > 
+> 
+> ## similar for "itemresp" data
+> ir <- itemresp(cbind(
++   c(-1, 0, 1, 1, 0),
++   c(0, 1, 2, 1, 2),
++   c(1, 2, 1, 1, 3)))
+> ir
+[1] {-1,0,1} {0,1,2}  {1,2,1}  {1,1,1}  {0,2,3} 
+> 
+> ## extract
+> mscale(ir)
+$item1
+[1] -1  0  1
+
+$item2
+[1] 0 1 2
+
+$item3
+[1] 1 2 3
+
+> 
+> ## replace (single scale for all items)
+> mscale(ir) <- 1:3
+> ir
+[1] {1,1,1} {2,2,2} {3,3,1} {3,2,1} {2,3,3}
 > 
 > 
 > 
@@ -1792,8 +1868,8 @@ Warning in pcmodel(pcd, nullcats = "downcode") :
   There are items with null categories (I2).
 > 
 > plot(x = coef(pcm_va_keep), y = coef(pcm_va_down),
-+      xlab = "Threshold Parameters (Downcoding)",
-+      ylab = "Threshold Parameters (Keeping)",
++      xlab = "Threshold Parameters (Keeping)",
++      ylab = "Threshold Parameters (Downcoding)",
 +      main = "Comparison of two null category strategies (I2 with null category)", 
 +      pch = rep(as.character(1:6), each = 2)[-3])
 > abline(b = 1, a = 0)
@@ -2590,7 +2666,7 @@ Dummy (-1,1)                 158 158  NA
 S1WantCurse  91  95 130
 S1DoCurse    91 108 117
 Dummy       158 158  NA
-> plot(rb)
+> plot(rb, srt = 25)
 > plot(rb, mscale = FALSE)
 > 
 > 
@@ -2743,7 +2819,7 @@ Bradley-Terry model parameters (btmodel):
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  13.588 0.108 13.714 0 0 
+Time elapsed:  15.644 0.164 15.85 0 0 
 > grDevices::dev.off()
 null device 
           1 

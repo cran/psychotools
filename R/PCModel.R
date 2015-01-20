@@ -270,6 +270,8 @@ pcmodel <- function (y, weights = NULL, nullcats = c("keep", "downcode", "ignore
   names(est) <- if (is.null(colnames(y))) {
     paste("I", rep.int(which(ident_items), oj), "-C", unlist(lapply(oj, seq_len)), sep = "")[-1] 
   } else paste(rep(colnames(y)[which(ident_items)], oj), "-C", unlist(lapply(oj, seq_len)), sep = "")[-1]
+  ## FIXME/Z: use parindex instead of unlist(lapply(oj, seq_len))
+  ## at least if nullcats = "keep"?
   
   ## ... and (if requested) esf of these ...
   if (full) {

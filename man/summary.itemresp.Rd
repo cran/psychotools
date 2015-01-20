@@ -13,7 +13,8 @@
   \method{summary}{itemresp}(object, items = NULL, abbreviate = FALSE,
     mscale = TRUE, simplify = TRUE, sep = " ", \dots)
   \method{plot}{itemresp}(x, xlab = "", ylab = "", items = NULL,
-    abbreviate = FALSE, mscale = TRUE, sep = "\n", \dots)
+    abbreviate = FALSE, mscale = TRUE, sep = "\n", off = 2, axes = TRUE,
+    names = TRUE, srt = 45, adj = c(1.1, 1.1), \dots)
 }
 
 \arguments{
@@ -29,11 +30,18 @@
     a matrix or returned as a list?}
   \item{sep}{character. A character for separating item labels from
     their corresponding scale labels (if any).}   
-  \item{xlab, ylab, \dots}{arguments passed to \code{\link[graphics]{spineplot}}.}
+  \item{xlab, ylab, off, axes, \dots}{arguments passed to \code{\link[graphics]{spineplot}}.}
+  \item{names}{logical or character. If \code{TRUE}, the names of 
+    the items are displayed on the x-axis. If \code{FALSE}, numbers of
+    items are shown. Alternatively a character vector of the same
+    length as the number of items can be supplied.}
+  \item{srt, adj}{numeric. Angle (\code{srt}) and adjustment (\code{adj})
+    in case names (rather than numbers) are used as x-axis labels.
+    These are passed to \code{\link[graphics]{text}}.}
 }
 
 \details{
-  The \code{plot} method just calls \code{summary} (passing on all further
+  The \code{plot} method essentially just calls \code{summary} (passing on most further
   arguments) and then visualizes the result as a \code{spineplot}.
 }
 
@@ -60,7 +68,7 @@ head(rb, 2)
 ## summary has NAs for non-existent response categories
 summary(rb)
 summary(rb, mscale = FALSE)
-plot(rb)
+plot(rb, srt = 25)
 plot(rb, mscale = FALSE)
 }
 

@@ -468,6 +468,10 @@ itempar.raschmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, .
   ## set labels
   names(cf) <- rownames(vc) <- colnames(vc) <- lbs
 
+  ## items solved by no or all subjects
+  cf[object$items == "0"] <- -Inf
+  cf[object$items == "1"] <- Inf
+
   ## process argument alias
   if (!alias) {
       if (is.matrix(ref)) {
@@ -482,8 +486,6 @@ itempar.raschmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, .
   }
   
   ## setup and return result object
-  cf[object$items == "0"] <- -Inf
-  cf[object$items == "1"] <- Inf
   rv <- structure(cf, class = "itempar", model = "RM", ref = ref, alias = alias, vcov = vc)
   return(rv)
 }

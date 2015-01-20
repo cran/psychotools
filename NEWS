@@ -1,3 +1,19 @@
+Changes in Version 0.4-0
+
+  o New function mptmodel() and corresponding extractor functions for fitting
+    multinomial processing tree (MPT) models. These functions are somewhat
+    experimental, and their user interface might change in future releases.
+
+  o Bug fix in itempar() method for "raschmodel" objects if alias = FALSE.
+    In the previous version the methods had an erroneous trailing NA.
+
+  o Improved item names labeling in plot() method for "itemresp" objects
+    to conform with regionplot() function for IRT models.
+
+  o mscale<-() method for "itemresp" has been improved so that categories
+    can be easily collapsed (e.g., dichotomized).
+
+
 Changes in Version 0.3-0
 
   o Infrastructure for IRT modeling in "psychotools" is greatly enhanced.

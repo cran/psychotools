@@ -29,8 +29,8 @@ btmodel(y, weights = NULL, type = c("loglin", "logit"), ref = NULL,
   \item{y}{paircomp object with the response.}
   \item{weights}{an optional vector of weights (interpreted as case weights).}
   \item{type}{character. Should an auxiliary log-linear Poisson model or logistic
-    binomial be employed for estimation? The latter is only available if not undecided
-    effects are estimated.}
+    binomial be employed for estimation? The latter is not available if
+    undecided effects are estimated.}
   \item{ref}{character or numeric. Which object parameter should be the reference
     category, i.e., constrained to zero?}
   \item{undecided}{logical. Should an undecided parameter be estimated?}
@@ -45,8 +45,10 @@ btmodel(y, weights = NULL, type = c("loglin", "logit"), ref = NULL,
 
 \details{
   \code{btmodel} provides a basic fitting function for Bradley-Terry models,
-  intended as a building block for fitting Bradley-Terry trees and Bradley-Terry mixtures
-  in the \pkg{psychotree} package, respectively.
+  intended as a building block for fitting Bradley-Terry trees and
+  Bradley-Terry mixtures in the \pkg{psychotree} package, respectively. While
+  \code{btmodel} is intended for individual paired-comparison data, the
+  \pkg{eba} package provides functions for aggregate data.
   
   \code{btmodel} returns an object of class \code{"btmodel"} for which
   several basic methods are available, including \code{print}, \code{plot},
@@ -73,7 +75,8 @@ btmodel(y, weights = NULL, type = c("loglin", "logit"), ref = NULL,
   \item{estfun}{empirical estimating function (also known as scores or gradient contributions).}
 }
 
-\seealso{\code{\link{pcmodel}}, \code{\link{rsmodel}}, \code{\link{raschmodel}}}
+\seealso{\code{\link{pcmodel}}, \code{\link{rsmodel}},
+  \code{\link{raschmodel}}, the \pkg{eba} package}
 
 \examples{
 o <- options(digits = 4)

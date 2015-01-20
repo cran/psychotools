@@ -155,8 +155,8 @@ pcm_va_keep  <- pcmodel(pcd, nullcats = "keep")
 pcm_va_down  <- pcmodel(pcd, nullcats = "downcode")
 
 plot(x = coef(pcm_va_keep), y = coef(pcm_va_down),
-     xlab = "Threshold Parameters (Downcoding)",
-     ylab = "Threshold Parameters (Keeping)",
+     xlab = "Threshold Parameters (Keeping)",
+     ylab = "Threshold Parameters (Downcoding)",
      main = "Comparison of two null category strategies (I2 with null category)", 
      pch = rep(as.character(1:6), each = 2)[-3])
 abline(b = 1, a = 0)

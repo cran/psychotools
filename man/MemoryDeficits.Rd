@@ -31,9 +31,9 @@ A data frame containing 576 observations on 7 variables.
   Participants were presented with 20 pairs of semantically related words. In
   a later memory test, they freely recalled the presented words. This
   procedure was repeated for a total of six study and test trials. Responses
-  were classified into four categories: each pair is recalled adjacently (E1),
-  each pair is recalled non-adjacently (E2), one word in a pair is recalled
-  (E3), neither word in a pair is recalled (E4).
+  were classified into four categories: both words in a pair are recalled
+  adjacently (E1) or non-adjacently (E2), one word in a pair is recalled (E3),
+  neither word in a pair is recalled (E4).
 }
 
 \source{

@@ -27,7 +27,7 @@ export(
   "rsmodel",
   "pcmodel",
   "btmodel",
-##  "mptModel.fit",
+  "mptmodel",
 
   ## wrapper to model fitters
   "RaschModel.fit",
@@ -41,12 +41,14 @@ export(
 
   ## tools
   "elementary_symmetric_functions",
+  "mptspec",
 
   ## estfun methods
   "estfun.btmodel",
   "estfun.raschmodel",
   "estfun.rsmodel",
   "estfun.pcmodel", 
+  "estfun.mptmodel", 
 
   ## bread methods
   "bread.raschmodel",
@@ -182,14 +184,17 @@ S3method("print", "summary.btmodel")
 S3method("summary", "btmodel")
 S3method("vcov", "btmodel")
 
-## methods for mptModel objects
-## S3method("deviance", "mptModel")
-## S3method("logLik", "mptModel")
-## S3method("plot", "mptModel")
-## S3method("print", "mptModel")
-## S3method("print", "summary.mptModel")
-## S3method("summary", "mptModel")
-## S3method("vcov", "mptModel")
+## methods for mptmodel objects
+S3method("coef", "mptmodel")
+S3method("deviance", "mptmodel")
+S3method("logLik", "mptmodel")
+S3method("nobs", "mptmodel")
+S3method("plot", "mptmodel")
+S3method("predict", "mptmodel")
+S3method("print", "mptmodel")
+S3method("print", "summary.mptmodel")
+S3method("summary", "mptmodel")
+S3method("vcov", "mptmodel")
 
 ## methods for discrpar objects
 S3method("coef", "discrpar")
