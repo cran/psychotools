@@ -93,9 +93,9 @@ rsmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
 }
 
 \references{
-  Andrich, D. (1978). Application of a Psychometric Rating Model to
-  Ordered Categories Which Are Scored With Successive Integers.  
-  Psychometrika, \bold{2}(4), 581-594.
+  Andrich D (1978).
+    Application of a Psychometric Rating Model to Ordered Categories Which Are Scored with Successive Integers.  
+    \emph{Psychometrika}, \bold{2}(4), 581--594.
 }
 
 \seealso{\code{\link{pcmodel}}, \code{\link{raschmodel}}, \code{\link{btmodel}}}

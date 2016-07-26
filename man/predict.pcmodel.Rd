@@ -69,13 +69,13 @@
 }
 
 \references{
-  Bock, R. D. (1972). Estimating item parameters and latent ability
-  when responses are scored in two or more nominal categories.
-  Psychometrika, \bold{37}, 29-51.
+  Bock RD (1972).
+    Estimating Item Parameters and Latent Ability When Responses Are Scored in Two or More Nominal Categories.
+    \emph{Psychometrika}, \bold{37}, 29--51.
 
-  Samejima, F. (1974). Normal ogive model on the continuous response
-  level in the multidimensional latent space.
-  Psychometrika, \bold{39}, 111-121.
+  Samejima F (1974).
+    Normal Ogive Model on the Continuous Response Level in the Multidimensional Latent Space.
+    \emph{Psychometrika}, \bold{39}, 111--121.
 }
 
 \seealso{

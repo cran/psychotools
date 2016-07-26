@@ -70,23 +70,22 @@ elementary_symmetric_functions(par, order = 0L, log = TRUE,
 }
 
 \references{
-  Michelle Liou (1994). More on the Computation of Higher-Order
-  Derivatives of the Elementary Symmetric Functions in the
-  Rasch Model. \emph{Applied Psychological Measurement},
-  \bold{18}, 53--62.
+  Liou M (1994).
+    More on the Computation of Higher-Order Derivatives of the Elementary Symmetric Functions in the Rasch Model.
+    \emph{Applied Psychological Measurement}, \bold{18}, 53--62.
 
-  Paul G. W. Jansen (1984). Computing the Second-Order Derivatives of
-  the Symmetric Functions in the Rasch Model. \emph{Kwantitatieve
-  Methoden}, \bold{13}, 131--147.
+  Jansen PGW (1984).
+    Computing the Second-Order Derivatives of the Symmetric Functions in the Rasch Model.
+    \emph{Kwantitatieve Methoden}, \bold{13}, 131--147.
 
-  Gerhard H. Fischer, and Ivo Ponocny (1994). An Extension of the
-  Partial Credit Model with an Application to the Measurement of
-  Change. \emph{Psychometrika}, \bold{59}(2), 177-192.
+  Fischer GH, and Ponocny I (1994).
+    An Extension of the Partial Credit Model with an Application to the Measurement of Change.
+    \emph{Psychometrika}, \bold{59}(2), 177--192.
 
-  Gerhard H. Fischer, and Ivo Ponocny. Extended Rating Scale and Partial
-  Credit Models for Assessing Change. In Gerhard H. Fischer, and Ivo
-  W. Molenaar, (1995). Rasch Models: Foundations, Recent Developments,
-  and Applications.  
+  Fischer GH, and Ponocny I (1995).
+    \dQuote{Extended Rating Scale and Partial Credit Models for Assessing Change.}
+    In Fischer GH, and Molenaar IW (eds.).
+    \emph{Rasch Models: Foundations, Recent Developments, and Applications.} 
 }
 
 \examples{

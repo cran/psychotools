@@ -66,13 +66,13 @@
 }
 
 \references{
-  Fox, J. & Hong, Jangman. (2009). Effect Displays in \code{R}
-  for Multinomial and Proportional-Odds Logit Models: Extensions to the
-  effects Package. \emph{Journal of Statistical Software}, \bold{32(1)},
-  \url{http://www.jstatsoft.org/v32/i01/}
+  Fox J, Hong J (2009).
+    Effect Displays in R for Multinomial and Proportional-Odds Logit Models: Extensions to the effects Package.
+    \emph{Journal of Statistical Software}, \bold{32}(1), 1--24.
+    \doi{10.18637/jss.v032.i01}
 
-  Van der Linden, W. J. & Hambleton, R. K. (1997). \emph{Handbook of
-  Modern Item Response Theory}. Springer, New York.
+  Van der Linden WJ, Hambleton RK (1997).
+    \emph{Handbook of Modern Item Response Theory}. Springer-Verlag, New York.
 }
 
 \seealso{\code{\link{curveplot}}, \code{\link{profileplot}},

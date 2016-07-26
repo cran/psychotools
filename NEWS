@@ -1,3 +1,12 @@
+Changes in Version 0.4-1
+
+  o Properly imported grDevices and utils in NAMESPACE.
+  
+  o Added new item response data set MathExam14W with esponses of 729
+    students to 13 items in a written exam of introductory mathematics
+    along with several covariates. 
+
+
 Changes in Version 0.4-0
 
   o New function mptmodel() and corresponding extractor functions for fitting

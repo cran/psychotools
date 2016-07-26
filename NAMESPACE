@@ -3,6 +3,16 @@ import(
   "stats",
   "graphics"
 )
+importFrom("grDevices",
+  "extendrange",
+  "gray.colors",
+  "hcl"
+)
+importFrom("utils",
+  "getParseData",
+  "head",
+  "tail"
+)
 
 ## C code
 useDynLib("psychotools", "esf")
@@ -195,6 +205,10 @@ S3method("print", "mptmodel")
 S3method("print", "summary.mptmodel")
 S3method("summary", "mptmodel")
 S3method("vcov", "mptmodel")
+
+## methods for mptspec objects
+S3method("print", "mptspec")
+S3method("update", "mptspec")
 
 ## methods for discrpar objects
 S3method("coef", "discrpar")

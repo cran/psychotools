@@ -64,17 +64,20 @@ mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
           else if(!is.null(colnames(y))) colnames(y)
           else paste(tid, unlist(lapply(rle(as.character(tid))$lengths,
                                         seq_len)), sep=".")
-  ncat   <- table(tid)
-  ntrees <- length(ncat)
-  n      <- setNames(tapply(ysum, tid, sum)[as.character(tid)], snam)
-  fitted <- n*pcat
-  G2     <- 2*sum(ysum*log(ysum/fitted), na.rm=TRUE)
-  df     <- sum(ncat - 1) - length(coef)
-  gof    <- c(G2=G2, df=df, pval = 1 - pchisq(G2, df))
+  ncat    <- table(tid)
+  ntrees  <- length(ncat)
+# n       <- setNames(tapply(ysum, tid, sum)[as.character(tid)], snam)
+  nbytree <- tapply(ysum, tid, sum)
+  n       <- setNames(nbytree[as.character(tid)], snam)
+  fitted  <- n*pcat
+  G2      <- 2*sum(ysum*log(ysum/fitted), na.rm=TRUE)
+  df      <- sum(ncat - 1) - length(coef)
+  gof     <- c(G2=G2, df=df, pval = 1 - pchisq(G2, df))
 
   rval <- list(
     y = y,
     coefficients = coef,
+  # loglik = sum(lfactorial(nbytree)) - sum(lfactorial(ysum)) + loglik,
     loglik = loglik,
     nobs = nsubj,
     npar = length(start),
@@ -254,7 +257,8 @@ mptspec <- function(..., .restr = NULL)
     if(as.character(restr[[1L]]) != "list") stop(".restr must be list")
     restr1 <- restr
     restrcl <- sapply(restr1[-1L], class)
-    restr <- sapply(restr1[-1L], deparse)
+  # restr <- sapply(restr1[-1L], deparse)
+    restr <- sapply(restr1[-1L], function(s) paste(deparse(s), collapse=""))
     restr <- paste(names(restr), " = ",
                    ifelse(restrcl == "numeric", "", "expression("),
                    restr,
@@ -286,6 +290,32 @@ mptspec <- function(..., .restr = NULL)
         "1.2" = p*q*(1 - r),
         "1.3" = p*(1 - q)*r,
         "1.4" = (1 - p) + p*(1 - q)*(1 - r)
+      ),
+      "prospec" = expression(
+        "1.1" = C1*P*(1 - M1)*(1 - g) + C1*(1 - P) +
+                (1 - C1)*P*(1 - M1)*(1 - g)*c + (1 - C1)*(1 - P)*c,
+        "1.2" = (1 - C1)*P*(1 - M1)*(1 - g)*(1 - c) +
+                (1 - C1)*(1 - P)*(1 - c),
+        "1.3" = C1*P*M1 + C1*P*(1 - M1)*g + (1 - C1)*P*M1 +
+                (1 - C1)*P*(1 - M1)*g,
+        "2.1" = (1 - C2)*P*(1 - M1)*(1 - g)*c + (1 - C2)*(1 - P)*c,
+        "2.2" = C2*P*(1 - M1)*(1 - g) + C2*(1 - P) +
+                (1 - C2)*P*(1 - M1)*(1 - g)*(1 - c) +
+                (1 - C2)*(1 - P)*(1 - c),
+        "2.3" = C2*P*M1 + C2*P*(1 - M1)*g + (1 - C2)*P*M1 +
+                (1 - C2)*P*(1 - M1)*g,
+        "3.1" = C1*P*M2 + C1*P*(1 - M1)*(1 - g) + C1*(1 - P) +
+                (1 - C1)*P*M2*c + (1 - C1)*P*(1 - M1)*(1 - g)*c +
+                (1 - C1)*(1 - P)*c,
+        "3.2" = (1 - C1)*P*M2*(1 - c) + (1 - C1)*P*(1 - M2)*(1 - g)*(1 - c) +
+                (1 - C1)*(1 - P)*(1 - c),
+        "3.3" = C1*P*(1 - M2)*g + (1 - C1)*P*(1 - M2)*g,
+        "4.1" = (1 - C2)*P*M2*c + (1 - C2)*P*(1 - M2)*(1 - g)*c +
+                (1 - C2)*(1 - P)*c,
+        "4.2" = C2*P*M2 + C2*P*(1 - M2)*(1 - g) + C2*(1 - P) +
+                (1 - C2)*P*M2*(1 - c) + (1 - C2)*P*(1 - M2)*(1 - g)*(1 - c) +
+                (1 - C2)*(1 - P)*(1 - c),
+        "4.3" = C2*P*(1 - M2)*g + (1 - C2)*P*(1 - M2)*g
       ),
       "rmodel" = expression(
         "1.1" = b,
@@ -326,12 +356,12 @@ mptspec <- function(..., .restr = NULL)
     )
     if(is.null(modcall))
       stop("'...' has to be either an expression or one of:\n",
-           "  '1HT', '2HT', 'PairAsso', 'rmodel', 'SourceMon',",
-            " 'SR2'.\n")
+           "  '1HT', '2HT', 'PairAsso', 'prospec', 'rmodel', 'SourceMon',",
+            " 'SR', 'SR2'.\n")
 
     ## Replicates?
     if (!is.null(spec$.replicates) && spec$.replicates > 1) {
-      nm <- do.call(rbind, strsplit(names(modcall), "\\."))  # treeid/catid
+      nm <- do.call(rbind, strsplit(names(modcall), "\\."))  # treeid.catid
       ntrees <- max(as.numeric(nm[, 1]))
       treeid <- rep(as.numeric(nm[, 1]), spec$.replicates) +
                 rep(seq(0, ntrees*(spec$.replicates - 1), ntrees),
@@ -348,7 +378,8 @@ mptspec <- function(..., .restr = NULL)
     spec <- modcall
   }
 
-  spec <- lapply(spec, deparse, width.cutoff = 400L)  # list of strings
+  ## list of strings
+  spec <- lapply(spec, function(s) paste(deparse(s), collapse=""))
 
   ## substitute restrictions
   if(!is.null(restr)) {
@@ -358,7 +389,7 @@ mptspec <- function(..., .restr = NULL)
     })
   }
 
-  ## parsed expressions  (list of expressions)
+  ## parsed expressions (list of expressions)
   if(!is.null(restr)) restr <- lapply(restr1[-1L], as.expression)
   prob <- lapply(spec, function(s) parse(text=s, keep.source=TRUE))
 
@@ -454,8 +485,6 @@ update.mptspec <- function(object, .restr = NULL, ...){
 
 ## Print model equations
 print.mptspec <- function(x, ...){
-  tab <- cbind(as.character(unlist(x$prob)))
-  dimnames(tab) <- list(names(x$prob), "MPT model equations")
-  print(tab, quote=FALSE, ...)
+  print(unlist(x$prob), ...)
 }
 

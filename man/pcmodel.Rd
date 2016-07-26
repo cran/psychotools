@@ -119,11 +119,13 @@ pcmodel(y, weights = NULL, nullcats = c("keep", "downcode", "ignore"),
 }
 
 \references{
-  Masters, G. N. (1992). A Rasch Model for Partial Credit Scoring.
-  Psychometrika, \bold{47}(2), 149-174.
+  Masters GN (1992).
+    A Rasch Model for Partial Credit Scoring.
+    \emph{Psychometrika}, \bold{47}(2), 149--174.
 
-  Wilson, M. & Masters, G. N. (1993). The Partial Credit Model
-  and Null Categories. Psychometrika, \bold{58}(1), 87-99.
+  Wilson M, Masters GN (1993).
+    The Partial Credit Model and Null Categories.
+    \emph{Psychometrika}, \bold{58}(1), 87--99.
 }
 
 \seealso{\code{\link{rsmodel}}, \code{\link{raschmodel}}, \code{\link{btmodel}}}

@@ -350,13 +350,13 @@ piplot <- function (object, ref = NULL, items = NULL, xlim = NULL, names = NULL,
   layout(matrix(1:2, ncol = 1, nrow = 2), heights = c(1, 2))
   
   ## person parameter plot
-  par(mar = c(0, w, 2.5, 1))
+  opar <- par(mar = c(0, w, 2.5, 1))
   plot(x = 0, xlim = xlim, ylim = c(0, max(ppt)), type = "n", axes = FALSE, xlab = "", ylab = "", main = main, cex.axis = cex.axis, ...)
   points(x = pptx, y = ppt, type = "h", col = "gray", lend = 2, lwd = 5, ...)
   box()
   
   ## item/threshold parameter plot
-  opar <- par(mar = c(4.5, w, 0, 1))
+  par(mar = c(4.5, w, 0, 1))
   plot(x = 0, xlim = xlim, ylim = ylim, type = "n", axes = FALSE, xlab = xlab, ylab = "", cex.axis = cex.axis)
   for (i in 1:m) {
     lines(y = rep(i, length(tp[[i]])), x = tp[[i]], type = "b", pch = 1, cex = cex.points, ...)
@@ -368,6 +368,7 @@ piplot <- function (object, ref = NULL, items = NULL, xlim = NULL, names = NULL,
   box()
 
   ## restore par
+  layout(matrix(1, nrow = 1, ncol = 1))
   on.exit(par(opar))
 }
 

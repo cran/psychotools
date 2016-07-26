@@ -61,15 +61,15 @@ A data frame containing 192 observations on 11 variables.
 }
 
 \references{
-  Hartung, F., Klenovsak, D., Santiago dos Santos, L., Strobl, C., and
-  Zaefferer, D. (2009). Are Tims Hot and Toms not? Probing the effect of sound
-  symbolism on perception of facial attractiveness. Presented at the
-  \emph{31th Annual Meeting of the Cognitive Science Society}, July 27 to
-  August 1, Amsterdam, The Netherlands.
+  Hartung F, Klenovsak D, Santiago dos Santos L, Strobl C, Zaefferer D (2009).
+    Are Tims Hot and Toms Not? Probing the Effect of Sound Symbolism on Perception of Facial Attractiveness.
+    Presented at the \emph{31th Annual Meeting of the Cognitive Science Society},
+    July 27--August 1, Amsterdam, The Netherlands.
  
-  Perfors, A. (2004). What's in a Name? The effect of sound symbolism on
-  perception of facial attractiveness. Presented at the \emph{26th Annual
-  Meeting of the Cognitive Science Society}, August 5-7, Chicago, USA.
+  Perfors A (2004).
+    What's in a Name? The Effect of Sound Symbolism on Perception of Facial Attractiveness.
+    Presented at the \emph{26th Annual Meeting of the Cognitive Science Society},
+    August 5--7, Chicago, USA.
 }
 
 \seealso{\code{\link{paircomp}}}

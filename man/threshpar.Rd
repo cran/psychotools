@@ -101,9 +101,10 @@
 }
 
 \references{
-  Geoffery N. Masters, and Benjamin D. Wright. The partial credit model.
-  In Wim J. van der Linden, and Ronald K. Hambleton, (1997). Handbook of
-  modern item response theory.  
+  Masters GN, Wright BD (1997).
+    The Partial Credit Model.
+    In Van der Linden WJ, Hambleton RK (eds.).
+    \emph{Handbook of Modern Item Response Theory}.
 }
 
 \seealso{\code{\link{itempar}}, \code{\link{personpar}}, and \code{\link{discrpar}}}

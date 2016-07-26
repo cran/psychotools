@@ -67,7 +67,7 @@ Provided by Jelte M. Wicherts.
 }
 
 \references{
-Wicherts, J.M., Conor, V.D., Hessen, D.J. (2005).
+Wicherts JM, Conor VD, Hessen DJ (2005).
   Stereotype Threat and Group Differences in Test Performance: A Question of Measurement Invariance.
   \emph{Journal of Personality and Social Psychology}, \bold{89}(5), 696-716.
 }

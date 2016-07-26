@@ -1,0 +1,70 @@
+citHeader("To cite psychotools in publications use:")
+
+## R >= 2.8.0 passes package metadata to citation().
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("psychotools")
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+citEntry(entry  = "Manual",
+         title  = "{psychotools}: Infrastructure for Psychometric Modeling",
+         author = c(person(given = "Achim",
+	                   family = "Zeileis"),
+                    person(given = "Carolin",
+		           family = "Strobl"),
+                    person(given = "Florian",
+		           family = "Wickelmaier"),
+                    person(given = "Basil",
+		           family = "Abou El-Komboz"),
+                    person(given = "Julia",
+		           family = "Kopf")),
+         year   = year,
+         note   = note,
+         url    = "https://CRAN.R-project.org/package=psychotools",
+    textVersion = 
+         paste("Achim Zeileis, Carolin Strobl, Florian Wickelmaier, Basil Abou El-Komboz, Julia Kopf", 
+   	       sprintf("(%s).", year),	 
+               "psychotools: Infrastructure for Psychometric Modeling.",
+	       paste(note, ".", sep = ""),
+               "URL https://CRAN.R-project.org/package=psychotools"))
+
+citEntry(entry  = "Article",
+         title  = "A Framework for Anchor Methods and an Iterative Forward Approach for {DIF} Detection",
+         author = c(person(given = "Julia",
+		           family = "Kopf"),
+                    person(given = "Carolin",
+		           family = "Strobl"),
+                    person(given = "Achim",
+	                   family = "Zeileis")),
+         journal= "Applied Psychological Measurement",
+         year   = "2015",
+         volume = "39",
+         number = "2",
+         pages  = "83--103",
+         doi    = "10.1177/0146621614544195",
+    textVersion = 
+         paste("Julia Kopf, Achim Zeileis, Carolin Strobl (2015).", 
+               "A Framework for Anchor Methods and an Iterative Forward Approach for DIF Detection.",
+               "Applied Psychological Measurement, 39(2), 83-103.",
+               "doi:10.1177/0146621614544195"),
+        header  = "If you use the forward anchor class in anchor() or anchortest(), please cite:")
+
+citEntry(entry  = "Article",
+         title  = "Anchor Selection Strategies for {DIF} Analysis: Review, Assessment, and New Approaches",
+         author = c(person(given = "Julia",
+		           family = "Kopf"),
+                    person(given = "Carolin",
+		           family = "Strobl"),
+                    person(given = "Achim",
+	                   family = "Zeileis")),
+         journal= "Educational and Psychological Measurement",
+         year   = "2015",
+         volume = "75",
+         number = "1",
+         pages  = "22--56",
+         doi    = "10.1177/0013164414529792",
+    textVersion = 
+         paste("Julia Kopf, Achim Zeileis, Carolin Strobl (2015).", 
+               "Anchor Selection Strategies for DIF Analysis: Review, Assessment, and New Approaches.",
+               "Educational and Psychological Measurement, 75(1), 22-56.",
+	       "doi:10.1177/0013164414529792"),
+        header = "If you use the MTT, MPT, MP or NST anchor selections in anchor() or anchortest(), please cite:")

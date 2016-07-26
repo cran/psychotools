@@ -6,8 +6,6 @@
 \alias{print.summary.anchortest}
 \alias{summary.anchortest}
 
-\encoding{utf8}
-
 \title{
   Anchor methods for the detection of uniform DIF the Rasch model
 }
@@ -40,7 +38,7 @@ anchortest(object, \dots)
     \code{constant} anchor class implying a constant anchor length
     defined by \code{length}, the iterative \code{forward} anchor class
     that iteratively includes items in the anchor and
-    the \code{all-other} anchor class, for an overview see Kopf et al. (2014a).
+    the \code{all-other} anchor class, for an overview see Kopf et al. (2015a).
     Additionally, the class can be \code{fixed}, then \code{select}
     needs to be the numeric index of the fixed selected anchor items.}
   \item{select}{character or numeric. Several anchor selection strategies are
@@ -116,7 +114,7 @@ anchortest(object, \dots)
   is required and we report \eqn{k}{k} test results. Note that the \code{all-other} 
   anchor class requires strong prior knowledge that DIF is balanced.
 
-  See Kopf et al. (2014ab) for a detailed introduction. For convenience
+  See Kopf et al. (2015ab) for a detailed introduction. For convenience
   a trivial \code{"fixed"} anchor class is provided where the \code{select}ed
   anchor is given directly (e.g., as chosen by a practitioner or by some
   other anchor selection method).
@@ -137,26 +135,29 @@ anchortest(object, \dots)
 }
 
 \references{
-  Cees A. W. Glas, Norman D. Verhelst (1995). Testing the Rasch
-  model. In Gerhard H. Fischer, Ivo W. Molenaar (Eds.), Rasch Models -
-  foundations, recent developments, and applications (chap. 5). New
-  York: Springer-Verlag.
+  Glas CAW, Verhelst ND (1995).
+    \dQuote{Testing the Rasch Model.}
+    In Fischer GH, Molenaar IW (eds.),
+    \emph{Rasch Models: Foundations, Recent Developments, and Applications}, chapter 5.
+    Springer-Verlag, New York.
 
-  Julia Kopf, Achim Zeileis, Carolin Strobl (2014a). A Framework for Anchor
-  Methods and an Iterative Forward Approach for DIF Detection.
-  \emph{Applied Psychological Measurement}, accepted for publication.
+  Kopf J, Zeileis A, Strobl C (2015a).
+    A Framework for Anchor Methods and an Iterative Forward Approach for DIF Detection.
+    \emph{Applied Psychological Measurement}, \bold{39}(2), 83--103.
+    \doi{10.1177/0146621614544195}
 
-  Julia Kopf, Achim Zeileis, Carolin Strobl (2014b). Anchor Selection Strategies for DIF 
-  Analysis: Review, Assessment, and New Approaches. \emph{Educational and Psychological Measurement},
-  accepted for publication.
+  Kopf J, Zeileis A, Strobl C (2015b).
+    Anchor Selection Strategies for DIF Analysis: Review, Assessment, and New Approaches.
+    \emph{Educational and Psychological Measurement}, \bold{75}(1), 22--56.
+    \doi{10.1177/0013164414529792}
 
-  Wen-Chung Wang (2004). Effects of Anchor Item Methods on the Detection
-  of Differential Item Functioning within the Family of Rasch Models,
-  Journal of Experimental Education, \bold{72}(3), 221--261.
+  Wang WC (2004).
+    Effects of Anchor Item Methods on the Detection of Differential Item Functioning within the Family of Rasch Models.
+    \emph{Journal of Experimental Education}, \bold{72}(3), 221--261.
 
-  Carol Woods (2009). Empirical Selection of Anchors for Tests of
-  Differential Item Functioning. \emph{Applied Psychological Measurement},
-  \bold{33}(1), 42--57.
+  Woods C (2009).
+    Empirical Selection of Anchors for Tests of Differential Item Functioning.
+    \emph{Applied Psychological Measurement}, \bold{33}(1), 42--57.
 }
 
 \seealso{\code{\link{anchor}}}

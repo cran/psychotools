@@ -47,21 +47,21 @@ A data frame containing 783 observations on 6 variables.
 }
 
 \references{
-  Choisel, S. & Wickelmaier, F. (2006). Extraction of auditory features and
-  elicitation of attributes for the assessment of multichannel reproduced
-  sound. Journal of the Audio Engineering Society, 54(9), 815-826.
+  Choisel S, Wickelmaier F (2006).
+    Extraction of Auditory Features and Elicitation of Attributes for the Assessment of Multichannel Reproduced Sound.
+    \emph{Journal of the Audio Engineering Society}, \bold{54}(9), 815--826.
 
-  Choisel, S. & Wickelmaier, F. (2007). Evaluation of multichannel
-  reproduced sound: Scaling auditory attributes underlying listener
-  preference. Journal of the Acoustical Society of America, 121(1),
-  388-400. 
+  Choisel S, Wickelmaier F (2007).
+    Evaluation of Multichannel Reproduced Sound: Scaling Auditory Attributes Underlying Listener Preference.
+    \emph{Journal of the Acoustical Society of America}, \bold{121}(1), 388--400. 
 
-  Wickelmaier, F. & Choisel, S. (2005). Selecting participants for listening
-  tests of multichannel reproduced sound. Presented at the AES 118th
-  Convention, May 28-31, Barcelona, Spain, convention paper 6483.
+  Wickelmaier F, Choisel S (2005).
+    Selecting Participants for Listening Tests of Multichannel Reproduced Sound.
+    Presented at the AES 118th Convention, May 28--31, Barcelona, Spain, convention paper 6483.
 
-  Wickelmaier, F. & Ellermeier, W. (2007). Deriving auditory features from
-  triadic comparisons. Perception & Psychophysics, 69(2), 287-297.
+  Wickelmaier F, Ellermeier W (2007).
+    Deriving Auditory Features from Triadic Comparisons.
+    \emph{Perception & Psychophysics}, \bold{69}(2), 287--297.
 }
 
 \seealso{\code{\link{paircomp}}}

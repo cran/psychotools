@@ -157,7 +157,7 @@ c_j^{MPT} =
   }  
   }
 
-Kopf et al. (2014b) recommend to combine the \code{class = "constant"} with
+Kopf et al. (2015b) recommend to combine the \code{class = "constant"} with
 \code{select = "MPT"} and the \code{class = "forward"} with \code{select = "MTT"},
 respectively.
 
@@ -178,28 +178,31 @@ knowledge that DIF is balanced.
 }
 
 \references{
-  Julia Kopf, Achim Zeileis, Carolin Strobl (2014a). A Framework for Anchor
-  Methods and an Iterative Forward Approach for DIF Detection.
-  \emph{Applied Psychological Measurement}, accepted for publication.
+  Kopf J, Zeileis A, Strobl C (2015a).
+    A Framework for Anchor Methods and an Iterative Forward Approach for DIF Detection.
+    \emph{Applied Psychological Measurement}, \bold{39}(2), 83--103.
+    \doi{10.1177/0146621614544195}
 
-  Julia Kopf, Achim Zeileis, Carolin Strobl (2014b). Anchor Selection Strategies for DIF 
-  Analysis: Review, Assessment, and New Approaches. \emph{Educational and Psychological Measurement},
-  accepted for publication.
+  Kopf J, Zeileis A, Strobl C (2015b).
+    Anchor Selection Strategies for DIF Analysis: Review, Assessment, and New Approaches.
+    \emph{Educational and Psychological Measurement}, \bold{75}(1), 22--56.
+    \doi{10.1177/0013164414529792}
 
-  Ching-Lin Shih, Wen-Chung Wang (2009). Differential Item Functioning Detection Using the
-  Multiple Indicators, Multiple Causes Method with a Pure Short Anchor.
-  \emph{Applied Psychological Measurement}, \bold{33}(3), 184--199.
+  Shih CL, Wang WC (2009).
+    Differential Item Functioning Detection Using the Multiple Indicators, Multiple Causes Method with a Pure Short Anchor.
+    \emph{Applied Psychological Measurement}, \bold{33}(3), 184--199.
 
-  Wen-Chung Wang (2004). Effects of Anchor Item Methods on the Detection of Differential Item
-  Functioning within the Family of Rasch Models, \emph{Journal of Experimental Education},
-  \bold{72}(3), 221--261.
+  Wang WC (2004).
+    Effects of Anchor Item Methods on the Detection of Differential Item Functioning within the Family of Rasch Models.
+    \emph{Journal of Experimental Education}, \bold{72}(3), 221--261.
 
-  Wen-Chung Wang, Ching-Lin Shih, Guo-Wei Sun (2012). The DIF-Free-then-DIF Strategy for the
-  Assessment of Differential Item Functioning. \emph{Educational and Psychological Measurement},
-  \bold{72}(4), 687--708.
+  Wang WC, Shih CL, Sun GW (2012).
+    The DIF-Free-then-DIF Strategy for the Assessment of Differential Item Functioning.
+    \emph{Educational and Psychological Measurement}, \bold{72}(4), 687--708.
 
-  Carol Woods (2009). Empirical Selection of Anchors for Tests of Differential Item Functioning.
-  \emph{Applied Psychological Measurement}, \bold{33}(1), 42-57.
+  Woods C (2009).
+    Empirical Selection of Anchors for Tests of Differential Item Functioning.
+    \emph{Applied Psychological Measurement}, \bold{33}(1), 42--57.
 }
 
 \seealso{

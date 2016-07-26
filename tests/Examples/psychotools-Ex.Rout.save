@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -97,6 +97,48 @@ CDU/CSU : FDP     106  86
 > 
 > 
 > 
+> cleanEx()
+> nameEx("MathExam14W")
+> ### * MathExam14W
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: MathExam14W
+> ### Title: Mathematics 101 Exam Results
+> ### Aliases: MathExam14W
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## load data and exclude extreme scorers
+> data("MathExam14W", package = "psychotools")
+> me <- subset(MathExam14W, nsolved > 0 & nsolved < 13)
+> 
+> ## item response data:
+> ## solved (correct/other) or credits (correct/incorrect/not attempted)
+> par(mfrow = c(1, 2))
+> plot(me$solved)
+> plot(me$credits)
+> 
+> 
+> ## Rasch and partial credit model
+> ram <- raschmodel(me$solved)
+> pcm <- pcmodel(me$credits)
+> 
+> ## various types of graphics displays
+> plot(ram, type = "profile")
+> plot(pcm, type = "profile", add = TRUE, col = "blue")
+> plot(ram, type = "piplot")
+> plot(pcm, type = "piplot")
+> plot(ram, type = "region")
+> plot(ram, type = "curves")
+> plot(pcm, type = "curves")
+> 
+> 
+> 
+> 
+> 
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
 > cleanEx()
 > nameEx("MemoryDeficits")
 > ### * MemoryDeficits
@@ -2819,7 +2861,7 @@ Bradley-Terry model parameters (btmodel):
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  15.644 0.164 15.85 0 0 
+Time elapsed:  5.084 0.072 5.155 0 0 
 > grDevices::dev.off()
 null device 
           1 

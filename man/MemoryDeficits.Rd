@@ -41,10 +41,9 @@ A data frame containing 576 observations on 7 variables.
 }
 
 \references{
-  Riefer, D.M., Knapp, B.R., Batchelder, W.H., Bamber, D., & Manifold, V.
-  (2002). Cognitive psychometrics: Assessing storage and retrieval deficits in
-  special populations with multinomial processing tree models. Psychological
-  Assessment, 14, 184-201.
+  Riefer DM, Knapp BR, Batchelder WH, Bamber D, Manifold V (2002).
+    Cognitive Psychometrics: Assessing Storage and Retrieval Deficits in Special Populations with Multinomial Processing Tree Models.
+    \emph{Psychological Assessment}, \bold{14}, 184--201.
 }
 
 \examples{

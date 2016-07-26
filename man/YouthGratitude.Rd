@@ -71,9 +71,8 @@ Provided by Jeff Froh and Jinyan Fan.
 
 \references{
   Froh JJ, Fan J, Emmons RA, Bono G, Huebner ES, Watkins P (2011).
-  Measuring Gratitude in Youth: Assessing the Psychometric Properties of
-  Adult Gratitude Scales in Children and Adolescents.
-  \emph{Psychological Assessment}, \bold{23}(2), 311--324.
+    Measuring Gratitude in Youth: Assessing the Psychometric Properties of Adult Gratitude Scales in Children and Adolescents.
+    \emph{Psychological Assessment}, \bold{23}(2), 311--324.
 }
 
 \examples{

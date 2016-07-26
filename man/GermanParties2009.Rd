@@ -73,10 +73,6 @@ A data frame containing 192 observations on 6 variables.
   The voter turnout was 70.8 percent in Germany and 80.5 percent in Tübingen.
 }
 
-% \references{
-%   FIX ME
-% }
-
 \seealso{\code{\link{paircomp}}}
 
 \examples{

@@ -74,14 +74,15 @@ personpar(object, \dots)
 }
 
 \references{
-  Erling B. Andersen. Polytomous Rasch Models and Their Estimation. In
-  Gerhard H. Fischer, and Ivo W. Molenaar, (1995). Rasch Models:
-  Foundations, Recent Developments, and Applications.
+  Andersen EB (1995).
+    Polytomous Rasch Models and Their Estimation.
+    In Fischer GH,  Molenaar IW (eds.).
+    \emph{Rasch Models: Foundations, Recent Developments, and Applications}.
 
-  Herbert Hoijtink, and Anne Boomsma. On Person Parameter Estimation in
-  the Dichotomous Rasch Model. In Gerhard H. Fischer, and Ivo
-  W. Molenaar, (1995). Rasch Models: Foundations, Recent Developments,
-  and Applications.  
+  Hoijtink H, Boomsma A (1995).
+    On Person Parameter Estimation in the Dichotomous Rasch Model.
+    In Fischer GH,  Molenaar IW (eds.).
+    \emph{Rasch Models: Foundations, Recent Developments, and Applications}.
 }
 
 \seealso{\code{\link{itempar}}, \code{\link{threshpar}},

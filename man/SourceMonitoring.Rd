@@ -48,15 +48,16 @@ A data frame containing 128 observations on four components.
 }
 
 \source{
-  Wickelmaier, F., and Zeileis, A. (2013). A first implementation of
-  recursive partitioning for multinomial processing tree models. Presented
-  at the Psychoco 2013 International Workshop on Psychometric Computing,
-  February 14-15, Zurich, Switzerland. 
+  Wickelmaier F, Zeileis A (2013).
+    A First Implementation of Recursive Partitioning for Multinomial Processing Tree Models.
+    Presented at the Psychoco 2013 International Workshop on Psychometric Computing,
+    February 14--15, Zurich, Switzerland. 
 }
 
 \references{
-  Batchelder, W.H., and Riefer, D.M. (1990). Multinomial processing tree
-  models of source monitoring. Psychological Review, 97, 548-564.
+  Batchelder WH, Riefer DM (1990).
+    Multinomial Processing Tree Models of Source Monitoring.
+    \emph{Psychological Review}, \bold{97}, 548--564.
 }
 
 \examples{
