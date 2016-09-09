@@ -183,6 +183,27 @@ CDU/CSU : FDP     106  86
 > 
 > 
 > cleanEx()
+> nameEx("PairClustering")
+> ### * PairClustering
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PairClustering
+> ### Title: Pair Clustering Data in Klauer (2006)
+> ### Aliases: PairClustering
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("PairClustering", package = "psychotools")
+> aggregate(cbind(E1, E2, E3, E4, F1, F2) ~ trial, PairClustering, sum)
+  trial  E1 E2  E3  E4  F1  F2
+1     1  80 10 122 418  65 250
+2     2 171 32 122 305 111 204
+> 
+> 
+> 
+> cleanEx()
 > nameEx("SoundQuality")
 > ### * SoundQuality
 > 
@@ -377,7 +398,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > ##D m$m5b <- mgcfa(f, group.equal = c("loadings", "residuals", "intercepts"))
 > ##D 
 > ##D ## Step 6: Different latent mean structure
-> ##D f <- c(f, 'ability ~  c(maj, min1, maj, min2) * 1 + c(NA, 0, NA, 0) * 1')
+> ##D f <- c(f, 'ability ~  c(maj, min1, maj, min2) * 1 + c(0, NA, 0, NA) * 1')
 > ##D m$m6 <- mgcfa(f, group.equal = c("loadings", "residuals", "intercepts"))
 > ##D 
 > ##D ## Extract measures of fit
@@ -2861,7 +2882,7 @@ Bradley-Terry model parameters (btmodel):
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  5.084 0.072 5.155 0 0 
+Time elapsed:  5.848 0.056 5.932 0 0 
 > grDevices::dev.off()
 null device 
           1 

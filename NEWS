@@ -1,3 +1,13 @@
+Changes in Version 0.4-2
+
+  o Added new data set "PairClustering" from Klauer (2006).
+
+  o Fixed replication code in example of StereotypeThreat (reported by
+    Ed Merkle).
+
+  o Basil Abou El-Komboz changed his name to Basil Komboz.
+
+
 Changes in Version 0.4-1
 
   o Properly imported grDevices and utils in NAMESPACE.

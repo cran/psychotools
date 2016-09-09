@@ -1,7 +1,7 @@
 /*
  * esf.C: Various functions to calculate the elementary symmetric 
  * functions both for Rasch, partial credit and rating scale models
- * Author: Basil Abou El-Komboz (basil.abou-el-komboz at stat.uni-muenchen.de)
+ * Author: Basil Komboz
  * Restrictions/conventions used:
  * - oj = number of categories - 1
  * - par does include (first) restricted parameter, but NOT restricted beta_j0
