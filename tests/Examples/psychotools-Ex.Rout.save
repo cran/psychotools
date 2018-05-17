@@ -1,11 +1,13 @@
 
-R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
-Copyright (C) 2016 The R Foundation for Statistical Computing
+R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -112,13 +114,31 @@ CDU/CSU : FDP     106  86
 > 
 > ## load data and exclude extreme scorers
 > data("MathExam14W", package = "psychotools")
+> MathExam14W <- transform(MathExam14W,
++   points = 2 * nsolved - 0.5 * rowSums(credits == 1)
++ )
 > me <- subset(MathExam14W, nsolved > 0 & nsolved < 13)
+> 
 > 
 > ## item response data:
 > ## solved (correct/other) or credits (correct/incorrect/not attempted)
 > par(mfrow = c(1, 2))
 > plot(me$solved)
 > plot(me$credits)
+> 
+> ## PCA
+> pr <- prcomp(me$solved, scale = TRUE)
+> names(pr$sdev) <- 1:10
+> plot(pr, main = "", xlab = "Number of components")
+> biplot(pr, col = c("transparent", "black"), main = "",
++   xlim = c(-0.065, 0.005), ylim = c(-0.04, 0.065))
+> 
+> 
+> ## points achieved (and 50% threshold)
+> par(mfrow = c(1, 1))
+> hist(MathExam14W$points, breaks = -4:13 * 2 + 0.5,
++   col = "lightgray", main = "", xlab = "Points")
+> abline(v = 12.5, lwd = 2, col = 2)
 > 
 > 
 > ## Rasch and partial credit model
@@ -131,6 +151,7 @@ CDU/CSU : FDP     106  86
 > plot(ram, type = "piplot")
 > plot(pcm, type = "piplot")
 > plot(ram, type = "region")
+> plot(pcm, type = "region")
 > plot(ram, type = "curves")
 > plot(pcm, type = "curves")
 > 
@@ -219,34 +240,34 @@ CDU/CSU : FDP     106  86
 > data("SoundQuality", package = "psychotools")
 > summary(SoundQuality$preference)
                             >   <
-Mono        : PhantomMono 515 268
-Mono        : Stereo      737  46
-PhantomMono : Stereo      698  85
-Mono        : WideStereo  689  94
-PhantomMono : WideStereo  657 126
-Stereo      : WideStereo  315 468
-Mono        : Matrix      718  65
-PhantomMono : Matrix      684  99
-Stereo      : Matrix      392 391
-WideStereo  : Matrix      425 358
-Mono        : Upmix1      718  65
-PhantomMono : Upmix1      679 104
-Stereo      : Upmix1      340 443
-WideStereo  : Upmix1      389 394
-Matrix      : Upmix1      372 411
-Mono        : Upmix2      702  81
-PhantomMono : Upmix2      641 142
-Stereo      : Upmix2      279 504
-WideStereo  : Upmix2      347 436
-Matrix      : Upmix2      325 458
-Upmix1      : Upmix2      351 432
-Mono        : Original    722  61
-PhantomMono : Original    682 101
-Stereo      : Original    384 399
-WideStereo  : Original    414 369
-Matrix      : Original    402 381
-Upmix1      : Original    410 373
-Upmix2      : Original    450 333
+Mono        : PhantomMono 268 515
+Mono        : Stereo       46 737
+PhantomMono : Stereo       85 698
+Mono        : WideStereo   94 689
+PhantomMono : WideStereo  126 657
+Stereo      : WideStereo  468 315
+Mono        : Matrix       65 718
+PhantomMono : Matrix       99 684
+Stereo      : Matrix      391 392
+WideStereo  : Matrix      358 425
+Mono        : Upmix1       65 718
+PhantomMono : Upmix1      104 679
+Stereo      : Upmix1      443 340
+WideStereo  : Upmix1      394 389
+Matrix      : Upmix1      411 372
+Mono        : Upmix2       81 702
+PhantomMono : Upmix2      142 641
+Stereo      : Upmix2      504 279
+WideStereo  : Upmix2      436 347
+Matrix      : Upmix2      458 325
+Upmix1      : Upmix2      432 351
+Mono        : Original     61 722
+PhantomMono : Original    101 682
+Stereo      : Original    399 384
+WideStereo  : Original    369 414
+Matrix      : Original    381 402
+Upmix1      : Original    373 410
+Upmix2      : Original    333 450
 > ftable(xtabs(~ time + repet + progmat, data = SoundQuality))
              progmat Beethoven Rachmaninov SteelyDan Sting
 time   repet                                              
@@ -344,7 +365,7 @@ Model 2: cbind(numerical, abstract, verbal) ~ ethnicity + condition
 1    291      7.5292                                          
 2    292  1   7.5714 0.026692   2.6419      3    289 0.04961 *
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 > ## corresponding univariate results
 > printCoefmat(t(sapply(summary(m),
 +   function(x) x$coefficients["ethnicityminority:conditionthreat", ])))
@@ -353,7 +374,7 @@ Response numerical -0.33844    0.57424 -0.5894  0.55607
 Response abstract   1.71660    0.72798  2.3580  0.01903 *
 Response verbal     0.80439    0.70783  1.1364  0.25672  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 > 
 > ## MGCFA (Table 3, p. 704)
 > ## can be replicated using package lavaan
@@ -450,7 +471,7 @@ S2DoScold    1.359e+00  2.012e-01   6.755 1.42e-11 ***
 S2WantShout  1.283e+00  2.007e-01   6.395 1.61e-10 ***
 S2DoShout    3.067e+00  2.343e-01  13.088  < 2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -1255 (df = 11) 
 Number of iterations in BFGS optimization: 19 
@@ -613,50 +634,36 @@ Number of iterations in BFGS optimization: 19
 > 
 > ### ** Examples
 > 
-> ## Verbal aggression data
-> data("VerbalAggression", package = "psychotools")
-> 
-> ## Rasch model for the self-to-blame situations; gender DIF test
-> raschmodels <- with(VerbalAggression, lapply(levels(gender), function(i) 
+> if(requireNamespace("multcomp")) {
++ 
++ ## Verbal aggression data
++ data("VerbalAggression", package = "psychotools")
++ 
++ ## Rasch model for the self-to-blame situations; gender DIF test
++ raschmodels <- with(VerbalAggression, lapply(levels(gender), function(i) 
 +   raschmodel(resp2[gender == i, 1:12])))
-> 
-> ## four anchor items from constant anchor class using MPT-selection
-> canchor <- anchor(object = raschmodels[[1]], object2 = raschmodels[[2]], 
++ 
++ ## four anchor items from constant anchor class using MPT-selection
++ canchor <- anchor(object = raschmodels[[1]], object2 = raschmodels[[2]], 
 +   class = "constant", select = "MPT", length = 4)
++ canchor
++ summary(canchor)
++ 
++ ## iterative forward anchor class using MTT-selection
++ set.seed(1)
++ fanchor <- anchor(object = raschmodels[[1]], object2 = raschmodels[[2]],
++   class = "forward", select = "MTT", range = c(0.05, 1))
++ fanchor
++ 
++ ## the same using the formula interface
++ set.seed(1)
++ fanchor2 <- anchor(resp2[, 1:12] ~ gender , data = VerbalAggression,
++   class = "forward", select = "MTT", range = c(0.05, 1))
++ 
++ ## really the same?
++ all.equal(fanchor, fanchor2, check.attributes = FALSE)
++ }
 Loading required namespace: multcomp
-> canchor
-Anchor items:
-[1] 6 7 3 9
-
-Ranking order:
- [1]  6  7  3  9  5  1  4  2 12 10  8 11
-
-Criterion values (not sorted):
- [1] -5 -3 -5 -4 -5 -7 -6 -2 -5 -2 -1 -3
-> summary(canchor)
-Anchor items:
-6 7 3 9> 
-> ## iterative forward anchor class using MTT-selection
-> set.seed(1)
-> fanchor <- anchor(object = raschmodels[[1]], object2 = raschmodels[[2]],
-+   class = "forward", select = "MTT", range = c(0.05, 1))
-> fanchor
-Anchor items:
-[1]  3  9  6  5  1  4 12
-
-Ranking order:
- [1]  7  3  9  6  5  1  4 12 10  8  2 11
-
-Criterion values (not sorted):
- [1]  6  9  6  7  6  6  5  9  6  9 10  9
-> 
-> ## the same using the formula interface
-> set.seed(1)
-> fanchor2 <- anchor(resp2[, 1:12] ~ gender , data = VerbalAggression,
-+   class = "forward", select = "MTT", range = c(0.05, 1))
-> 
-> ## really the same?
-> all.equal(fanchor, fanchor2, check.attributes = FALSE)
 [1] TRUE
 > 
 > 
@@ -668,176 +675,52 @@ Criterion values (not sorted):
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: anchortest
-> ### Title: Anchor methods for the detection of uniform DIF the Rasch model
+> ### Title: Anchor methods for the detection of uniform DIF in the Rasch
+> ###   model
 > ### Aliases: anchortest anchortest.default anchortest.formula
 > ###   print.anchortest print.summary.anchortest summary.anchortest
 > ### Keywords: regression
 > 
 > ### ** Examples
 > 
-> o <- options(digits = 4)
-> 
-> ## Verbal aggression data
-> data("VerbalAggression", package = "psychotools")
-> 
-> ## Rasch model for the self-to-blame situations; gender DIF test
-> raschmodels <- with(VerbalAggression, lapply(levels(gender), function(i) 
+> if(requireNamespace("multcomp")) {
++ 
++ o <- options(digits = 4)
++ 
++ ## Verbal aggression data
++ data("VerbalAggression", package = "psychotools")
++ 
++ ## Rasch model for the self-to-blame situations; gender DIF test
++ raschmodels <- with(VerbalAggression, lapply(levels(gender), function(i) 
 +   raschmodel(resp2[gender == i, 1:12])))
-> 
-> ## four anchor items from constant anchor class using MPT-selection
-> const1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]],
++ 
++ ## four anchor items from constant anchor class using MPT-selection
++ const1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]],
 +   class = "constant", select = "MPT", length = 4)
-> const1
-Anchor items:
-[1] 6 7 3 9
-
-Anchored item parameters:
-S1WantCurse_1   S1DoCurse_1 S1WantScold_1   S1DoScold_1 S1WantShout_1 
-     -0.74701      -0.58351      -0.04436       0.39998       0.47407 
-S2WantCurse_1   S2DoCurse_1 S2WantScold_1   S2DoScold_1 S2WantShout_1 
-     -1.35148      -0.06928      -0.21997       0.97937       0.39998 
-  S2DoShout_1 S1WantCurse_2   S1DoCurse_2 S1WantScold_2   S1DoScold_2 
-      2.51449      -0.75471      -1.30591      -0.10200      -0.75471 
-S1WantShout_2 S2WantCurse_2   S2DoCurse_2 S2WantScold_2   S2DoScold_2 
-      0.45093      -1.11212      -1.51475      -0.18127      -0.50356 
-S2WantShout_2   S2DoShout_2 
-      1.03043       1.81021 
-
-Ranking order:
- [1]  6  7  3  9  5  1  4  2 12 10  8 11
-
-Criterion values (not sorted):
- [1] -5 -3 -5 -4 -5 -7 -6 -2 -5 -2 -1 -3
-
-Final DIF tests:
-
-	 Simultaneous Tests for General Linear Hypotheses
-
-Linear Hypotheses:
-                 Estimate Std. Error z value Pr(>|z|)    
-S1WantCurse == 0  0.00771    0.37887    0.02  0.98377    
-S1DoCurse == 0    0.72240    0.39811    1.81  0.06959 .  
-S1WantScold == 0  0.05765    0.28473    0.20  0.83956    
-S1DoScold == 0    1.15469    0.37457    3.08  0.00205 ** 
-S1WantShout == 0  0.02314    0.36610    0.06  0.94960    
-S2WantCurse == 0 -0.23936    0.30869   -0.78  0.43810    
-S2DoCurse == 0    1.44548    0.40739    3.55  0.00039 ***
-S2WantScold == 0 -0.03870    0.28547   -0.14  0.89216    
-S2DoScold == 0    1.48294    0.37142    3.99  6.5e-05 ***
-S2WantShout == 0 -0.63046    0.37762   -1.67  0.09501 .  
-S2DoShout == 0    0.70428    0.43901    1.60  0.10866    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-(Univariate p values reported)
-
-> summary(const1)
-Anchor items:
-6 7 3 9> 
-> ## iterative forward anchor class using MTT-selection
-> set.seed(1)
-> forw1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], 
++ const1
++ summary(const1)
++ 
++ ## iterative forward anchor class using MTT-selection
++ set.seed(1)
++ forw1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], 
 +   class = "forward", select = "MTT", test = TRUE,
 +   adjust = "none", range = c(0.05,1))
-> forw1
-Anchor items:
-[1]  3  9  6  5  1  4 12
-
-Anchored item parameters:
-S1WantCurse_1   S1DoCurse_1   S1DoScold_1 S1WantShout_1   S1DoShout_1 
-     -1.31744      -1.15394      -0.17045      -0.09636       1.04537 
-S2WantCurse_1   S2DoCurse_1 S2WantScold_1   S2DoScold_1 S2WantShout_1 
-     -1.92191      -0.63971      -0.79040       0.40894      -0.17045 
-  S2DoShout_1 S1WantCurse_2   S1DoCurse_2   S1DoScold_2 S1WantShout_2 
-      1.94406      -1.02097      -1.57217      -1.02097       0.18467 
-  S1DoShout_2 S2WantCurse_2   S2DoCurse_2 S2WantScold_2   S2DoScold_2 
-      1.12913      -1.37838      -1.78101      -0.44753      -0.76983 
-S2WantShout_2   S2DoShout_2 
-      0.76417       1.54394 
-
-Ranking order:
- [1]  7  3  9  6  5  1  4 12 10  8  2 11
-
-Criterion values (not sorted):
- [1]  6  9  6  7  6  6  5  9  6  9 10  9
-
-Final DIF tests:
-
-	 Simultaneous Tests for General Linear Hypotheses
-
-Linear Hypotheses:
-                 Estimate Std. Error z value Pr(>|z|)    
-S1WantCurse == 0  -0.2965     0.3165   -0.94  0.34892    
-S1DoCurse == 0     0.4182     0.3844    1.09  0.27657    
-S1DoScold == 0     0.8505     0.3118    2.73  0.00638 ** 
-S1WantShout == 0  -0.2810     0.3027   -0.93  0.35323    
-S1DoShout == 0    -0.0838     0.3311   -0.25  0.80030    
-S2WantCurse == 0  -0.5435     0.3854   -1.41  0.15843    
-S2DoCurse == 0     1.1413     0.3938    2.90  0.00375 ** 
-S2WantScold == 0  -0.3429     0.3038   -1.13  0.25906    
-S2DoScold == 0     1.1788     0.3549    3.32  0.00089 ***
-S2WantShout == 0  -0.9346     0.3600   -2.60  0.00944 ** 
-S2DoShout == 0     0.4001     0.3658    1.09  0.27409    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-(Univariate p values reported)
-
-> 
-> ## the same using the formula interface
-> set.seed(1)
-> forw2 <- anchortest(resp2[, 1:12] ~ gender, data = VerbalAggression,
++ forw1
++ 
++ ## the same using the formula interface
++ set.seed(1)
++ forw2 <- anchortest(resp2[, 1:12] ~ gender, data = VerbalAggression,
 +   class = "forward", select = "MTT", test = TRUE,
 +   adjust = "none", range = c(0.05, 1))
-> 
-> ## compare both results
-> all.equal(forw1, forw2, check.attributes = FALSE)
-[1] TRUE
-> 
-> ## DIF test with fixed given anchor (arbitrarily selected to be items 1 and 2)
-> anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], select = 1:2)
-Anchor items:
-[1] 1 2
-
-Anchored item parameters:
-  S1DoCurse_1 S1WantScold_1   S1DoScold_1 S1WantShout_1   S1DoShout_1 
-      0.08175       0.62090       1.06524       1.13932       2.28106 
-S2WantCurse_1   S2DoCurse_1 S2WantScold_1   S2DoScold_1 S2WantShout_1 
-     -0.68622       0.59598       0.44529       1.64463       1.06524 
-  S2DoShout_1   S1DoCurse_2 S1WantScold_2   S1DoScold_2 S1WantShout_2 
-      3.17975      -0.27560       0.92831       0.27560       1.48124 
-  S1DoShout_2 S2WantCurse_2   S2DoCurse_2 S2WantScold_2   S2DoScold_2 
-      2.42570      -0.08181      -0.48444       0.84904       0.52674 
-S2WantShout_2   S2DoShout_2 
-      2.06074       2.84051 
-
-Ranking order:
-[1] NA
-
-Criterion values (not sorted):
-[1] NA
-
-Final DIF tests:
-
-	 Simultaneous Tests for General Linear Hypotheses
-
-Linear Hypotheses:
-                 Estimate Std. Error z value Pr(>|z|)   
-S1DoCurse == 0      0.357      0.245    1.46   0.1453   
-S1WantScold == 0   -0.307      0.407   -0.76   0.4501   
-S1DoScold == 0      0.790      0.414    1.91   0.0563 . 
-S1WantShout == 0   -0.342      0.411   -0.83   0.4053   
-S1DoShout == 0     -0.145      0.445   -0.33   0.7451   
-S2WantCurse == 0   -0.604      0.433   -1.39   0.1631   
-S2DoCurse == 0      1.080      0.441    2.45   0.0143 * 
-S2WantScold == 0   -0.404      0.408   -0.99   0.3218   
-S2DoScold == 0      1.118      0.412    2.71   0.0067 **
-S2WantShout == 0   -0.996      0.423   -2.35   0.0187 * 
-S2DoShout == 0      0.339      0.482    0.70   0.4819   
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-(Univariate p values reported)
-
-> 
-> options(digits = o$digits)
++ 
++ ## compare both results
++ all.equal(forw1, forw2, check.attributes = FALSE)
++ 
++ ## DIF test with fixed given anchor (arbitrarily selected to be items 1 and 2)
++ anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], select = 1:2)
++ 
++ options(digits = o$digits)
++ }
 > 
 > 
 > 
@@ -970,7 +853,7 @@ Gruene    1.1858     0.0951   12.47  < 2e-16 ***
 SPD       0.8131     0.0907    8.97  < 2e-16 ***
 CDU/CSU   0.1756     0.0875    2.01    0.045 *  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -1720 (df = 5) 
 
@@ -1588,7 +1471,7 @@ Loading required package: xtable
 > 
 > cleanEx()
 
-detaching 'package:likert', 'package:xtable', 'package:ggplot2'
+detaching ‘package:likert’, ‘package:xtable’, ‘package:ggplot2’
 
 > nameEx("labels")
 > ### * labels
@@ -1625,10 +1508,10 @@ detaching 'package:likert', 'package:xtable', 'package:ggplot2'
 > 
 > ### Name: mptmodel
 > ### Title: Multinomial Processing Tree (MPT) Model Fitting Function
-> ### Aliases: mptmodel coef.mptmodel deviance.mptmodel estfun.mptmodel
-> ###   logLik.mptmodel predict.mptmodel print.mptmodel summary.mptmodel
-> ###   print.summary.mptmodel vcov.mptmodel mptspec print.mptspec
-> ###   update.mptspec
+> ### Aliases: mptmodel coef.mptmodel confint.mptmodel deviance.mptmodel
+> ###   estfun.mptmodel logLik.mptmodel predict.mptmodel print.mptmodel
+> ###   summary.mptmodel print.summary.mptmodel vcov.mptmodel mptspec
+> ###   print.mptspec update.mptspec
 > ### Keywords: regression
 > 
 > ### ** Examples
@@ -1651,7 +1534,7 @@ b     0.172      -1.5687     0.0427  -36.72   <2e-16 ***
 D2    0.675       0.7292     0.0568   12.84   <2e-16 ***
 d2    0.425      -0.3031     0.1428   -2.12    0.034 *  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Likelihood ratio G2: -5.11e-13 on 0 df, p-value: 1 
 AIC: 12478
@@ -1904,7 +1787,7 @@ S2WantShout-C2   2.1175     0.3650    5.80  6.6e-09 ***
 S2DoShout-C1     2.1247     0.2273    9.35  < 2e-16 ***
 S2DoShout-C2     4.4099     0.4200   10.50  < 2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -2470 (df = 23) 
 Number of iterations in BFGS optimization: 32 
@@ -1913,9 +1796,9 @@ Number of iterations in BFGS optimization: 32
 > ## visualizations
 > plot(pcm, type = "profile")
 > plot(pcm, type = "regions")
+> plot(pcm, type = "piplot")
 > plot(pcm, type = "curves")
 > plot(pcm, type = "information")
-> plot(pcm, type = "piplot")
 > 
 > ## Get data of situation 1 ('A bus fails to
 > ## stop for me') and induce a null category in item 2.
@@ -2466,7 +2349,7 @@ S2DoScold    1.36e+00   2.01e-01    6.76  1.4e-11 ***
 S2WantShout  1.28e+00   2.01e-01    6.39  1.6e-10 ***
 S2DoShout    3.07e+00   2.34e-01   13.09  < 2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -1260 (df = 11) 
 Number of iterations in BFGS optimization: 19 
@@ -2568,7 +2451,7 @@ S2WantShout   0.8635     0.1214    7.11  1.1e-12 ***
 S2DoShout     2.0598     0.1466   14.05  < 2e-16 ***
 C2            0.5024     0.0850    5.91  3.4e-09 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -2480 (df = 12) 
 Number of iterations in BFGS optimization: 19 
@@ -2882,7 +2765,7 @@ Bradley-Terry model parameters (btmodel):
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  5.848 0.056 5.932 0 0 
+Time elapsed:  8.465 0.077 8.617 0 0 
 > grDevices::dev.off()
 null device 
           1 

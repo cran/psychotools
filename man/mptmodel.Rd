@@ -2,6 +2,7 @@
 \alias{mptmodel}
 
 \alias{coef.mptmodel}
+\alias{confint.mptmodel}
 \alias{deviance.mptmodel}
 \alias{estfun.mptmodel}
 \alias{logLik.mptmodel}
@@ -26,7 +27,8 @@
 \usage{
 mptmodel(y, weights = NULL, spec, treeid = NULL,
   optimargs = list(control = list(reltol = .Machine$double.eps^(1/1.2),
-                                  maxit = 1000)),
+                                  maxit = 1000),
+                   init = NULL),
   start = NULL, vcov = TRUE, estfun = FALSE, \dots)
 }
 
@@ -68,7 +70,8 @@ mptmodel(y, weights = NULL, spec, treeid = NULL,
   \code{mptmodel} returns an S3 object of class \code{"mptmodel"},
     i.e., a list with components as follows:
   \item{y}{a matrix with the response frequencies,}
-  \item{coefficients}{estimated parameters,}
+  \item{coefficients}{estimated parameters (for extraction, the \code{coef}
+    function is preferred),}
   \item{loglik}{log-likelihood of the fitted model,}
   \item{npar}{number of estimated parameters,}
   \item{weights}{the weights used (if any),}

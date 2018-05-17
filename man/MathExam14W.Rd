@@ -76,13 +76,31 @@ Zeileis A, Umlauf N, Leisch F (2014).
 \examples{
 ## load data and exclude extreme scorers
 data("MathExam14W", package = "psychotools")
+MathExam14W <- transform(MathExam14W,
+  points = 2 * nsolved - 0.5 * rowSums(credits == 1)
+)
 me <- subset(MathExam14W, nsolved > 0 & nsolved < 13)
+
 
 ## item response data:
 ## solved (correct/other) or credits (correct/incorrect/not attempted)
 par(mfrow = c(1, 2))
 plot(me$solved)
 plot(me$credits)
+
+## PCA
+pr <- prcomp(me$solved, scale = TRUE)
+names(pr$sdev) <- 1:10
+plot(pr, main = "", xlab = "Number of components")
+biplot(pr, col = c("transparent", "black"), main = "",
+  xlim = c(-0.065, 0.005), ylim = c(-0.04, 0.065))
+
+
+## points achieved (and 50% threshold)
+par(mfrow = c(1, 1))
+hist(MathExam14W$points, breaks = -4:13 * 2 + 0.5,
+  col = "lightgray", main = "", xlab = "Points")
+abline(v = 12.5, lwd = 2, col = 2)
 
 
 ## Rasch and partial credit model
@@ -95,6 +113,7 @@ plot(pcm, type = "profile", add = TRUE, col = "blue")
 plot(ram, type = "piplot")
 plot(pcm, type = "piplot")
 plot(ram, type = "region")
+plot(pcm, type = "region")
 plot(ram, type = "curves")
 plot(pcm, type = "curves")
 
@@ -114,7 +133,7 @@ at2 <- anchortest(solved ~ group, data = me, adjust = "single-step")
 at2
 plot(at2$final_tests)
 ## -> quad/payflow/planning easier for group 1
-## -> interest slightly easier for group 2
+## -> hesse slightly easier for group 2
 
 ## bring out differences between groups 1 and 2
 ## by (anchored) item difficulty profiles

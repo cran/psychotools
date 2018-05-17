@@ -7,7 +7,7 @@
 \alias{summary.anchortest}
 
 \title{
-  Anchor methods for the detection of uniform DIF the Rasch model
+  Anchor methods for the detection of uniform DIF in the Rasch model
 }
 
 \description{
@@ -163,6 +163,8 @@ anchortest(object, \dots)
 \seealso{\code{\link{anchor}}}
 
 \examples{
+if(requireNamespace("multcomp")) {
+
 o <- options(digits = 4)
 
 ## Verbal aggression data
@@ -198,6 +200,7 @@ all.equal(forw1, forw2, check.attributes = FALSE)
 anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], select = 1:2)
 
 options(digits = o$digits)
+}
 }
 
 \keyword{regression}

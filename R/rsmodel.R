@@ -255,7 +255,7 @@ rsmodel <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
     ## ... as well as variance-bcovariance matrix
     if (hessian) {
       vc <- opt$hessian
-      vc <- solve(vc)
+      vc <- qr.solve(vc)
     } else {
       vc <- matrix(NA, nrow = length(est), ncol = length(est))
     }
@@ -783,7 +783,7 @@ personpar.rsmodel <- function (object, ref = NULL, vcov = TRUE, interval = NULL,
 
     ## obtain Hessian from objective function: joint log likelihood
     cloglik <- function (pp) - sum(rf * rng * pp) + sum(cs * tp) + sum(rf * colSums(log(1 + apply(outer(os, pp), 2, function (x) colSums(exp(x - tp))))))
-    vc <- solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)
+    vc <- qr.solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)
   } else {
     vc <- matrix(NA, nrow = length(rng), ncol = length(rng))
   }

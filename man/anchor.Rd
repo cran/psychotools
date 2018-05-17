@@ -210,6 +210,8 @@ knowledge that DIF is balanced.
 }
 
 \examples{
+if(requireNamespace("multcomp")) {
+
 ## Verbal aggression data
 data("VerbalAggression", package = "psychotools")
 
@@ -236,6 +238,7 @@ fanchor2 <- anchor(resp2[, 1:12] ~ gender , data = VerbalAggression,
 
 ## really the same?
 all.equal(fanchor, fanchor2, check.attributes = FALSE)
+}
 }
 
 \keyword{regression}

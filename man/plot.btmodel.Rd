@@ -19,7 +19,9 @@
     on log-scale) be displayed?}
   \item{index}{logical. Should different indexes for different items be used?}
   \item{names}{logical. Should the names for the objects be displayed?}
-  \item{ref}{logical. Should a horizontal line for the reference level be drawn?}
+  \item{ref}{logical. Should a horizontal line for the reference level be drawn?
+    Alternatively, \code{ref} can also be numeric or character to employ
+    a reference level different from that stored in \code{x}.}
   \item{abbreviate}{logical or numeric. Should object names be abbreviated?
     If numeric this controls the length of the abbreviation.}
   \item{type}{plot type. Default is \code{"b"} if \code{index} is \code{TRUE}.}

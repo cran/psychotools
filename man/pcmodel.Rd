@@ -143,9 +143,9 @@ summary(pcm)
 ## visualizations
 plot(pcm, type = "profile")
 plot(pcm, type = "regions")
+plot(pcm, type = "piplot")
 plot(pcm, type = "curves")
 plot(pcm, type = "information")
-plot(pcm, type = "piplot")
 
 ## Get data of situation 1 ('A bus fails to
 ## stop for me') and induce a null category in item 2.

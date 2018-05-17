@@ -4,7 +4,7 @@ elementary_symmetric_functions <- function(par,
   ## check order, set poly and engine
   stopifnot(order %in% 0L:2L)
   poly <- is.list(par)
-  if (is.null(engine)) engine <- if (order < 2L && log) "C" else "R"
+  if (is.null(engine)) engine <- if (order < 2L && log && !(.Platform$OS.type == "windows" && .Platform$r_arch == "i386")) "C" else "R"
 
   ## if necessary: create ncat and unlist par
   if (engine == "C" || poly) {
@@ -113,7 +113,11 @@ elementary_symmetric_functions <- function(par,
     ## construct item parameter list and result vector
     m <- length(ncat)
     par <- split.default(par, rep.int(1L:m, ncat))
-    eps <- lapply(par, function (x) c(1, exp(-x)))
+    eps <- lapply(par, function (x) {
+      x <- c(1, exp(-x))
+      x[is.na(x)] <- 0
+      x
+    })
     rval <- vector("list", (1L+order))
     names(rval) <- 0L:order
 

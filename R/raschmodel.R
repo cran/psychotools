@@ -246,7 +246,7 @@ raschmodel <- function(y, weights = NULL, start = NULL, reltol = 1e-10,
   
     if(hessian) {
       vc <- if(deriv == "numeric") opt$hessian else ahessian(cf, esf)
-      vc <- solve(vc)
+      vc <- qr.solve(vc)
     } else {
       vc <- matrix(NA, nrow = length(cf), ncol = length(cf))
     }
@@ -651,7 +651,7 @@ personpar.raschmodel <- function (object, ref = NULL, vcov = TRUE, interval = NU
 
     ## obtain Hessian from objective function: joint log likelihood
     cloglik <- function (pp)  - sum(rf * rng * pp) + sum(cs * ip) + sum(rf * rowSums(log(1 + exp(outer(pp, ip, "-")))))
-    vc <- solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)
+    vc <- qr.solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)
   } else {
     vc <- matrix(NA_real_, nrow = length(rng), ncol = length(rng))
   }

@@ -1,7 +1,8 @@
 ## workhorse function
 mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
   optimargs = list(control = list(reltol = .Machine$double.eps^(1/1.2),
-                                  maxit = 1000)),
+                                  maxit = 1000),
+                   init = NULL),
   start = NULL, vcov = TRUE, estfun = FALSE, ...)
 {
   ## main arguments
@@ -32,7 +33,7 @@ mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
          else rep(1, NCOL(y))
 
   ## for fitting only sums are needed
-  ysum <- colSums(y)
+  ysum <- colSums(y * weights)
   
   ## determine number of parameters and starting values
   if(is.null(start)) {
@@ -53,6 +54,10 @@ mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
   }
   
   ## call optim()
+  if (!is.null(optimargs$init)) {
+    start[] <- qlogis(optimargs$init)  # Workaround: override start, for
+  }                                    #   setting start vals from mpttree()
+  optimargs$init <- NULL
   optArgs <- list(par=start, fn=nll, gr=grad, method="BFGS")
   optArgs <- c(optArgs, as.list(optimargs))
   opt <- do.call(optim, optArgs)
@@ -92,8 +97,8 @@ mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
     optim = opt,
     ysum = setNames(ysum, snam)
   )
-  if(estfun) rval$estfun <- estfun.mptmodel(rval)
   class(rval) <- "mptmodel"
+  if(estfun) rval$estfun <- estfun.mptmodel(rval)
   return(rval)
 }
 
@@ -163,6 +168,26 @@ vcov.mptmodel <- function(object, logit = TRUE, what = c("vcov", "fisher"),
     if (what == "vcov") solve(H(coef))
     else                      H(coef)
   }
+}
+
+
+## Based on stats::confint.default
+confint.mptmodel <- function(object, parm, level = 0.95, logit = TRUE, ...)
+{
+  cf <- coef(object, logit=logit)
+  pnames <- names(cf)
+  if (missing(parm)) 
+      parm <- pnames
+  else if (is.numeric(parm)) 
+      parm <- pnames[parm]
+  a <- (1 - level)/2
+  a <- c(a, 1 - a)
+  pct <- paste(format(100*a, trim=TRUE, scientific=FALSE, digits=3), "%")
+  fac <- qnorm(a)
+  ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, pct))
+  ses <- sqrt(diag(vcov(object, logit=logit)))[parm]
+  ci[] <- cf[parm] + ses %o% fac
+  ci
 }
 
 

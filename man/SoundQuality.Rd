@@ -5,7 +5,7 @@
 
 \description{
   Paired comparison judgments of 40 selected listeners with respect to
-  eight audio reproduction modes and for types of music. 
+  eight audio reproduction modes and four types of music. 
 }
 
 \usage{data("SoundQuality")}
@@ -54,6 +54,7 @@ A data frame containing 783 observations on 6 variables.
   Choisel S, Wickelmaier F (2007).
     Evaluation of Multichannel Reproduced Sound: Scaling Auditory Attributes Underlying Listener Preference.
     \emph{Journal of the Acoustical Society of America}, \bold{121}(1), 388--400. 
+    \doi{10.1121/1.2385043}
 
   Wickelmaier F, Choisel S (2005).
     Selecting Participants for Listening Tests of Multichannel Reproduced Sound.
@@ -62,6 +63,7 @@ A data frame containing 783 observations on 6 variables.
   Wickelmaier F, Ellermeier W (2007).
     Deriving Auditory Features from Triadic Comparisons.
     \emph{Perception & Psychophysics}, \bold{69}(2), 287--297.
+    \doi{10.3758/BF03193750}
 }
 
 \seealso{\code{\link{paircomp}}}

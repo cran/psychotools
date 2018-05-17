@@ -292,7 +292,7 @@ pcmodel <- function (y, weights = NULL, nullcats = c("keep", "downcode", "ignore
     ## ... as well as variance-covariance matrix
     if (hessian) {
       vc <- opt$hessian
-      vc <- solve(vc)
+      vc <- qr.solve(vc)
     } else {
       vc <- matrix(NA, nrow = length(est), ncol = length(est))
     }
@@ -837,7 +837,7 @@ personpar.pcmodel <- function (object, ref = NULL, vcov = TRUE, interval = NULL,
       ppx <- lapply(ojvl, function (x) outer(x, pp)) # l * theta_i
       - sum(rf * rng * pp) + sum(unlist(mapply("*", cs, tp))) + sum(rf * rowSums(log(1 + mapply(function (x, y) colSums(exp(x - y)), ppx, tp))))
     }
-    vc <- solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)    
+    vc <- qr.solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)    
   } else {      
     vc <- matrix(NA_real_, nrow = length(rng), ncol = length(rng))
   }

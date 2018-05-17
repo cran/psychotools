@@ -220,7 +220,7 @@ plot.btmodel <- function(x,
   names(cf) <- abbreviate(names(cf), abbreviate)
 
   ## raw plot
-  ix <- if(index) seq(along = cf) else rep(0, length(cf))
+  ix <- if(index) seq_along(cf) else rep(0, length(cf))
   plot(ix, cf, xlab = xlab, ylab = ylab, type = "n", axes = FALSE, ...)
   if(ref) abline(h = cf_ref, col = "lightgray")
   axis(2)
@@ -270,7 +270,9 @@ itempar.btmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, log 
   if (vcov) {
     vc <- vcov(object)
     vc <- vc[setdiff(rownames(vc), "(undecided)"), setdiff(colnames(vc), "(undecided)")]
-    vc <- D %*% rbind(0, cbind(0, vc)) %*% t(D)
+    vc <- rbind(0, cbind(0, vc))
+    rownames(vc)[1L] <- colnames(vc)[1L] <- object$ref
+    vc <- D %*% vc[lbs, lbs] %*% t(D)
   } else {
     vc <- matrix(NA, nrow = ncf, ncol = ncf)
   }
@@ -289,10 +291,10 @@ itempar.btmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, log 
       D <- matrix(0, nrow = ncf, ncol = ncf) # i != j and j not in ref -> 0
       for (i in ncfv) {
         if (i %in% ref) {
-          D[i, i] <- (scf - cf[i])/(scf^2) # i = j and j in ref
-          D[-i, i] <- -cf[-i]/(scf^2)      # i != j and j in ref
+          D[i, i] <- 1 - cf[i] # i = j and j in ref
+          D[-i, i] <- -cf[-i]  # i != j and j in ref
         } else {
-          D[i, i] <- 1/scf                 # i = j and j not in ref
+          D[i, i] <- 1         # i = j and j not in ref
         }
       }
 
@@ -361,14 +363,14 @@ estfun.btmodel <- function(x, ...)
       plogis(c(-1, 1) * diff(p[ix[i,]]), log.p = TRUE)
     })
   logp <- t(sapply(1L:npc, par2logprob))
-  loglik <- sum(logp * ytab)
 
   ## estimating functions
   if(!undecided) logp <- cbind(logp, -Inf) ## ties impossible
-  gradp <- matrix(0, nrow = npc * 3, ncol = nobj)
+  gradp <- matrix(0, nrow = npc * 3, ncol = nobj + 1)
   cf <- -matrix(c(1, 0, 0, 0, 1, 0, 0.5, 0.5, 1), ncol = 3)
   ct <- matrix(c(1, 0, 0.5, 0, 1, 0.5, 0, 0, 1), ncol = 3)
-  for(i in 1L:npc) gradp[i*3 - (2:0), c(ix[i,], nobj)] <- t(t(ct) + as.vector(cf %*% exp(logp[i,])))
+  for(i in 1L:npc) gradp[i*3 - (2:0), c(ix[i,], nobj + 1)] <- t(t(ct) + as.vector(cf %*% exp(logp[i,])))
+  gradp <- gradp[, -ref]
   ef <- t(sapply(1L:length(y), function(i) {
     wi <- (0:(npc - 1)) * 3 + c(2, 3, 1)[ymat[i,] + 2]
     colSums(gradp[wi,, drop = FALSE], na.rm = TRUE)

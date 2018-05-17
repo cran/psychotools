@@ -1,3 +1,24 @@
+Changes in Version 0.4-3
+
+  o Conditionally register all estfun() and bread() S3 methods for model
+    objects, provided that the "sandwich" package is attached.
+
+  o Added native routine registration for esf.c.
+
+  o Use R version of elementary_symmetric_functions() by default on Win/i386
+    due to small numeric differences on that platform.
+
+  o The estfun() method for "btmodel" objects always computed the scores
+    with the last object for the reference category - even if a different
+    ref= was specified in the model. Thanks to Heather Turner for pointing
+    out the problem.
+
+  o The itempar() method for "btmodel" objects miscomputed the variance
+    covariance matrix (unless the first object was used as the ref when
+    estimating the model). Thanks to Heather Turner for pointing out the
+    problem.
+
+
 Changes in Version 0.4-2
 
   o Added new data set "PairClustering" from Klauer (2006).

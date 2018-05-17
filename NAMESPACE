@@ -196,6 +196,7 @@ S3method("vcov", "btmodel")
 
 ## methods for mptmodel objects
 S3method("coef", "mptmodel")
+S3method("confint", "mptmodel")
 S3method("deviance", "mptmodel")
 S3method("logLik", "mptmodel")
 S3method("nobs", "mptmodel")
