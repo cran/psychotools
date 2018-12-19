@@ -1,5 +1,5 @@
 ## convenience function for rainbow in HCL space
-hclrainbow <- function(n) hcl(h = seq(0, 360 * (n - 1)/n, length = n), c = 80, l = 60)
+hclrainbow <- function(n) hcl(h = seq(0, 360 * (n - 1) / n, length = n), c = 80, l = 60)
 
 ## region plot graphic function
 regionplot <- function (object, parg = list(type = NULL, ref = NULL, alias = TRUE),
@@ -47,10 +47,10 @@ regionplot <- function (object, parg = list(type = NULL, ref = NULL, alias = TRU
     lab[c(1, m)] <- c(1, m)
     pr <- pretty(1:m)
     pr <- pr[pr > 1 & pr < m]
-    lab[pr] <- pr    
+    lab[pr] <- pr
     nms <- lab
   }
-  
+
   ## check if all threshold parameters are in order, if not, calculate sorted ones
   us <- sapply(tp, is.unsorted)
   if (any(us)) {
@@ -58,40 +58,40 @@ regionplot <- function (object, parg = list(type = NULL, ref = NULL, alias = TRU
     for (j in usj) {
       tpj <- tp[[j]]
       nj <- length(tpj)
-      
+
       ## check if there is a point with a biggest parameter, if yes, take mean
       for (i in 1:nj) {
-        if (all(tpj[i] > tpj[(i+1):nj])) {
+        if (all(tpj[i] > tpj[(i + 1):nj])) {
           tpj[i] <- mean(tpj[i:nj])
-          tpj <- tpj[-(i+1:nj)]
+          tpj <- tpj[-(i + 1:nj)]
           break
         }
       }
-      
+
       ## recursive sorting if there is still unorder (e.g. 4, 2, 3, 1)
       while(is.unsorted(tpj)) {
         uo_pos <- which(diff(tpj) < 0)                     # locate unordered parameters, returns position of the first
         tpj[uo_pos] <- (tpj[uo_pos] + tpj[uo_pos + 1]) / 2 # replace first with location of intersection of ccc curves (= (eps1 + eps2)/ 2)
         tpj <- tpj[-(uo_pos + 1)]                          # remove second
       }
-      
+
       tp[[j]] <- tpj
     }
   }
 
   ## setup axis range and positions
   if (is.null(ylim)) ylim <- extendrange(unlist(tp, use.names = FALSE), f = 0.25)
-  xi <- 0:m + c(0:(m-1), m-1) * off
-  xlim <- c(xi[1], xi[m+1])
+  xi <- 0:m + c(0:(m - 1), m - 1) * off
+  xlim <- c(xi[1], xi[m + 1])
 
   ## setup graphical window
   plot(0, 0, xlim = xlim, ylim = ylim, type = "n", xaxs = "i", yaxs = "i", axes = FALSE, ylab = ylab, xlab = xlab, main = main, ...)
 
-  ## plot items 
+  ## plot items
   for (j in seq_along(tp)) {
     rect(xleft = xi[j], xright = xi[j] + 1, ybottom = c(ylim[1], tp[[j]]), ytop = c(tp[[j]], ylim[2]), col = cols[[j]])
   }
-  
+
   ## indicate unordered parameters
   if ((is.null(type) || type == "mode")) {
     orgtp <- threshpar(object, type = type, ref = ref, alias = alias, vcov = FALSE)
@@ -107,9 +107,9 @@ regionplot <- function (object, parg = list(type = NULL, ref = NULL, alias = TRU
     axis(2)
     axis(4)
     if(names) {
-      text(xi[-(m+1)] + 0.5, par("usr")[3], labels = nms, srt = srt, adj = adj, xpd = TRUE, cex = 0.9)
+      text(xi[-(m + 1)] + 0.5, par("usr")[3], labels = nms, srt = srt, adj = adj, xpd = TRUE, cex = 0.9)
     } else {
-      axis(1, at=(xi[-(m+1)] + 0.5), labels = nms)
+      axis(1, at = (xi[-(m + 1)] + 0.5), labels = nms)
     }
   }
   box()
@@ -117,43 +117,56 @@ regionplot <- function (object, parg = list(type = NULL, ref = NULL, alias = TRU
 }
 
 ## profiles of item, threshold or discrimination parameters
-profileplot <- function(object, what = c("items", "thresholds", "discriminations"),
-  parg = list(type = NULL, ref = NULL, alias = TRUE), index = TRUE, names = TRUE, main = NULL,
-  abbreviate = FALSE, ref = TRUE, col = "lightgray", border = "black", pch = NULL, cex = 1, refcol = "lightgray",
-  linecol = "black", lty = 2, ylim = NULL, xlab = NULL, ylab = NULL, add = FALSE,
-  srt = 45, adj = c(1.1, 1.1), axes = TRUE, ...)
+profileplot <- function(object,
+  what = c("items", "thresholds", "discriminations", "guessings", "uppers"),
+  parg = list(type = NULL, ref = NULL, alias = TRUE, logit = FALSE), index = TRUE,
+  names = TRUE, main = NULL, abbreviate = FALSE, ref = TRUE, col = "lightgray",
+  border = "black", pch = NULL, cex = 1, refcol = "lightgray",
+  linecol = "black", lty = 2, ylim = NULL, xlab = NULL, ylab = NULL,
+  add = FALSE, srt = 45, adj = c(1.1, 1.1), axes = TRUE, ...)
 {
   ## check input
   what <- match.arg(what)
-  if (what == "thresholds") type <- parg$type
+  if(what == "thresholds") type <- parg$type
   refpar <- parg$ref
-  alias <- if (is.null(parg$alias)) TRUE else parg$alias
+  alias <- if(is.null(parg$alias)) TRUE else parg$alias
+  logit <- parg$logit
   addargs <- list(...)
-  if ("difficulty" %in% names(addargs)) {
+  if("difficulty" %in% names(addargs)) {
     warning("The argument 'difficulty' is deprecated and not longer used. All plotted parameters are difficulty parameters.")
   }
-  if ("center" %in% names(addargs)) {
+  if("center" %in% names(addargs)) {
     warning("The argument 'center' is deprecated and not longer used. Centered parameters can be plotted when setting the 'ref' argument of 'parg' to NULL (default).")
   }
-
   ## parameters to be plotted
-  if (what == "items") {
+  if(what == "items") {
     cf <- itempar(object, ref = refpar, alias = alias, vcov = FALSE)
     ncf <- length(cf)
-  } else if (what == "thresholds") {
-    cf <- coef(threshpar(object, ref = refpar, alias = alias, type = type, vcov = FALSE), type = "matrix")
+    lb <- "difficulty"
+  } else if(what == "thresholds") {
+    cf <- coef(threshpar(object, ref = refpar, alias = alias, type = type,
+      vcov = FALSE), type = "matrix")
     ncf <- nrow(cf)
     ncat <- ncol(cf)
-  } else {
+    lb <- "threshold"
+  } else if(what == "discriminations") {
     cf <- discrpar(object, ref = refpar, alias = alias, vcov = FALSE)
     ncf <- length(cf)
+    lb <- "discrimination"
+  } else if(what == "guessings") {
+    cf <- guesspar(object, alias = alias, vcov = FALSE, logit = logit)
+    ncf <- length(cf)
+    lb <- "guessing"
+  } else {
+    cf <- upperpar(object, alias = alias, vcov = FALSE, logit = logit)
+    ncf <- length(cf)
+    lb <- "upper asymptote"
   }
   cf_ref <- mean(cf)
-
   ## labeling
-  if (is.null(names)) names <- !index
-  if (isTRUE(names)) nms <- if (what == "thresholds") rownames(cf) else names(cf)
-  if (is.character(names)) {
+  if(is.null(names)) names <- !index
+  if(isTRUE(names)) nms <- if(what == "thresholds") rownames(cf) else names(cf)
+  if(is.character(names)) {
     nms <- names
     names <- TRUE
   }
@@ -162,18 +175,20 @@ profileplot <- function(object, what = c("items", "thresholds", "discriminations
     lab[c(1, ncf)] <- c(1, ncf)
     pr <- pretty(1:ncf)
     pr <- pr[pr > 1 & pr < ncf]
-    lab[pr] <- pr    
+    lab[pr] <- pr
     nms <- lab
   }
-
   ## abbreviation
   if(is.logical(abbreviate)) {
     nlab <- max(nchar(nms))
-    abbreviate <- if(abbreviate) as.numeric(cut(nlab, c(-Inf, 1.5, 4.5, 7.5, Inf))) else nlab
+    abbreviate <- if(abbreviate) {
+      as.numeric(cut(nlab, c(-Inf, 1.5, 4.5, 7.5, Inf)))
+    } else {
+      nlab
+    }
   }
   nms <- abbreviate(nms, abbreviate)
-
-  ## graphical parameter processing  
+  ## graphical parameter processing
   type <- if(index) "b" else "p"
   missing_col_border <- !missing(col) && missing(border)
   if(what != "thresholds") {
@@ -182,58 +197,76 @@ profileplot <- function(object, what = c("items", "thresholds", "discriminations
     col <- rep(col, length.out = ncf)
     border <- rep(border, length.out = ncf)
   } else {
-    col <- matrix(rep(t(col), length.out = ncf * ncat), ncol = ncat, byrow = TRUE)
-    border <- matrix(rep(t(border), length.out = ncf * ncat), ncol = ncat, byrow = TRUE)
+    col <- matrix(rep(t(col), length.out = ncf * ncat), ncol = ncat,
+      byrow = TRUE)
+    border <- matrix(rep(t(border), length.out = ncf * ncat), ncol = ncat,
+      byrow = TRUE)
     linecol <- rep(linecol, length.out = ncat)
-    if(!is.null(pch)) pch <- matrix(rep(t(pch), length.out = ncf * ncat), ncol = ncat, byrow = TRUE)
+    if(!is.null(pch)) pch <- matrix(rep(t(pch), length.out = ncf * ncat),
+      ncol = ncat, byrow = TRUE)
   }
   if((!index | is.null(pch)) && missing_col_border) border <- col
   cex <- rep(cex, length.out = ncf)
   if(is.null(ylim)) ylim <- range(cf, na.rm = TRUE)
   ylim <- rep(ylim, length.out = 2)
-  xlim <- if (!index && what == "thresholds" && ncat > 1) extendrange(c(1, ncat), f = 0.25) else NULL
-  lb <- if (what == "items") "difficulty" else if (what == "thresholds") "threshold" else "discrimination"
-  if(is.null(xlab)) xlab <- if (index) "" else {
-    if(what != "thresholds") "Items" else "Categories"
+  xlim <- if(!index && what == "thresholds" && ncat > 1) {
+    extendrange(c(1, ncat), f = 0.25)
+  } else {
+    NULL
+  }
+  if(is.null(xlab)) xlab <- if(index) {
+    ""
+  } else {
+   if(what != "thresholds") "Items" else "Categories"
   }
   if(is.null(ylab)) ylab <- paste("Item", lb, "parameters")
-
   ## raw plot
-  if(index) ix <- 1:ncf else if (what == "thresholds") {
-    ix <- matrix(rep(1:ncat, each = ncf), nrow = ncf)
-  } else ix <- rep(0, ncf)
-  if (!add) {
-      plot(ix, rep(0, length(ix)), xlab = xlab, ylab = ylab, type = "n", axes = FALSE, ylim = ylim, xlim = xlim, main = main, ...)
-      if(ref & what != "thresholds") abline(h = cf_ref, col = refcol)
-      if(axes) axis(2)
-      if (!index & what == "thresholds" & axes) axis(1, at = unique(ix), labels = paste("Category", 1:ncat))
-      box()
+  ix <- if(index) {
+    1:ncf
+  } else if(what == "thresholds") {
+    matrix(rep(1:ncat, each = ncf), nrow = ncf)
+  } else {
+    rep(0, ncf)
   }
-
+  if(!add) {
+    plot(ix, rep(0, length(ix)), xlab = xlab, ylab = ylab, type = "n",
+      axes = FALSE, ylim = ylim, xlim = xlim, main = main, ...)
+    if(ref & what != "thresholds") abline(h = cf_ref, col = refcol)
+    if(axes) axis(2)
+    if(!index & what == "thresholds" & axes) {
+      axis(1, at = unique(ix), labels = paste("Category", 1:ncat))
+    }
+    box()
+  }
   ## actual data
   if(!index & names) {
-    if (what == "thresholds") {
-      for (i in 1:ncat) text(nms, x = ix[, i], y = cf[, i], col = border[, i])
+    if(what == "thresholds") {
+      for(i in 1:ncat) text(nms, x = ix[, i], y = cf[, i], col = border[, i])
     } else {
       text(nms, x = ix, y = cf, col = border)
     }
   } else {
-    if (what == "thresholds") {
-      for (i in 1:ncat) {
-        lines(ix, cf[, i], type = type, lty = lty, pch = NA, col = linecol[i], cex = cex)
-        if (is.null(pch)) {
-          text(x = ix, y = cf[, i], labels = paste0("C", i), col = border[, i], cex = cex * 0.8, font = 2)
+    if(what == "thresholds") {
+      for(i in 1:ncat) {
+        lines(ix, cf[, i], type = type, lty = lty, pch = NA, col = linecol[i],
+          cex = cex)
+        if(is.null(pch)) {
+          text(x = ix, y = cf[, i], labels = paste0("C", i), col = border[, i],
+           cex = cex * 0.8, font = 2)
         } else {
-	  lines(x = ix, y = cf[, i], type = type, lty = 0, pch = pch[, i], col = border[, i], bg = col[, i], cex = cex)
-	}
+          lines(x = ix, y = cf[, i], type = type, lty = 0, pch = pch[, i],
+            col = border[, i], bg = col[, i], cex = cex)
+        }
       }
     } else {
       lines(ix, cf, type = type, lty = lty, pch = NA, col = linecol, cex = cex)
-      lines(ix, cf, type = type, lty = 0, pch = pch, col = border, bg = col, cex = cex)
+      lines(ix, cf, type = type, lty = 0, pch = pch, col = border, bg = col,
+        cex = cex)
     }
     if(index && !add && axes) {
       if(names) {
-        text(ix, par("usr")[3], labels = nms, srt = srt, adj = adj, xpd = TRUE, cex = 0.9)
+        text(ix, par("usr")[3], labels = nms, srt = srt, adj = adj, xpd = TRUE,
+         cex = 0.9)
       } else {
         axis(1, at = ix, labels = nms)
       }
@@ -242,9 +275,9 @@ profileplot <- function(object, what = c("items", "thresholds", "discriminations
 }
 
 ## ICC/CCC/response curve functions plot
-curveplot <- function (object, ref = NULL, items = NULL, names = NULL, layout = NULL,
-                       xlim = NULL, ylim = c(0, 1), col = NULL, lty = NULL, main = NULL,
-                       xlab = "Latent trait", ylab = "Probability", add = FALSE, ...)
+curveplot <- function(object, ref = NULL, items = NULL, names = NULL,
+  layout = NULL, xlim = NULL, ylim = c(0, 1), col = NULL, lty = NULL,
+  main = NULL, xlab = "Latent trait", ylab = "Probability", add = FALSE, ...)
 {
   ## setup relevant informations and process input
   tp <- coef(threshpar(object, type = "mode", vcov = FALSE), type = "matrix")
@@ -272,8 +305,8 @@ curveplot <- function (object, ref = NULL, items = NULL, names = NULL, layout = 
   }
   if (is.null(layout)) {
     nrow <- ceiling(sqrt(m))
-    ncol <- ceiling(m/nrow)
-    layout <- matrix(1:(nrow*ncol), nrow = nrow, ncol = ncol)
+    ncol <- ceiling(m / nrow)
+    layout <- matrix(1:(nrow * ncol), nrow = nrow, ncol = ncol)
   } else stopifnot(prod(dim(layout)) >= m)
   if (is.null(xlim)) xlim <- extendrange(unclass(tp), f = 0.25)
   if (is.null(col)) col <- hclrainbow(max(oj))
@@ -302,80 +335,178 @@ curveplot <- function (object, ref = NULL, items = NULL, names = NULL, layout = 
 }
 
 ## person item plot
-piplot <- function (object, ref = NULL, items = NULL, xlim = NULL, names = NULL,
-                    labels = TRUE, main = "Person-Item Plot", xlab = "Latent trait",
-                    abbreviate = FALSE, cex.axis = 0.8, cex.text = 0.5, cex.points = 1.5, ...)
+piplot <- function(object, pcol = NULL, histogram = TRUE, ref = NULL,
+  items = NULL, xlim = NULL, names = NULL, labels = TRUE,
+  main = "Person-Item Plot", xlab = "Latent trait", abbreviate = FALSE,
+  cex.axis = 0.8, cex.text = 0.5, cex.points = 1.5,
+  grid = TRUE, ...)
 {
+  ## FIXME:: general way to handle prettifying options, e.g. supply all colors as a list?
+
+  ## handle grid
+  if(is.null(grid)) grid <- TRUE
+  if(is.logical(grid)) grid <- if(grid) "lightgray" else "transparent"
+
   ## setup parameters, number of items and item labels
   tp <- threshpar(object, ref = ref, vcov = FALSE)
   ip <- sapply(tp, mean)
-  pp <- personpar(object, ref = ref, vcov = FALSE)
-  ppr <- range(as.numeric(names(pp)))
-  rs <- rowSums(object$data, na.rm = TRUE)
-  rs <- rs[rs >= ppr[1] && rs <= ppr[2]]
-  ppt <- table(pp[rs])
-  pptx <- as.numeric(names(ppt))
   m <- length(ip)
   nms <- names(ip)
-
+  pp <- personpar(object, ref = ref, vcov = FALSE)
+  type <- attributes(pp)$type
+  ## distinguish based on "type", preprocessing
+  if(type == "normal") {
+    gp <- split(pp, rep(1:(length(pp) / 2), each = 2))
+    if(!is.null(pcol)) {
+      pcol <- rep_len(pcol, length.out = length(gp))
+      coltrans <- apply(col2rgb(pcol), 2, function(x) {
+        tmp <- split(x, 1:3)
+        rgb(tmp[[1]], tmp[[2]], tmp[[3]], 25, maxColorValue = 255)
+      })
+    } else if(length(gp) > 1) {
+      pcol <- hclrainbow(length(gp))
+      coltrans <- apply(col2rgb(pcol), 2, function(x) {
+        tmp <- split(x, 1:3)
+        rgb(tmp[[1]], tmp[[2]], tmp[[3]], 25, maxColorValue = 255)
+      })
+    } else {
+      pcol <- "gray50"
+      tmp <- col2rgb(pcol)
+      coltrans <- rgb(tmp[1, 1], tmp[2, 1], tmp[3, 1], 25, maxColorValue = 255)
+    }
+    pp <-
+    if(!is.null(object$impact)) {
+      split(personpar(object, personwise = TRUE), object$impact)
+    } else {
+      list(personpar(object, personwise = TRUE))
+    }
+  } else if(type == "discrete") {
+    if(!is.null(pcol)) {
+      if(length(pcol) != 1) {
+        pcol <- pcol[1]
+      }
+    } else {
+      pcol <- "gray50"
+    }
+    ppr <- range(as.numeric(names(pp)))
+    rs <- rowSums(object$data, na.rm = TRUE)
+    rs <- rs[rs >= ppr[1] & rs <= ppr[2]]
+    ppt <- table(pp[rs])
+    pptx <- as.numeric(names(ppt))
+  }
   ## process argument items
-  if (is.null(items)) {
+  if(is.null(items)) {
     items <- 1:m
-  } else if (is.numeric(items)) {
+  } else if(is.numeric(items)) {
     stopifnot(all(items %in% 1:m))
-  } else if (is.character(items)) {
+  } else if(is.character(items)) {
     stopifnot(all(items %in% nms))
     items <- which(items %in% nms)
-  } else stop("Argument 'items' is misspecified (see ?piplot for possible values).")
-  
+  } else {
+    stop("Argument 'items' is misspecified (see ?piplot for possible values).")
+  }
   ## subset to requested items
   m <- length(items)
   ip <- ip[items]
   tp <- tp[items]
   nms <- nms[items]
-
   ## abbreviation
   if(is.logical(abbreviate)) {
     nlab <- max(nchar(nms))
-    abbreviate <- if(abbreviate) as.numeric(cut(nlab, c(-Inf, 1.5, 4.5, 7.5, Inf))) else nlab
+    abbreviate <-
+    if(abbreviate) {
+      as.numeric(cut(nlab, c(-Inf, 1.5, 4.5, 7.5, Inf)))
+    } else {
+      nlab
+    }
   }
   nms <- abbreviate(nms, abbreviate)
   w <- max(nchar(nms)) * 0.5
-
   ## setup x axis limits, backup par
-  if (is.null(xlim)) xlim <- range(c(unlist(tp), pp))
+  xlim <-
+  if(type == "normal") {
+    range(c(unlist(tp), unlist(lapply(pp, function(x) hist(x, plot = FALSE)$breaks))))
+  } else if(type == "discrete") {
+    range(c(unlist(tp), pp))
+  }
   ylim <- c(1, m)
-
   ## setup graphic region
   layout(matrix(1:2, ncol = 1, nrow = 2), heights = c(1, 2))
-  
-  ## person parameter plot
+  ## person parameter plot different for CML vs. MML
   opar <- par(mar = c(0, w, 2.5, 1))
-  plot(x = 0, xlim = xlim, ylim = c(0, max(ppt)), type = "n", axes = FALSE, xlab = "", ylab = "", main = main, cex.axis = cex.axis, ...)
-  points(x = pptx, y = ppt, type = "h", col = "gray", lend = 2, lwd = 5, ...)
+  if(type == "normal") {
+    ylimpp1 <- max(unlist(lapply(pp, function(x) {
+      hist(x, plot = FALSE)$density
+    })))
+    ylimpp2 <- max(sapply(gp, function(x) dnorm(x[1], x[1], sqrt(x[2]))))
+    ylimpp <- c(0, max(ylimpp1, ylimpp2))
+    ## FIXME: allow "border" color to be defined by the user
+    if(histogram) {
+      hist(pp[[1]], freq = FALSE, xlim = xlim, ylim = ylimpp,
+        col = coltrans[1], border = "gray", axes = FALSE, xlab = "",
+        ylab = "", main = main)
+      x <- NULL ## for R CMD check due to the following expression in curve()
+      curve(dnorm(x, gp[[1]][1], sqrt(gp[[1]][2])), xlim[1], xlim[2],
+        col = pcol[1], add = TRUE)
+      if(length(gp) > 1) {
+        for(a in 2:length(gp)) {
+          hist(pp[[a]], freq = FALSE, xlim = xlim, ylim = ylimpp,
+            col = coltrans[a], border = "gray", add = TRUE)
+          curve(dnorm(x, gp[[a]][1], sqrt(gp[[a]][2])), xlim[1], xlim[2],
+            col = pcol[a], add = TRUE)
+        }
+        legend("topleft", legend = levels(object$impact), col = pcol, lty = 1,
+          bty = "n", title = "Impact", cex = 0.5)
+      }
+    } else {
+      curve(dnorm(x, gp[[1]][1], sqrt(gp[[1]][2])), xlim[1], xlim[2],
+        ylim = ylimpp, col = pcol[1], axes = FALSE, xlab = "", ylab = "",
+        main = main)
+      if(length(gp) > 1) {
+        for(a in 2:length(gp)) {
+          curve(dnorm(x, gp[[a]][1], sqrt(gp[[a]][2])), xlim[1], xlim[2],
+            col = pcol[a], add = TRUE)
+        }
+        legend("topleft", legend = levels(object$impact), col = pcol, lty = 1,
+          bty = "n", title = "Impact", cex = 0.5)
+      }
+    }
+  } else if(type == "discrete") {
+    plot(x = 0, xlim = xlim, ylim = c(0, max(ppt)), type = "n", axes = FALSE,
+      xlab = "", ylab = "", main = main, cex.axis = cex.axis, ...)
+    points(x = pptx, y = ppt, type = "h", col = pcol, lend = 2, lwd = 5, ...)
+  }
   box()
-  
   ## item/threshold parameter plot
   par(mar = c(4.5, w, 0, 1))
-  plot(x = 0, xlim = xlim, ylim = ylim, type = "n", axes = FALSE, xlab = xlab, ylab = "", cex.axis = cex.axis)
-  for (i in 1:m) {
-    lines(y = rep(i, length(tp[[i]])), x = tp[[i]], type = "b", pch = 1, cex = cex.points, ...)
-    if (labels) text(x = tp[[i]], y = rep(i, length(tp[[i]])), labels = gsub("C", "", names(tp[[i]])), cex = cex.text, ...)
+  plot(x = 0, xlim = xlim, ylim = ylim, type = "n", axes = FALSE, xlab = xlab,
+    ylab = "", cex.axis = cex.axis)
+  ## grid (horizontal gray lines for the items or none)
+  if(grid != "transparent") {
+    abline(h = 1:m, col = grid)
+  }
+  for(i in 1:m) {
+    lines(y = rep(i, length(tp[[i]])), x = tp[[i]], type = "b", pch = 1,
+      cex = cex.points, ...)
+    if(labels) {
+      text(x = tp[[i]], y = rep(i, length(tp[[i]])),
+        labels = gsub("C", "", names(tp[[i]])), cex = cex.text, ...)
+    }
   }
   points(x = ip, y = 1:m, pch = 16, cex = cex.points, ...)
   axis(side = 1, cex.axis = cex.axis)
   axis(side = 2, at = 1:m, labels = nms, las = 2, cex.axis = cex.axis)
   box()
-
   ## restore par
   layout(matrix(1, nrow = 1, ncol = 1))
   on.exit(par(opar))
 }
 
 ## information curve plot
-infoplot <- function (object, what = c("categories", "items", "test"), ref = NULL, items = NULL, names = NULL,
-                      layout = NULL, xlim = NULL, ylim = NULL, col = NULL, lty = NULL, lwd = NULL, main = NULL,
-                      legend = TRUE, xlab = "Latent trait", ylab = "Information", add = FALSE, ...)
+infoplot <- function(object, what = c("categories", "items", "test"),
+  ref = NULL, items = NULL, names = NULL, layout = NULL, xlim = NULL,
+  ylim = NULL, col = NULL, lty = NULL, lwd = NULL, main = NULL, legend = TRUE,
+  xlab = "Latent trait", ylab = "Information", add = FALSE, ...)
 {
   ## process input
   what <- match.arg(what)
@@ -413,7 +544,7 @@ infoplot <- function (object, what = c("categories", "items", "test"), ref = NUL
       overlay <- TRUE
     } else {
       nrow <- ceiling(sqrt(m))
-      ncol <- ceiling(m/nrow)
+      ncol <- ceiling(m / nrow)
       layout <- matrix(1:(nrow * ncol), nrow = nrow, ncol = ncol)
       overlay <- FALSE
     }
@@ -448,7 +579,7 @@ infoplot <- function (object, what = c("categories", "items", "test"), ref = NUL
   } else {
     if (!overlay && m > 1 && what != "test") stop("Overlaying information curves is only possible for tests or single items.")
   }
-  
+
   if (overlay) {
     if (what == "items") info <- info[, items]
     matplot(x = theta, y = info, xlim = xlim, ylim = ylim, type = "l", main = main, lty = lty, col = col, lwd = lwd,
@@ -456,7 +587,7 @@ infoplot <- function (object, what = c("categories", "items", "test"), ref = NUL
     if (what == "items" && !add && legend) legend(x = "topleft", legend = pnms[items], col = col, lwd = lwd, lty = lty, bty = "n")
   } else {
     for (j in items) {
-      matplot(x = theta, y = info[, grepl(nms[j],colnames(info))], xlim = xlim, ylim = ylim, xaxs = "i",
+      matplot(x = theta, y = info[, grepl(paste0(nms[j], "-"), colnames(info))], xlim = xlim, ylim = ylim, xaxs = "i",
               main = pnms[j], type = "l", lty = lty, lwd = lwd, col = col, xlab = xlab, ylab = ylab, add = add, ...)
     }
   }

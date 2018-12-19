@@ -35,7 +35,7 @@ rsmodel <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
     oj <- oj[!unid]
     m <- m - nunid
     ident_items[unid] <- FALSE
-    warning("There were unidentified items (only one category used, ", paste("I", which(unid), sep = "", collapse = ", "), ").")
+    warning("There were unidentified items (only one category used, ", paste(which(unid), collapse = ", "), ").")
   }
 
   ## stop if not all oj equal or oj = 1 (dichotomous items).
@@ -718,14 +718,14 @@ threshpar.rsmodel <- function (object, type = c("mode", "median", "mean"), ref =
   }
 
   ## setup and return result object
-  rv <- structure(tp, class = "threshpar", model = "RSM", type = type, ref = ref, relative = relative, alias = alias, vcov = vc)
+  rv <- structure(tp, class = "threshpar", model = "RSM", type = type, ref = ref, relative = relative, cumulative = cumulative, alias = alias, vcov = vc)
   return(rv)  
 }
 
 discrpar.rsmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
 {
   ## check input
-  if (!is.null(ref)) warning("Argument 'ref' is currently not processed.")  ## FIXME: Implement argument ref for discrimination parameters
+  if (!is.null(ref)) warning("Argument 'ref' is currently not processed.")  ## all discrpars are fixed at 1 anyways
 
   ## extract labels and number of items
   m <- sum(object$items)
@@ -748,9 +748,10 @@ discrpar.rsmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, ...
   return(rv)
 }
 
-personpar.rsmodel <- function (object, ref = NULL, vcov = TRUE, interval = NULL, tol = 1e-8, ...)
+personpar.rsmodel <- function(object, personwise = FALSE, ref = NULL,
+  vcov = TRUE, interval = NULL, tol = 1e-8, ...)
 {
-  ## extract item parameters in pcm formulation
+  # extract item parameters in pcm formulation
   tp <- threshpar(object, ref = ref, type = "mode", alias = TRUE, vcov = FALSE)
   tp <- lapply(tp, cumsum)
   m <- length(tp)
@@ -758,39 +759,102 @@ personpar.rsmodel <- function (object, ref = NULL, vcov = TRUE, interval = NULL,
   os <- 1:o
   osv <- rep.int(os, m)
   rng <- 1:(m * o - 1)
-  
-  ## iterate over raw scores (from 1 until rmax-1), see Fischer & Molenaar, 1995, p.286, Eq. (15.43)
-  if(is.null(interval)) interval <- c(-1, 1) * qlogis(1/m * 1e-3) #FIXME: 1e3 enough?
-  pp <- sapply(rng, function(rawscore) uniroot(function(pp) rawscore - sum(osv * exp(osv * pp - unlist(tp)) / unlist(lapply(tp, function (beta) rep.int(1 + sum(exp(os * pp - beta)), o)))),
-    interval = interval, tol = tol)$root)
-
-  ## calculate person parameters
-  if (vcov) {
-    ## relevant data for joint loglik approach
-    y <- object$data[weights(object) > 0, , drop = FALSE]
-    rs <- rowSums(y)
-    rf <- tabulate(rs, nbins = m * o - 1)
-    cs <- apply(y, 2, tabulate, nbins = o)
-    
-    ## remove unidentified parameters
-    rs <- rs[rf != 0]
-    rng <- rng[rf != 0]
-    pp <- pp[rf != 0]
-    rf <- rf[rf != 0]
-
-    ## transform ip to matrix (o x m)
-    tp <- do.call("cbind", tp)
-
-    ## obtain Hessian from objective function: joint log likelihood
-    cloglik <- function (pp) - sum(rf * rng * pp) + sum(cs * tp) + sum(rf * colSums(log(1 + apply(outer(os, pp), 2, function (x) colSums(exp(x - tp))))))
-    vc <- qr.solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)
+  y <- object$data[weights(object) > 0, , drop = FALSE]
+  rs <- rowSums(y)
+  # calculate person parameters
+  # iterate over raw scores (from 1 until rmax - 1), see Fischer & Molenaar, 1995, p. 286, Eq. (15.43)
+  if(is.null(interval)) interval <- c(-1, 1) * qlogis(1 / m * 1e-3) # FIXME: 1e3 enough?
+  pp <- sapply(rng, function(rawscore) {
+    uniroot(function(pp) {
+      rawscore - sum(osv * exp(osv * pp - unlist(tp)) /
+      unlist(lapply(tp, function(beta) {
+        rep.int(1 + sum(exp(os * pp - beta)), o)
+      })))
+    }, interval = interval, tol = tol)$root
+  })
+  # personwise matches each person with their parameter
+  if(personwise) {
+    pp <- pp[match(rs, rng)]
+    vc <- matrix(NA_real_, length(pp), length(pp))
+    rownames(vc) <- colnames(vc) <- seq_along(rs)
+    rv <- structure(pp, .Names = seq_along(rs), class = "personpar",
+      model = "RSM", vcov = vc, type = "personwise")
   } else {
-    vc <- matrix(NA, nrow = length(rng), ncol = length(rng))
+    if(vcov) {
+      # relevant data for joint loglik approach
+      cs <- apply(y, 2, tabulate, nbins = o)
+      rf <- tabulate(rs, nbins = m * o - 1)
+      # remove unidentified parameters
+      rs <- rs[rf != 0]
+      rng <- rng[rf != 0]
+      pp <- pp[rf != 0]
+      rf <- rf[rf != 0]
+      # transform ip to matrix (o x m)
+      tp <- do.call("cbind", tp)
+      # obtain Hessian from objective function: joint log likelihood
+      cloglik <- function(pp) {
+        - sum(rf * rng * pp) + sum(cs * tp) +
+        sum(rf * colSums(log(1 + apply(outer(os, pp), 2, function(x) {
+          colSums(exp(x - tp))
+        }))))
+      }
+      vc <- solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS",
+        control = list(reltol = tol, maxit = 0, ...))$hessian)
+    } else {
+      vc <- matrix(NA_real_, nrow = length(rng), ncol = length(rng))
+    }
+    rownames(vc) <- colnames(vc) <- rng
+    rv <- structure(pp, .Names = rng, class = "personpar", model = "RSM",
+      vcov = vc, type = "discrete")
   }
-  colnames(vc) <- rownames(vc) <- rng
-  
-  ## setup and return result object
-  rv <- structure(pp, .Names = rng, class = "personpar", model = "RSM", vcov = vc)
+  return(rv)
+}
+
+guesspar.rsmodel <- function(object, alias = TRUE, vcov = TRUE, ...)
+{
+  N <- sum(object$items)
+  lbs <- colnames(object$data)
+  if(alias) {
+    g <- rep(0, N)
+    vc <-
+    if(vcov) {
+      matrix(0, N, N)
+    } else {
+      matrix(NA_real_, N, N)
+    }
+    names(g) <- rownames(vc) <- colnames(vc) <- lbs
+  } else {
+    g <- numeric()
+    vc <- matrix(0, 0, 0)
+    alias <- rep(1, N)
+    names(alias) <- lbs
+  }
+  rv <- structure(g, class = "guesspar", model = "RSM",
+    alias = alias, vcov = vc)
+  return(rv)
+}
+
+upperpar.rsmodel <- function(object, alias = TRUE, vcov = TRUE, ...)
+{
+  N <- sum(object$items)
+  lbs <- colnames(object$data)
+  if(alias) {
+    u <- rep(1, N)
+    vc <-
+    if(vcov) {
+      matrix(0, N, N)
+    } else {
+      matrix(NA_real_, N, N)
+    }
+    names(u) <- rownames(vc) <- colnames(vc) <- lbs
+  } else {
+    u <- numeric()
+    vc <- matrix(0, 0, 0)
+    alias <- rep(1, N)
+    names(alias) <- lbs
+  }
+  rv <- structure(u, class = "upperpar", model = "RSM",
+    alias = alias, vcov = vc)
   return(rv)
 }
 

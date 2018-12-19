@@ -25,6 +25,8 @@
 \seealso{\code{\link{btmodel}}, \code{\link{raschmodel}}}
 
 \examples{
+o <- options(digits = 4)
+
 ## data
 data("GermanParties2009", package = "psychotools")
 
@@ -33,6 +35,11 @@ bt <- btmodel(GermanParties2009$preference)
 
 ## worth parameters
 worth(bt)
+
+## or
+itempar(bt)
+
+options(digits = o$digits)
 }
 
 \keyword{classes}

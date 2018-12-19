@@ -25,11 +25,11 @@ A data frame containing 316 observations on 4 variables.
 The 24 items are constructed by factorial combination of four different
 frustrating situations (see below), three possible verbally aggressive responses
 (curse, scold, shout), and two behavioural models (want, do). The four situations are
-\tabular{ll}{
+\tabular{rl}{
   S1:\tab A bus fails to stop for me.\cr
   S2:\tab I miss a train because a clerk gave me faulty information.\cr
   S3:\tab The grocery store closes just as I am about to enter.\cr
-  S4:\tab The operator disconnects me when I used up my last 10 cents for a call.\cr
+  S4:\tab The operator disconnects me when I used up my last 10 cents for a call.
 }
 Note that the first two situations are other-to-blame situations, and the latter two are self-to-blame
 situations.

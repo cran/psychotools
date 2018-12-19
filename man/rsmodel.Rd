@@ -25,10 +25,10 @@ rsmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
 }
 
 \arguments{
-  \item{y}{object that can be coerced (via
-  \code{\link[base]{as.matrix}}). Typically either already a
-  \code{\link[base]{matrix}} or a \code{\link[base]{data.frame}} with
-  items in the columns and observations in the rows.}
+  \item{y}{item response object that can be coerced (via \code{\link[base]{as.matrix}})
+    to a numeric matrix with scores 0, 1, \dots Typically, either
+    already a matrix, data frame, or dedicated object of class
+    \code{\link{itemresp}}.}
   \item{weights}{an optional vector of weights (interpreted as case
     weights).}
   \item{deriv}{character. If "sum" (the default), the first derivatives
@@ -98,7 +98,8 @@ rsmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
     \emph{Psychometrika}, \bold{2}(4), 581--594.
 }
 
-\seealso{\code{\link{pcmodel}}, \code{\link{raschmodel}}, \code{\link{btmodel}}}
+\seealso{\code{\link{pcmodel}}, \code{\link{gpcmodel}}, \code{\link{raschmodel}},
+  \code{\link{plmodel}}, \code{\link{btmodel}}}
 
 \examples{
 o <- options(digits = 4)

@@ -1,3 +1,40 @@
+Changes in Version 0.5-0
+
+  o Infrastructure for IRT modeling in the unified "psychotools" framework is
+    extended by marginal maximum likelihood (MML) estimation of generalized partial
+    credit models and parametric logistic models, respectively. The corresponding
+    fitting functions (see below for details) call mirt() or multipleGroup() from
+    the "mirt" package but return objects for which all standard extractor methods
+    (item parameters, person parameters, etc.) and visualization methods (item
+    response curves, parameter profiles, person-item maps, etc.) are available.
+    
+  o The new gpcmodel() function interfaces mirt (see above) and fits (generalized)
+    partial credit models (GPCMs) by MML.
+    
+  o The new plmodel() function interfaces mirt (see above) and fits various
+    parametric IRT logistic models using MML: 1PL (Rasch), 2PL, 3PL, 3PLu, and
+    4PL.
+
+  o New functions and eponymous classes guesspar(), and upperpar() to
+    extract/represent so-called guessing parameters and upper asymptote parameters
+    of IRT models.
+
+  o personpar() now distinguishes between parameters of the assumed person ability
+    distribution (personwise = FALSE) and the individual person parameters for
+    each person/subject in the underlying data set (personwise = TRUE). In the CML
+    case, the latter simply computes the raw score for each person and then extracts
+    the corresponding person parameter. In the MML case, this necessitates
+    (numerically) integrating out the individual person parameters (also known as
+    factor scores or latent trait estimates) based on the underlying normal
+    distribution.
+
+  o Added new data set "ConspiracistBeliefs2016" from the Open Source Psychometrics
+    Project (2016).
+
+  o Added new simulated data set "Sim3PL" for fitting dichotomous IRT models,
+    especially the 3PL and 3PLu.
+
+
 Changes in Version 0.4-3
 
   o Conditionally register all estfun() and bread() S3 methods for model

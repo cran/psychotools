@@ -77,7 +77,11 @@ mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
   fitted  <- n*pcat
   G2      <- 2*sum(ysum*log(ysum/fitted), na.rm=TRUE)
   df      <- sum(ncat - 1) - length(coef)
-  gof     <- c(G2=G2, df=df, pval = 1 - pchisq(G2, df))
+  gof     <- c(G2=G2, df=df, pval = pchisq(G2, df, lower.tail=FALSE))
+  if(df == 0 && abs(G2) < sqrt(.Machine$double.eps)) {
+    gof["G2"] <- 0
+    gof["pval"] <- 1
+  }
 
   rval <- list(
     y = y,

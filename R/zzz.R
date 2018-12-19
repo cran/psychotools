@@ -23,13 +23,19 @@ register_s3_method <- function(pkg, generic, class, fun = NULL) {
 }
 
 .onLoad <- function(libname, pkgname) {
-  register_s3_method("sandwich", "estfun", "btmodel")
-  register_s3_method("sandwich", "estfun", "raschmodel")
-  register_s3_method("sandwich", "estfun", "rsmodel")
-  register_s3_method("sandwich", "estfun", "pcmodel")
-  register_s3_method("sandwich", "estfun", "mptmodel")
-  register_s3_method("sandwich", "bread",  "raschmodel")
-  register_s3_method("sandwich", "bread",  "rsmodel")
-  register_s3_method("sandwich", "bread",  "pcmodel")
+  if(getRversion() < "3.6.0") {
+    register_s3_method("sandwich", "estfun", "btmodel")
+    register_s3_method("sandwich", "estfun", "raschmodel")
+    register_s3_method("sandwich", "estfun", "rsmodel")
+    register_s3_method("sandwich", "estfun", "pcmodel")
+    register_s3_method("sandwich", "estfun", "gpcmodel")
+    register_s3_method("sandwich", "estfun", "plmodel")
+    register_s3_method("sandwich", "estfun", "mptmodel")
+    register_s3_method("sandwich", "bread",  "raschmodel")
+    register_s3_method("sandwich", "bread",  "rsmodel")
+    register_s3_method("sandwich", "bread",  "pcmodel")
+    register_s3_method("sandwich", "bread",  "gpcmodel")
+    register_s3_method("sandwich", "bread",  "plmodel")
+  }
   invisible()
 }

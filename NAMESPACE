@@ -6,7 +6,9 @@ import(
 importFrom("grDevices",
   "extendrange",
   "gray.colors",
-  "hcl"
+  "hcl",
+  "col2rgb",
+  "rgb"
 )
 importFrom("utils",
   "getParseData",
@@ -31,11 +33,15 @@ export(
   "threshpar",
   "discrpar",
   "personpar",
+  "guesspar",
+  "upperpar",
 
   ## psychometric model fitters
   "raschmodel",
   "rsmodel",
   "pcmodel",
+  "gpcmodel",
+  "plmodel",
   "btmodel",
   "mptmodel",
 
@@ -58,12 +64,16 @@ export(
   "estfun.raschmodel",
   "estfun.rsmodel",
   "estfun.pcmodel", 
+  "estfun.gpcmodel", 
+  "estfun.plmodel", 
   "estfun.mptmodel", 
 
   ## bread methods
   "bread.raschmodel",
   "bread.rsmodel",
   "bread.pcmodel", 
+  "bread.gpcmodel", 
+  "bread.plmodel", 
 
 
   ## graphical functions
@@ -136,6 +146,7 @@ S3method("xtfrm", "paircomp")
 ## methods for raschmodel objects
 S3method("coef", "raschmodel")
 S3method("discrpar", "raschmodel")
+S3method("guesspar", "raschmodel")
 S3method("itempar", "raschmodel")
 S3method("logLik", "raschmodel")
 S3method("nobs", "raschmodel")
@@ -146,6 +157,7 @@ S3method("print", "raschmodel")
 S3method("print", "summary.raschmodel")
 S3method("summary", "raschmodel")
 S3method("threshpar", "raschmodel")
+S3method("upperpar", "raschmodel")
 S3method("vcov", "raschmodel")
 S3method("weights", "raschmodel")
 S3method("worth", "raschmodel")
@@ -153,6 +165,7 @@ S3method("worth", "raschmodel")
 ## methods for rsmodel objects
 S3method("coef", "rsmodel")
 S3method("discrpar", "rsmodel")
+S3method("guesspar", "rsmodel")
 S3method("itempar", "rsmodel")
 S3method("logLik", "rsmodel")
 S3method("nobs", "rsmodel")
@@ -163,12 +176,14 @@ S3method("print", "rsmodel")
 S3method("print", "summary.rsmodel")
 S3method("summary", "rsmodel")
 S3method("threshpar", "rsmodel")
+S3method("upperpar", "rsmodel")
 S3method("vcov", "rsmodel")
 S3method("weights", "rsmodel")
 
 ## methods for pcmodel objects
 S3method("coef", "pcmodel")
 S3method("discrpar", "pcmodel")
+S3method("guesspar", "pcmodel")
 S3method("itempar", "pcmodel")
 S3method("logLik", "pcmodel")
 S3method("nobs", "pcmodel")
@@ -179,8 +194,46 @@ S3method("print", "pcmodel")
 S3method("print", "summary.pcmodel")
 S3method("summary", "pcmodel")
 S3method("threshpar", "pcmodel")
+S3method("upperpar", "pcmodel")
 S3method("vcov", "pcmodel")
 S3method("weights", "pcmodel")
+
+## methods for gpcmodel objects
+S3method("coef", "gpcmodel")
+S3method("discrpar", "gpcmodel")
+S3method("guesspar", "gpcmodel")
+S3method("itempar", "gpcmodel")
+S3method("logLik", "gpcmodel")
+S3method("nobs", "gpcmodel")
+S3method("personpar", "gpcmodel")
+S3method("plot", "gpcmodel")
+S3method("predict", "gpcmodel")
+S3method("print", "gpcmodel")
+S3method("print", "summary.gpcmodel")
+S3method("summary", "gpcmodel")
+S3method("threshpar", "gpcmodel")
+S3method("upperpar", "gpcmodel")
+S3method("vcov", "gpcmodel")
+S3method("weights", "gpcmodel")
+
+## methods for plmodel objects
+S3method("coef", "plmodel")
+S3method("confint", "plmodel")
+S3method("discrpar", "plmodel")
+S3method("guesspar", "plmodel")
+S3method("itempar", "plmodel")
+S3method("logLik", "plmodel")
+S3method("nobs", "plmodel")
+S3method("personpar", "plmodel")
+S3method("plot", "plmodel")
+S3method("predict", "plmodel")
+S3method("print", "plmodel")
+S3method("print", "summary.plmodel")
+S3method("summary", "plmodel")
+S3method("threshpar", "plmodel")
+S3method("upperpar", "plmodel")
+S3method("vcov", "plmodel")
+S3method("weights", "plmodel")
 
 ## methods for btmodel objects
 S3method("coef", "btmodel")
@@ -235,6 +288,16 @@ S3method("coef", "threshpar")
 S3method("print", "threshpar")
 S3method("vcov", "threshpar")
 
+## methods for guesspar objects
+S3method("coef", "guesspar")
+S3method("print", "guesspar")
+S3method("vcov", "guesspar")
+
+## methods for upperpar objects
+S3method("coef", "upperpar")
+S3method("print", "upperpar")
+S3method("vcov", "upperpar")
+
 ## methods for anchor objects
 S3method("anchor", "default")
 S3method("anchor", "formula")
@@ -249,3 +312,18 @@ S3method("print", "anchortest")
 S3method("summary", "anchortest")
 S3method("print", "summary.anchortest")
 
+## conditional registration of strucchange methods
+if(getRversion() >= "3.6.0") {
+  S3method(sandwich::estfun, "btmodel")
+  S3method(sandwich::estfun, "raschmodel")
+  S3method(sandwich::estfun, "rsmodel")
+  S3method(sandwich::estfun, "pcmodel")
+  S3method(sandwich::estfun, "gpcmodel")
+  S3method(sandwich::estfun, "plmodel")
+  S3method(sandwich::estfun, "mptmodel")
+  S3method(sandwich::bread,  "raschmodel")
+  S3method(sandwich::bread,  "rsmodel")
+  S3method(sandwich::bread,  "pcmodel")
+  S3method(sandwich::bread,  "gpcmodel")
+  S3method(sandwich::bread,  "plmodel")
+}

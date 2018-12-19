@@ -75,8 +75,8 @@ btmodel(y, weights = NULL, type = c("loglin", "logit"), ref = NULL,
   \item{estfun}{empirical estimating function (also known as scores or gradient contributions).}
 }
 
-\seealso{\code{\link{pcmodel}}, \code{\link{rsmodel}},
-  \code{\link{raschmodel}}, the \pkg{eba} package}
+\seealso{\code{\link{pcmodel}}, \code{\link{gpcmodel}}, \code{\link{rsmodel}},
+  \code{\link{raschmodel}}, \code{\link{plmodel}}, the \pkg{eba} package}
 
 \examples{
 o <- options(digits = 4)

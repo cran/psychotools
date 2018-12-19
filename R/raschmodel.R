@@ -3,6 +3,7 @@ raschmodel <- function(y, weights = NULL, start = NULL, reltol = 1e-10,
   deriv = c("sum", "diff", "numeric"), hessian = TRUE, maxit = 100L,
   full = TRUE, gradtol = reltol, iterlim = maxit, ...)
 {
+
   ## argument matching
   if(missing(reltol) && !missing(gradtol) && !is.null(gradtol)) reltol <- gradtol
   if(missing(maxit) && !missing(iterlim) && !is.null(iterlim)) maxit <- iterlim
@@ -10,6 +11,10 @@ raschmodel <- function(y, weights = NULL, start = NULL, reltol = 1e-10,
 
   ## original data
   y <- as.matrix(y)
+  ## data should be dichotomous
+  if(any(apply(y, 2, function(x) sum(unique(x) != "NA", na.rm = TRUE) > 2))) {
+    stop("'y' should only contain dichotomous data.")
+  }
   k <- k_orig <- ncol(y)
   n <- nrow(y)
   if(is.null(colnames(y))) colnames(y) <- paste("Item", gsub(" ", "0", format(1:k)), sep = "")
@@ -600,7 +605,7 @@ threshpar.raschmodel <- function (object, type = c("mode", "median", "mean"), re
 discrpar.raschmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
 {
   ## check input
-  if (!is.null(ref)) warning("Argument 'ref' is currently not processed.") ## FIXME: Implement argument ref for discrimination parameters
+  if (!is.null(ref)) warning("Argument 'ref' is currently not processed.") ## all discrpars are fixed at 1 anyways
 
   ## extract labels and number of items
   lbs <- c("", names(coef(object)))
@@ -623,44 +628,103 @@ discrpar.raschmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, 
   return(rv)
 }
 
-personpar.raschmodel <- function (object, ref = NULL, vcov = TRUE, interval = NULL, tol = 1e-8, ...)
+personpar.raschmodel <- function(object, personwise = FALSE, ref = NULL,
+  vcov = TRUE, interval = NULL, tol = 1e-8, ...)
 {
-  ## extract item parameters and relevant informations
+  # extract item parameters and relevant informations
   ip <- itempar(object, ref = ref, vcov = FALSE)
   m <- length(ip)
-  rng <- 1:(m-1)
-
-  ## calculate person parameters
-  ## iterate over raw scores (from 1 until rmax-1), see Fischer & Molenaar, 1995, p.55
-  if(is.null(interval)) interval <- c(-1, 1) * qlogis(1/m * 1e-3) #FIXME: 1e3 enough?
-  pp <- sapply(rng, function(rawscore) uniroot(function(pp) rawscore - sum(plogis(pp - ip)),
-    interval = interval, tol = tol)$root)
-
-  if (vcov) {    
-    ## relevant data for joint loglik approach
-    y <- object$data[weights(object) > 0, , drop = FALSE]
-    cs <- colSums(y)
-    rs <- rowSums(y)
-    rf <- tabulate(rs, nbins = m - 1)
-
-    ## remove unidentified parameters
-    rs <- rs[rf != 0]
-    rng <- rng[rf != 0]
-    pp <- pp[rf != 0]
-    rf <- rf[rf != 0]
-
-    ## obtain Hessian from objective function: joint log likelihood
-    cloglik <- function (pp)  - sum(rf * rng * pp) + sum(cs * ip) + sum(rf * rowSums(log(1 + exp(outer(pp, ip, "-")))))
-    vc <- qr.solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS", control = list(reltol = tol, maxit = 0, ...))$hessian)
+  rng <- 1:(m - 1)
+  y <- object$data[weights(object) > 0, , drop = FALSE]
+  rs <- rowSums(y)
+  # calculate person parameters
+  # iterate over raw scores (from 1 until rmax - 1), see Fischer & Molenaar, 1995, p. 55
+  if(is.null(interval)) interval <- c(-1, 1) * qlogis(1 / m * 1e-3) # FIXME: 1e3 enough?
+  pp <- sapply(rng, function(rawscore) {
+    uniroot(function(pp) {
+      rawscore - sum(plogis(pp - ip))
+    }, interval = interval, tol = tol)$root
+  })
+  # personwise matches each person with their parameter
+  if(personwise) {
+    pp <- pp[match(rs, rng)]
+    vc <- matrix(NA_real_, length(pp), length(pp))
+    rownames(vc) <- colnames(vc) <- seq_along(rs)
+    rv <- structure(pp, .Names = seq_along(rs), class = "personpar",
+      model = "RM", vcov = vc, type = "personwise")
   } else {
-    vc <- matrix(NA_real_, nrow = length(rng), ncol = length(rng))
+    if(vcov) {
+      # relevant data for joint loglik approach
+      cs <- colSums(y)
+      rf <- tabulate(rs, nbins = m - 1)
+      # remove unidentified parameters
+      rs <- rs[rf != 0]
+      rng <- rng[rf != 0]
+      pp <- pp[rf != 0]
+      rf <- rf[rf != 0]
+      # obtain Hessian from objective function: joint log likelihood
+      cloglik <- function(pp) {
+        - sum(rf * rng * pp) + sum(cs * ip) +
+        sum(rf * rowSums(log(1 + exp(outer(pp, ip, "-")))))
+      }
+      vc <- solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS",
+        control = list(reltol = tol, maxit = 0, ...))$hessian)
+    } else {
+      vc <- matrix(NA_real_, nrow = length(rng), ncol = length(rng))
+    }
+    rownames(vc) <- colnames(vc) <- rng
+    rv <- structure(pp, .Names = rng, class = "personpar", model = "RM",
+      vcov = vc, type = "discrete")
   }
-  colnames(vc) <- rownames(vc) <- rng
-
-  ## setup and return result object
-  rv <- structure(pp, .Names = rng, class = "personpar", model = "RM", vcov = vc)
   return(rv)
+}
 
+guesspar.raschmodel <- function(object, alias = TRUE, vcov = TRUE, ...)
+{
+  N <- length(object$items)
+  lbs <- colnames(object$data)
+  if(alias) {
+    g <- rep(0, N)
+    vc <-
+    if(vcov) {
+      matrix(0, N, N)
+    } else {
+      matrix(NA_real_, N, N)
+    }
+    names(g) <- rownames(vc) <- colnames(vc) <- lbs
+  } else {
+    g <- numeric()
+    vc <- matrix(0, 0, 0)
+    alias <- rep(1, N)
+    names(alias) <- lbs
+  }
+  rv <- structure(g, class = "guesspar", model = "RM", 
+    alias = alias, vcov = vc)
+  return(rv)
+}
+
+upperpar.raschmodel <- function(object, alias = TRUE, vcov = TRUE, ...)
+{
+  N <- length(object$items)
+  lbs <- colnames(object$data)
+  if(alias) {
+    u <- rep(1, N)
+    vc <-
+    if(vcov) {
+      matrix(0, N, N)
+    } else {
+      matrix(NA_real_, N, N)
+    }
+    names(u) <- rownames(vc) <- colnames(vc) <- lbs
+  } else {
+    u <- numeric()
+    vc <- matrix(0, 0, 0)
+    alias <- rep(1, N)
+    names(alias) <- lbs
+  }
+  rv <- structure(u, class = "upperpar", model = "RM",
+    alias = alias, vcov = vc)
+  return(rv)
 }
 
 nobs.raschmodel <- function (object, ...)

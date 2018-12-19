@@ -3,6 +3,8 @@
 \alias{plot.raschmodel}
 \alias{plot.rsmodel}
 \alias{plot.pcmodel}
+\alias{plot.plmodel}
+\alias{plot.gpcmodel}
 
 \title{Visualizing IRT Models}
 
@@ -17,18 +19,22 @@
   type = c("regions", "profile", "curves", "information", "piplot"), \dots)
 \S3method{plot}{pcmodel}(x,
   type = c("regions", "profile", "curves", "information", "piplot"), \dots)
+\S3method{plot}{plmodel}(x,
+  type = c("regions", "profile", "curves", "information", "piplot"), \dots)
+\S3method{plot}{gpcmodel}(x,
+  type = c("regions", "profile", "curves", "information", "piplot"), \dots)
 }
 
 \arguments{
-  \item{x}{a fitted model object of class
-    \code{"raschmodel"}, \code{"rsmodel"} or \code{"pcmodel"}.}
+  \item{x}{a fitted model object of class \code{"raschmodel"},
+    \code{"rsmodel"}, \code{"pcmodel"}, \code{"plmodel"} or \code{"gpcmodel"}.}
   \item{type}{character, specifying the type of plot to create.}
-  \item{\dots}{further arguments passed over to the specific
-    plotting function.}
+  \item{\dots}{further arguments passed over to the specific plotting
+    function.}
 }
 
 \seealso{\code{\link{curveplot}}, \code{\link{regionplot}},
-  \code{\link{profileplot}},  \code{\link{infoplot}},
-  \code{\link{piplot}}}
+  \code{\link{profileplot}}, \code{\link{infoplot}}, \code{\link{piplot}}}
 
 \keyword{hplot}
+

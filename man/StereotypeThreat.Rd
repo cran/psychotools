@@ -144,7 +144,7 @@ f <- c(f[1:4], 'abstract ~ c(ar1, ar2, ar3, ar3) * 1')
 m$m5b <- mgcfa(f, group.equal = c("loadings", "residuals", "intercepts"))
 
 ## Step 6: Different latent mean structure
-f <- c(f, 'ability ~  c(maj, min1, maj, min2) * 1 + c(0, NA, 0, NA) * 1')
+f <- c(f, 'ability ~  c(maj, min, maj, min) * 1 + c(0, NA, 0, NA) * 1')
 m$m6 <- mgcfa(f, group.equal = c("loadings", "residuals", "intercepts"))
 
 ## Extract measures of fit

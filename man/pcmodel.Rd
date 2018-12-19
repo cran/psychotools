@@ -25,19 +25,19 @@ pcmodel(y, weights = NULL, nullcats = c("keep", "downcode", "ignore"),
 }
 
 \arguments{
-  \item{y}{object that can be coerced (via
-  \code{\link[base]{as.matrix}}). Typically either already a
-  \code{\link[base]{matrix}} or a \code{\link[base]{data.frame}} with
-  items in the columns and observations in the rows.}
+  \item{y}{item response object that can be coerced (via \code{\link[base]{as.matrix}})
+    to a numeric matrix with scores 0, 1, \dots Typically, either
+    already a matrix, data frame, or dedicated object of class
+    \code{\link{itemresp}}.}
   \item{weights}{an optional vector of weights (interpreted as case
     weights).}
   \item{deriv}{character. If "sum" (the default), the first derivatives
     of the elementary symmetric functions are calculated with the sum
     algorithm. Otherwise ("diff") the difference algorithm (faster but
     numerically unstable) is used.}
-  \item{nullcats}{character vector of length one, specifying how items with
-  null categories, i.e., categories not used, should be treated (see
-  details below).}
+  \item{nullcats}{character string, specifying how items with
+    null categories (i.e., categories not observed) should be treated (see
+    details below).}
   \item{start}{an optional vector of starting values.}
   \item{hessian}{logical. Should the Hessian of the final model be computed?
     If set to \code{FALSE}, the \code{vcov} method can only return \code{NA}s
@@ -128,7 +128,8 @@ pcmodel(y, weights = NULL, nullcats = c("keep", "downcode", "ignore"),
     \emph{Psychometrika}, \bold{58}(1), 87--99.
 }
 
-\seealso{\code{\link{rsmodel}}, \code{\link{raschmodel}}, \code{\link{btmodel}}}
+\seealso{\code{\link{gpcmodel}}, \code{\link{rsmodel}}, \code{\link{raschmodel}},
+  \code{\link{plmodel}}, \code{\link{btmodel}}}
 
 \examples{
 o <- options(digits = 4)

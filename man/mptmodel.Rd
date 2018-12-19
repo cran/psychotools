@@ -81,8 +81,9 @@ mptmodel(y, weights = NULL, spec, treeid = NULL,
     package.}
 }
 
-\seealso{\code{\link{btmodel}}, \code{\link{pcmodel}}, \code{\link{rsmodel}},
-  \code{\link{raschmodel}}, \code{\link{mptspec}}, the \pkg{mpt} package}
+\seealso{\code{\link{btmodel}}, \code{\link{pcmodel}}, \code{\link{gpcmodel}},
+  \code{\link{rsmodel}}, \code{\link{raschmodel}}, \code{\link{plmodel}},
+  \code{\link{mptspec}}, the \pkg{mpt} package}
 
 \examples{
 o <- options(digits = 4)

@@ -25,7 +25,8 @@ raschmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
 }
 
 \arguments{
-  \item{y}{object that can be coerced (via \code{\link[base]{as.matrix}}) to a binary 0/1 matrix.}
+  \item{y}{item response object that can be coerced (via \code{\link[base]{as.matrix}})
+    to a binary 0/1 matrix (e.g., from class \code{\link{itemresp}}.}
   \item{weights}{an optional vector of weights (interpreted as case weights).}
   \item{start}{an optional vector of starting values.}
   \item{deriv}{character. Which type of derivatives should be used for computing
@@ -76,7 +77,8 @@ raschmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
   Hessian matrix.}
 }
 
-\seealso{\code{\link{pcmodel}}, \code{\link{rsmodel}}, \code{\link{btmodel}}}
+\seealso{\code{\link{plmodel}}, \code{\link{pcmodel}}, \code{\link{rsmodel}},
+  \code{\link{gpcmodel}}, \code{\link{btmodel}}}
 
 \examples{
 o <- options(digits = 4)
