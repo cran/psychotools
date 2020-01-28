@@ -65,8 +65,11 @@ data("VerbalAggression", package = "psychotools")
 
 ## Rasch model for the self-to-blame situations
 m <- raschmodel(VerbalAggression$resp2[, 1:12])
-summary(m)
 plot(m)
+
+## IGNORE_RDIFF_BEGIN
+summary(m)
+## IGNORE_RDIFF_END
 }
 
 \keyword{datasets}

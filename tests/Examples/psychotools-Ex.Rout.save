@@ -1,6 +1,6 @@
 
-R version 3.5.1 (2018-07-02) -- "Feather Spray"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
+Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -547,6 +547,9 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 > 
 > ## Rasch model for the self-to-blame situations
 > m <- raschmodel(VerbalAggression$resp2[, 1:12])
+> plot(m)
+> 
+> ## IGNORE_RDIFF_BEGIN
 > summary(m)
 
 Rasch model
@@ -570,7 +573,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 Log-likelihood: -1255 (df = 11) 
 Number of iterations in BFGS optimization: 19 
 
-> plot(m)
+> ## IGNORE_RDIFF_END
 > 
 > 
 > 
@@ -1024,18 +1027,6 @@ c bar
 > plot(pcmod, type = "curves", item = 1, lty = 2, add = TRUE)
 > legend(x = "topleft", y = 1.0, legend = c("RSM", "PCM"), lty = 1:2, bty = "n")
 > 
-> if(requireNamespace("mirt")) {
-+ ## fit 2PL and generaliced partial credit model to verbal aggression data
-+ twoplmod <- plmodel(VerbalAggression$resp2)
-+ gpcmod <- gpcmodel(VerbalAggression$resp)
-+ 
-+ ## curve plots of the dichotomous 2PL
-+ plot(twoplmod, type = "curves", xlim = c(-6, 6))
-+ 
-+ ## curve plots under the GPCM for the first six items of the data set
-+ plot(gpcmod, type = "curves", items = 1:6, xlim = c(-6, 6))
-+ }
-Loading required namespace: mirt
 > 
 > 
 > 
@@ -1089,6 +1080,7 @@ S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout
 + ## extract the standard errors
 + sqrt(diag(vcov(dp2)))
 + }
+Loading required namespace: mirt
 S1WantCurse   S1DoCurse S1WantScold   S1DoScold S1WantShout   S1DoShout 
      0.2275      0.2688      0.2364      0.3494      0.2107      0.2226 
 S2WantCurse   S2DoCurse S2WantScold   S2DoScold S2WantShout   S2DoShout 
@@ -2049,7 +2041,7 @@ Warning in pcmodel(pcd, nullcats = "downcode") :
 > 
 > ### ** Examples
 > 
-> o <- options(digits = 4)
+> o <- options(digits = 3)
 > 
 > ## load verbal aggression data
 > data("VerbalAggression", package = "psychotools")
@@ -2072,97 +2064,97 @@ Item response person parameters (RM):
 > ## extract variance-covariance matrix and standard errors
 > vc <- vcov(rap)
 > sqrt(diag(vc))
-      1       2       3       4       5       6       7       8       9      10 
-0.51966 0.24130 0.24436 0.13692 0.14951 0.15399 0.11909 0.10416 0.10469 0.10614 
-     11      12      13      14      15      16      17      18      19      20 
-0.11883 0.10567 0.11972 0.09392 0.09979 0.12279 0.16944 0.15343 0.17813 0.24846 
-     21      22      23 
-0.22583 0.35604 0.61788 
+     1      2      3      4      5      6      7      8      9     10     11 
+0.5197 0.2413 0.2444 0.1369 0.1495 0.1540 0.1191 0.1042 0.1047 0.1061 0.1188 
+    12     13     14     15     16     17     18     19     20     21     22 
+0.1057 0.1197 0.0939 0.0998 0.1228 0.1694 0.1534 0.1781 0.2485 0.2258 0.3560 
+    23 
+0.6179 
 > 
 > ## Wald confidence intervals
 > confint(rap)
-      2.5 %   97.5 %
-1  -4.63698 -2.59993
-2  -3.31705 -2.37117
-3  -2.83415 -1.87627
-4  -2.24987 -1.71316
-5  -1.96243 -1.37636
-6  -1.69654 -1.09291
-7  -1.37782 -0.91099
-8  -1.11453 -0.70621
-9  -0.89236 -0.48199
-10 -0.67885 -0.26280
-11 -0.49103 -0.02524
-12 -0.25348  0.16072
-13 -0.06767  0.40163
-14  0.20043  0.56857
-15  0.41341  0.80458
-16  0.60312  1.08446
-17  0.76104  1.42522
-18  1.06215  1.66356
-19  1.31249  2.01076
-20  1.51649  2.49045
-21  1.97136  2.85659
-22  2.25108  3.64672
-23  2.57033  4.99237
+     2.5 %  97.5 %
+1  -4.6370 -2.5999
+2  -3.3170 -2.3712
+3  -2.8342 -1.8763
+4  -2.2499 -1.7132
+5  -1.9624 -1.3764
+6  -1.6965 -1.0929
+7  -1.3778 -0.9110
+8  -1.1145 -0.7062
+9  -0.8924 -0.4820
+10 -0.6789 -0.2628
+11 -0.4910 -0.0252
+12 -0.2535  0.1607
+13 -0.0677  0.4016
+14  0.2004  0.5686
+15  0.4134  0.8046
+16  0.6031  1.0845
+17  0.7610  1.4252
+18  1.0621  1.6636
+19  1.3125  2.0108
+20  1.5165  2.4904
+21  1.9714  2.8566
+22  2.2511  3.6467
+23  2.5703  4.9924
 > 
 > ## now match each person to person parameter with the corresponding raw score
 > personpar(ram, personwise = TRUE)[1:6]
-      1       2       3       4       5       6 
--0.6872 -3.6185 -0.4708  0.3845 -0.4708 -0.2581 
+     1      2      3      4      5      6 
+-0.687 -3.618 -0.471  0.385 -0.471 -0.258 
 > 
 > ## person parameters for RSM/PCM fitted to original polytomous data
 > rsm <- rsmodel(VerbalAggression$resp)
 > pcm <- pcmodel(VerbalAggression$resp)
 > cbind(personpar(rsm, vcov = FALSE), personpar(pcm, vcov = FALSE))
-       [,1]     [,2]
-1  -3.76574 -3.78510
-2  -3.07212 -3.08660
-3  -2.66235 -2.67303
-4  -2.36718 -2.37489
-5  -2.13384 -2.13920
-6  -1.93895 -1.94245
-7  -1.77011 -1.77213
-8  -1.61995 -1.62079
-9  -1.48374 -1.48366
-10 -1.35826 -1.35744
-11 -1.24121 -1.23983
-12 -1.13089 -1.12907
-13 -1.02601 -1.02387
-14 -0.92556 -0.92319
-15 -0.82872 -0.82619
-16 -0.73483 -0.73220
-17 -0.64333 -0.64066
-18 -0.55375 -0.55109
-19 -0.46566 -0.46306
-20 -0.37871 -0.37621
-21 -0.29256 -0.29020
-22 -0.20692 -0.20473
-23 -0.12148 -0.11951
-24 -0.03597 -0.03426
-25  0.04987  0.05128
-26  0.13634  0.13740
-27  0.22369  0.22437
-28  0.31223  0.31248
-29  0.40228  0.40206
-30  0.49418  0.49345
-31  0.58830  0.58703
-32  0.68508  0.68325
-33  0.78502  0.78262
-34  0.88871  0.88575
-35  0.99683  0.99334
-36  1.11026  1.10630
-37  1.23004  1.22572
-38  1.35753  1.35300
-39  1.49447  1.48998
-40  1.64323  1.63911
-41  1.80705  1.80379
-42  1.99067  1.98894
-43  2.20134  2.20206
-44  2.45119  2.45561
-45  2.76292  2.77274
-46  3.18803  3.20541
-47  3.89319  3.92095
+      [,1]    [,2]
+1  -3.7657 -3.7851
+2  -3.0721 -3.0866
+3  -2.6623 -2.6730
+4  -2.3672 -2.3749
+5  -2.1338 -2.1392
+6  -1.9390 -1.9424
+7  -1.7701 -1.7721
+8  -1.6200 -1.6208
+9  -1.4837 -1.4837
+10 -1.3583 -1.3574
+11 -1.2412 -1.2398
+12 -1.1309 -1.1291
+13 -1.0260 -1.0239
+14 -0.9256 -0.9232
+15 -0.8287 -0.8262
+16 -0.7348 -0.7322
+17 -0.6433 -0.6407
+18 -0.5537 -0.5511
+19 -0.4657 -0.4631
+20 -0.3787 -0.3762
+21 -0.2926 -0.2902
+22 -0.2069 -0.2047
+23 -0.1215 -0.1195
+24 -0.0360 -0.0343
+25  0.0499  0.0513
+26  0.1363  0.1374
+27  0.2237  0.2244
+28  0.3122  0.3125
+29  0.4023  0.4021
+30  0.4942  0.4934
+31  0.5883  0.5870
+32  0.6851  0.6833
+33  0.7850  0.7826
+34  0.8887  0.8857
+35  0.9968  0.9933
+36  1.1103  1.1063
+37  1.2300  1.2257
+38  1.3575  1.3530
+39  1.4945  1.4900
+40  1.6432  1.6391
+41  1.8071  1.8038
+42  1.9907  1.9889
+43  2.2013  2.2021
+44  2.4512  2.4556
+45  2.7629  2.7727
+46  3.1880  3.2054
+47  3.8932  3.9209
 > 
 > if(requireNamespace("mirt")) {
 + ## fit a 2PL accounting for gender impact and
@@ -2183,8 +2175,8 @@ Item response person parameters (RM):
 + ## (integrated out over the normal ability distribution)
 + personpar(twoplm, personwise = TRUE)[1:6]
 + }
-      1       2       3       4       5       6 
--0.3508 -1.6954 -0.1343  0.4718 -0.1717 -0.1252 
+     1      2      3      4      5      6 
+-0.351 -1.695 -0.134  0.472 -0.172 -0.125 
 > 
 > options(digits = o$digits)
 > 
@@ -2215,22 +2207,6 @@ Item response person parameters (RM):
 > ## just visualize the first six items and the person parameter plot
 > plot(pcmod, type = "piplot", items = 1:6, pcol = "lightblue")
 > 
-> if(requireNamespace("mirt")) {
-+ ## fit generalized partial credit model to verbal aggression data
-+ gpcmod <- gpcmodel(VerbalAggression$resp)
-+ 
-+ ## create a person-item plot visualization of the fitted GPCM
-+ plot(gpcmod, type = "piplot")
-+ 
-+ ## turn off the histogram and grid
-+ plot(gpcmod, type = "piplot", histogram = FALSE, grid = FALSE)
-+ 
-+ ## fit GPCM to verbal aggression data accounting for gender impact
-+ mgpcmod <- gpcmodel(VerbalAggression$resp, impact = VerbalAggression$gender)
-+ 
-+ ## create a person-item plot visualization of the fitted GPCM
-+ plot(mgpcmod, type = "piplot", pcol = c("darkgreen", "darkorange"))
-+ }
 > 
 > 
 > 
@@ -2574,18 +2550,6 @@ Arnd              1         1           1         0
 > ## profile plot of the discrimination parameters of the dichotomous RM
 > plot(rmmod, type = "profile", what = "discrimination")
 > 
-> if(requireNamespace("mirt")) {
-+ ## fit 2PL and generalized partial credit model to verbal aggression data
-+ twoplmod <- plmodel(VerbalAggression$resp2)
-+ gpcmod <- gpcmodel(VerbalAggression$resp)
-+ 
-+ ## profile plot of the discrimination parameters of a dichotomous 2PL
-+ plot(twoplmod, type = "profile", what = "discrimination")
-+ 
-+ ## profile plot of the item parameters of the 2PL and GPCM
-+ plot(twoplmod, type = "profile", what = "items", col = 4)
-+ plot(gpcmod, type = "profile", what = "items", col = 2, add = TRUE)
-+ }
 > 
 > 
 > 
@@ -2611,6 +2575,7 @@ Arnd              1         1           1         0
 > 
 > ## Rasch model for the other-to-blame situations
 > m <- raschmodel(VerbalAggression$resp2[, 1:12])
+> ## IGNORE_RDIFF_BEGIN
 > summary(m)
 
 Rasch model
@@ -2634,6 +2599,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 Log-likelihood: -1260 (df = 11) 
 Number of iterations in BFGS optimization: 19 
 
+> ## IGNORE_RDIFF_END
 > 
 > ## visualizations
 > plot(m, type = "profile")
@@ -3132,7 +3098,7 @@ Bradley-Terry model parameters (btmodel):
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  25.954 0.168 26.168 0 0 
+Time elapsed:  20.375 4.92 18.24 0.002 0 
 > grDevices::dev.off()
 null device 
           1 

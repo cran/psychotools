@@ -75,6 +75,7 @@ plot(pcmod, type = "piplot")
 ## just visualize the first six items and the person parameter plot
 plot(pcmod, type = "piplot", items = 1:6, pcol = "lightblue")
 
+\donttest{
 if(requireNamespace("mirt")) {
 ## fit generalized partial credit model to verbal aggression data
 gpcmod <- gpcmodel(VerbalAggression$resp)
@@ -90,6 +91,7 @@ mgpcmod <- gpcmodel(VerbalAggression$resp, impact = VerbalAggression$gender)
 
 ## create a person-item plot visualization of the fitted GPCM
 plot(mgpcmod, type = "piplot", pcol = c("darkgreen", "darkorange"))
+}
 }
 }
 

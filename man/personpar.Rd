@@ -142,7 +142,7 @@ personpar(object, \dots)
 
 
 \examples{
-o <- options(digits = 4)
+o <- options(digits = 3)
 
 ## load verbal aggression data
 data("VerbalAggression", package = "psychotools")

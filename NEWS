@@ -1,3 +1,9 @@
+Changes in Version 0.5-1
+
+  o Added "IGNORE_RDIFF" flags in some examples in order to avoid showing
+    diffs due to small numeric deviations in some checks (especially on CRAN).
+
+
 Changes in Version 0.5-0
 
   o Infrastructure for IRT modeling in the unified "psychotools" framework is

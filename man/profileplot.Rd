@@ -91,6 +91,7 @@ plot(pcmod, type = "profile", what = "thresholds", parg = list(type = "mode"))
 ## profile plot of the discrimination parameters of the dichotomous RM
 plot(rmmod, type = "profile", what = "discrimination")
 
+\donttest{
 if(requireNamespace("mirt")) {
 ## fit 2PL and generalized partial credit model to verbal aggression data
 twoplmod <- plmodel(VerbalAggression$resp2)
@@ -102,6 +103,7 @@ plot(twoplmod, type = "profile", what = "discrimination")
 ## profile plot of the item parameters of the 2PL and GPCM
 plot(twoplmod, type = "profile", what = "items", col = 4)
 plot(gpcmod, type = "profile", what = "items", col = 2, add = TRUE)
+}
 }
 }
 

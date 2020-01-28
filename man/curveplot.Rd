@@ -75,6 +75,7 @@ plot(rsmod, type = "curves", item = 1)
 plot(pcmod, type = "curves", item = 1, lty = 2, add = TRUE)
 legend(x = "topleft", y = 1.0, legend = c("RSM", "PCM"), lty = 1:2, bty = "n")
 
+\donttest{
 if(requireNamespace("mirt")) {
 ## fit 2PL and generaliced partial credit model to verbal aggression data
 twoplmod <- plmodel(VerbalAggression$resp2)
@@ -85,6 +86,7 @@ plot(twoplmod, type = "curves", xlim = c(-6, 6))
 
 ## curve plots under the GPCM for the first six items of the data set
 plot(gpcmod, type = "curves", items = 1:6, xlim = c(-6, 6))
+}
 }
 }
 

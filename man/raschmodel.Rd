@@ -88,7 +88,9 @@ data("VerbalAggression", package = "psychotools")
 
 ## Rasch model for the other-to-blame situations
 m <- raschmodel(VerbalAggression$resp2[, 1:12])
+## IGNORE_RDIFF_BEGIN
 summary(m)
+## IGNORE_RDIFF_END
 
 ## visualizations
 plot(m, type = "profile")
