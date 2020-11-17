@@ -1,3 +1,24 @@
+Changes in Version 0.6-0
+
+  o New anchor() selection strategy using inequality-based alignment, either
+    based on the Gini index or the component loss function (CLF). Thus, also directly
+    available in anchortest(). Improved print() and plot() methods.
+
+  o Changed method to invert hessian for raschmodel(), rsmodel(), and pcmodel()
+    from qr.solve() to chol2inv(chol()).
+
+  o Added two demos on how to conduct simulation studies for score-based test
+    of measurement invariance.
+
+  o All IRT models now have a function to simulate IRT data, see rrm(), rrsm(),
+    rpcm(), rpl(), and rgpcm().
+
+  o An accompanying new PsyArXiv Preprint "An R Toolbox for Score-Based
+    Measurement Invariance Tests in IRT Models" by Lennart Schneider, Carolin
+    Strobl, Achim Zeileis, and Rudolf Debelak is available at
+    https://doi.org/10.31234/osf.io/r9w34
+
+
 Changes in Version 0.5-1
 
   o Added "IGNORE_RDIFF" flags in some examples in order to avoid showing

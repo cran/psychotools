@@ -16,7 +16,7 @@ A data frame containing 783 observations on 6 variables.
   \item{id}{Factor. Listener ID.}
   \item{time}{Factor. Listening experiment before or after elicitation and
     scaling of more specific auditory attributes.}
-  \item{progmat}{Factor. The Program material: Beethoven, Rachmaninov, Steely
+  \item{progmat}{Factor. The program material: Beethoven, Rachmaninov, Steely
     Dan, Sting.}
   \item{repet}{The repetition within each time point.}
   \item{session}{The experimental session coding the presentation order of
@@ -44,6 +44,10 @@ A data frame containing 783 observations on 6 variables.
 
   The selection of listeners for the experiments is described in Wickelmaier
   and Choisel (2005).
+
+  An extended version of this data set, including judgments on spatial and
+  timbral auditory attributes and including listener variables, is available
+  via \code{data("soundquality", package = "eba")}.
 }
 
 \references{

@@ -42,7 +42,6 @@ anchor.formula <- function(formula, data = NULL, subset = NULL,
 anchor.default <- function(object, object2, class = c("constant", "forward"),
   select = NULL, length = NULL, range = c(0.1, 0.8), ...)
 {
-
   ## check if items are equal and finite in both groups
   cf1 <- coef(itempar(object))
   cf2 <- coef(itempar(object2))
@@ -55,8 +54,24 @@ anchor.default <- function(object, object2, class = c("constant", "forward"),
   ## anchor method
   class <- match.arg(class)
   if(is.null(select)) select <- if(class == "constant") "MPT" else "MTT"
-  select <- match.arg(select, c("MTT", "MPT", "MT", "MP", "NST", "AO", "AOP"))
-  if(is.null(length)) length <- if(class == "constant") 4 else length(cf1)  
+  select <- match.arg(select, c("MTT", "MPT", "MT", "MP", "NST", "AO", "AOP", "Gini", "CLF", "GiniT", "CLFT"))
+
+  ## default anchor length:
+  ## - constant: 1 for alignment anchors, 4 for "classic" test-based anchors
+  ## - forward: unrestricted (up to number of items)
+  if(is.null(length)) length <- if(class == "constant") {
+    if(select %in% c("Gini", "CLF", "GiniT", "CLFT")) 1 else 4
+  } else {
+    length(cf1)
+  }
+
+  ## warn about alignment selection strategy with length > 1 or forward class
+  if(select %in% c("Gini", "CLF", "GiniT", "CLFT")) {
+    if(class == "forward") stop("Anchor forward selection cannot be combined with Gini or CLF.")
+    if(length > 1) warning("Selecting alignment anchors (Gini or CLF) with length > 1 might not yield optimal results.")
+    ## FIXME: when alignanchor() becomes available:
+    ## if(length > 1) warning("For selecting alignment anchors (Gini or CLF) with length > 1, please use the alignanchor() function.")
+  }
 
   ## carry out auxiliary DIF tests
   aux_tests <- auxtests(obj1 = object, obj2 = object2, select)$aux_tests
@@ -65,36 +80,45 @@ anchor.default <- function(object, object2, class = c("constant", "forward"),
   anchor_items <- anchorclass(obj1 = object, obj2 = object2, ranking_order = selection_results$ranking_order, 
     class, length = length, range = range)$anchor_items
   results <- list(anchor_items = anchor_items, ranking_order = selection_results$ranking_order,
-    criteria = selection_results$criteria)
+    criteria = selection_results$criteria, class = class, select = select, length = length, range = range)
   class(results) <- "anchor"
-  results	
-
+  results
 }
 
 
 ## methods for class 'anchor'
 print.anchor <- function(x, ...)
 {
-  cat("Anchor items:\n")
-  print(x$anchor_items)
-  cat("\nRanking order:\n")
-  print(x$ranking_order)  
-  cat("\nCriterion values (not sorted):\n")
-  print(x$criteria)       
+  method <- switch(x$class,
+    "constant" = sprintf("Anchor selection with %s criterion and constant length %s", x$select, x$length),
+    "forward" = sprintf("Anchor forward selection with %s criterion and maximum length %s", x$select, x$length)
+  )
+  
+  cat(method, "\n")
+  cat(if(length(x$anchor_items) > 1L) "Anchor items:" else "Anchor item:",
+    paste(x$anchor_items, collapse = ", "),
+    "\n")
+  
   invisible(x)  
 }
 
 summary.anchor <- function(object, ...)
 {
-  res <- list(anchor_items = object$anchor_items)
-  class(res) <- "summary.anchor"
-  return(res)
+  class(object) <- c("summary.anchor", class(object))
+  return(object)
 }
 
 print.summary.anchor <- function(x, ...)
 {
-  cat("Anchor items:\n")
-  cat(x$anchor_items)   
+  print.anchor(x, ...)
+
+  cat("\nRanking order:\n",
+    strwrap(paste(x$ranking_order, collapse = ", ")),
+    "\n")
+  cat("Criterion values (not sorted):\n",
+    strwrap(paste(round(x$criteria, digits = 2 + (x$select %in% c("Gini", "GiniT"))), collapse = ", ")),
+    "\n")
+
   invisible(x)  
 }
 
@@ -150,7 +174,7 @@ anchortest.default <- function(object, object2,  class = c("constant", "forward"
   if(is.null(select) || is.character(select)) {
     class <- match.arg(class)
     if(is.null(select)) select <- if(class == "constant") "MPT" else "MTT"
-    select <- match.arg(select, c("MTT", "MPT", "MT", "MP", "NST", "AO", "AOP"))
+    select <- match.arg(select, c("MTT", "MPT", "MT", "MP", "NST", "AO", "AOP", "Gini", "CLF", "GiniT", "CLFT"))
   } else {
     if(!missing(class) && match.arg(class) != "fixed") warning("if 'select' specifies the anchor items directly, 'class' needs to be 'fixed'")
     class <- "fixed"
@@ -218,6 +242,13 @@ print.summary.anchortest <- function(x, ...)
   invisible(x)  
 }
 
+plot.anchortest <- function(x, main = NULL, ...) {
+  if(is.null(main)) main <- sprintf("Anchor item%s: %s",
+    if(length(x$anchor_items) > 1L) "s" else "",
+    paste(x$anchor_items, collapse = ", "))
+  plot(x$final_tests, main = main, ...)
+}
+
 
 ###############
 ## utilities ##
@@ -231,7 +262,10 @@ auxtests <- function(obj1, obj2, select)
 
   if (select %in% c("AO", "AOP")) {
     diag(aux_tests) <- allothertests(obj1 = obj1, obj2 = obj2, adjust = "none")$test$test$tstat
-  } else if (select %in% c("MTT", "MT")) {
+  } else if(select %in% c("Gini", "CLF")) {
+    d <- coef(itempar(obj1)) - coef(itempar(obj2))
+    aux_tests[] <- outer(d, d, "-")
+  } else if (select %in% c("MTT", "MT", "GiniT", "CLFT")) {
     for(i in 1:k) {
       tempdt <- diftests(obj1, obj2, anchor_items = i, adjust = "none")$test     # contains test stats using single anchors
       aux_tests[i,-i] <- tempdt$test$tstat                                       # contains test statistics 
@@ -246,7 +280,6 @@ auxtests <- function(obj1, obj2, select)
   return(list(aux_tests = aux_tests))
 
 }
-
 
 ## function anchorselect
 anchorselect <- function(obj1, obj2, aux_tests, select)
@@ -263,7 +296,11 @@ anchorselect <- function(obj1, obj2, aux_tests, select)
     names(sortlist) <- NULL
     return(sortlist)
   }
-	
+
+  ## inequality functions for alignment
+  gini <- function(d) 2 * sum(1:k * sort(d))/(k * sum(d)) - (k + 1)/k
+  clf <- function(d) sum(sqrt(d))
+
   switch(select,
          "MTT" = {                      # mean test statistic treshold after Kopf et al. (2013b)
            threshold <- sort(abs(colMeans(aux_tests, na.rm=TRUE)))[ceiling(0.5*k)]   # threshold definition   
@@ -317,11 +354,29 @@ anchorselect <- function(obj1, obj2, aux_tests, select)
            criteria[-AOPtempnew[1]] <- abs(tempdt$tstat)     
            
            warning("The all-other purified selection requires strong prior knowledge that DIF is balanced.")        
+         },
+	 
+         "Gini" = {                       # alignment as suggested by Strobl et al. (2020)
+           criteria <- -apply(abs(aux_tests), 2, gini)
+         },
+
+         "CLF" = {                       # alignment adaptation by Strobl et al. (2020) based on Asparouhov & Muthen (2014).
+           criteria <- apply(abs(aux_tests), 2, clf)
+         },
+	 
+         "GiniT" = {                       # modified version of Gini with t statistics rather than coefficient differences
+	   diag(aux_tests) <- 0
+           criteria <- -apply(abs(aux_tests), 2, gini)
+         },
+
+         "CLFT" = {                       # modified version of CLF with t statistics rather than coefficient differences
+	   diag(aux_tests) <- 0
+           criteria <- apply(abs(aux_tests), 2, clf)
          })
 
   ranking_order <- mysort(criteria)
   ranking_order <- as.integer(ranking_order)
-  return(list(ranking_order = ranking_order, criteria = round(criteria,2)))
+  return(list(ranking_order = ranking_order, criteria = criteria))
 
 }
 
@@ -361,8 +416,8 @@ anchorclass <- function(obj1, obj2, ranking_order, class, length, range)
            }  
            anchor_items <- res_anchor
          })
-  return(list(anchor_items = anchor_items))  
 
+  return(list(anchor_items = anchor_items))  
 }
 
 

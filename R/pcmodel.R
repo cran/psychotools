@@ -292,7 +292,9 @@ pcmodel <- function (y, weights = NULL, nullcats = c("keep", "downcode", "ignore
     ## ... as well as variance-covariance matrix
     if (hessian) {
       vc <- opt$hessian
-      vc <- qr.solve(vc)
+      ## FIXME: how to invert
+      vc <- chol2inv(chol(vc))
+      #vc <- qr.solve(vc)
     } else {
       vc <- matrix(NA, nrow = length(est), ncol = length(est))
     }

@@ -183,7 +183,6 @@ void esf_diff(double eps[], int npar, int m, int oj[], int rmax, int rcum[], int
 {
   /* loop and helper variables */
   int i, r, k, ri_max, ncol, max_col;
-  double *eps_tmp = (double *) R_alloc(npar, sizeof(double));
 
   /* clear and initialize gamma1 */
   for (k = 0; k < m * rmax; k++) {

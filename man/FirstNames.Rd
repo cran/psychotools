@@ -54,7 +54,7 @@ A data frame containing 192 observations on 11 variables.
   The names were selected to fall within the upper (Tim, Lucas), mid (Michael,
   Robin) and lower (Benedikt, Julius) range of the top 100 of the most popular
   boys names in Germany in the years from 1990 to 1999
-  (\url{http://www.beliebte-vornamen.de/3778-1990er-jahre.htm}). The names
+  (\url{https://www.beliebte-vornamen.de/3778-1990er-jahre.htm}). The names
   have either front (e, i) or back (o, u) vowels in the stressed syllables.
   Phonology of the name and attractiveness of a person have been shown to be
   related (Perfors, 2004; Hartung et al., 2009).

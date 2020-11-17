@@ -84,7 +84,14 @@ export(
   "regionplot",
 
   ## auxiliary generics
-  "worth"
+  "worth",
+
+  ## simulate functions
+  "rrm",
+  "rrsm",
+  "rpcm",
+  "rpl",
+  "rgpcm"
 )
 
 ## methods for itemresp objects
@@ -311,6 +318,7 @@ S3method("anchortest", "formula")
 S3method("print", "anchortest")
 S3method("summary", "anchortest")
 S3method("print", "summary.anchortest")
+S3method("plot", "anchortest")
 
 ## conditional registration of strucchange methods
 if(getRversion() >= "3.6.0") {

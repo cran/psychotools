@@ -251,7 +251,9 @@ raschmodel <- function(y, weights = NULL, start = NULL, reltol = 1e-10,
   
     if(hessian) {
       vc <- if(deriv == "numeric") opt$hessian else ahessian(cf, esf)
-      vc <- qr.solve(vc)
+      ## FIXME: how to invert
+      vc <- chol2inv(chol(vc))
+      #vc <- qr.solve(vc)
     } else {
       vc <- matrix(NA, nrow = length(cf), ncol = length(cf))
     }
@@ -814,5 +816,5 @@ rrm <- function(theta = NULL, beta = NULL, return_setting = TRUE)
   resp <- (matrix(runif(n * m), nrow = n, ncol = m) < probs) + 0
 
   ## return
-  if (return_setting) list(theta = theta, beta = beta, data = resp) else resp
+  if (return_setting) list(beta = beta, theta = theta, data = resp) else resp
 }

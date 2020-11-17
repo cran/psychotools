@@ -25,12 +25,14 @@ mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
   nsubj <- sum(weights > 0L)
 
   ## treeid
-  tid <- if(length(treeid) == NCOL(y)) factor(treeid)
-         else if(length(names(spec$prob)) == NCOL(y))
-           factor(gsub("^(.+)\\..*", "\\1", names(spec$prob)))
+  tid <- if(length(treeid) == NCOL(y))
+           factor(treeid)
+         else if(length(spec$treeid) == NCOL(y))            # read from spec
+           spec$treeid
          else if(!is.null(colnames(y)))
-           factor(gsub("^(.+)\\..*", "\\1", colnames(y))) # before 1st dot
-         else rep(1, NCOL(y))
+           factor(gsub("([^.]+)\\..*", "\\1", colnames(y))) # before 1st dot
+         else
+           rep(1, NCOL(y))
 
   ## for fitting only sums are needed
   ysum <- colSums(y * weights)
@@ -65,10 +67,10 @@ mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
   loglik <- -opt$value
   pcat <- spec$par2prob(plogis(coef))
  
-  snam <- if(!is.null(names(spec$prob))) names(spec$prob)
-          else if(!is.null(colnames(y))) colnames(y)
-          else paste(tid, unlist(lapply(rle(as.character(tid))$lengths,
-                                        seq_len)), sep=".")
+  snam <- if(!is.null(names(spec$prob))) names(spec$prob)       # from spec
+          else if(!is.null(colnames(y))) colnames(y)            # from data
+          else ave(as.character(tid), tid,                      # guess
+                   FUN = function(a) paste(a, seq_along(a), sep="."))
   ncat    <- table(tid)
   ntrees  <- length(ncat)
 # n       <- setNames(tapply(ysum, tid, sum)[as.character(tid)], snam)
@@ -299,6 +301,7 @@ mptspec <- function(..., .restr = NULL)
   # and (further below, after default models) turn into list of characters
   spec$.restr <- NULL
   spec <- as.list(spec[-1L])                  # exclude function name
+  treeid <- NULL
 
   if (is.character(whichmod <- spec[[1]])) {  # default models
     modcall <- switch(EXPR = whichmod,
@@ -381,18 +384,55 @@ mptspec <- function(..., .restr = NULL)
         "1.3" = 2*(1 - c)*u*(1 - u),
         "1.4" = c*(1 - r) + (1 - c)*(1 - u)^2
       ),
+      "WST" = expression(
+        "1.1"  = (1 - a)*(1 - P)*(1 - p)*(1 - Q)*(1 - q),
+        "1.2"  = a*c*(1 - d)*(1 - sb)*i +
+                 (1 - a)*(1 - P)*(1 - p)*(1 - Q)*q,
+        "1.3"  = a*c*(1 - d)*sb*i +
+                 (1 - a)*(1 - P)*(1 - p)*Q*(1 - q),
+        "1.4"  = a*(1 - c)*(1 - x)*(1 - d)*i +
+                 (1 - a)*(1 - P)*(1 - p)*Q*q,
+        "1.5"  = a*c*d*(1 - sf)*i +
+                 (1 - a)*(1 - P)*p*(1 - Q)*(1 - q),
+        "1.6"  = a*(1 - c)*x*(1 - sfb)*i +
+                 (1 - a)*(1 - P)*p*(1 - Q)*q,
+        "1.7"  = a*c*d*(1 - sf)*(1 - i) +
+                 a*c*(1 - d)*sb*(1 - i) +
+                 (1 - a)*(1 - P)*p*Q*(1 - q),
+        "1.8"  = (1 - a)*(1 - P)*p*Q*q,
+        "1.9"  = a*c*d*sf*i +
+                 (1 - a)*P*(1 - p)*(1 - Q)*(1 - q),
+        "1.10" = a*c*d*sf*(1 - i) +
+                 a*c*(1 - d)*(1 - sb)*(1 - i) +
+                 (1 - a)*P*(1 - p)*(1 - Q)*q,
+        "1.11" = a*(1 - c)*x*sfb*i +
+                 (1 - a)*P*(1 - p)*Q*(1 - q),
+        "1.12" = (1 - a)*P*(1 - p)*Q*q,
+        "1.13" = a*(1 - c)*(1 - x)*d*i +
+                 (1 - a)*P*p*(1 - Q)*(1 - q),
+        "1.14" = (1 - a)*P*p*(1 - Q)*q,
+        "1.15" = (1 - a)*P*p*Q*(1 - q),
+        "1.16" = a*(1 - c)*x*sfb*(1 - i) +
+                 a*(1 - c)*x*(1 - sfb)*(1 - i) +
+                 a*(1 - c)*(1 - x)*d*(1 - i) +
+                 a*(1 - c)*(1 - x)*(1 - d)*(1 - i) +
+                 (1 - a)*P*p*Q*q
+      ),
       NULL  # model not available
     )
     if(is.null(modcall))
       stop("'...' has to be either an expression or one of:\n",
-           "  '1HT', '2HT', 'PairAsso', 'prospec', 'rmodel', 'SourceMon',",
-            " 'SR', 'SR2'.\n")
+           "  '1HT', '2HT', 'PairAsso', 'prospec', 'rmodel', 'SourceMon',\n",
+           "  'SR', 'SR2', 'WST'.\n")
+
+    ## Get treeid from names
+    nm <- do.call(rbind, strsplit(names(modcall), "\\."))  # treeid.catid
+    treeid <- as.numeric(nm[, 1])
 
     ## Replicates?
     if (!is.null(spec$.replicates) && spec$.replicates > 1) {
-      nm <- do.call(rbind, strsplit(names(modcall), "\\."))  # treeid.catid
-      ntrees <- max(as.numeric(nm[, 1]))
-      treeid <- rep(as.numeric(nm[, 1]), spec$.replicates) +
+      ntrees <- max(treeid)
+      treeid <- rep(treeid, spec$.replicates) +
                 rep(seq(0, ntrees*(spec$.replicates - 1), ntrees),
                     each=nrow(nm))
       pd <- getParseData(parse(text=modcall, keep.source=TRUE))
@@ -421,6 +461,8 @@ mptspec <- function(..., .restr = NULL)
   ## parsed expressions (list of expressions)
   if(!is.null(restr)) restr <- lapply(restr1[-1L], as.expression)
   prob <- lapply(spec, function(s) parse(text=s, keep.source=TRUE))
+  if(is.null(treeid) && !is.null(names(prob)))
+    treeid <- gsub("([^.]+)\\..*", "\\1", names(prob))  # guess from names
 
   ## extract the parameters
   pars <- unique(unlist(lapply(prob, function(e) {
@@ -491,7 +533,8 @@ mptspec <- function(..., .restr = NULL)
     prob = prob,
     deriv = deriv,
     par = pars,
-    restr = restr
+    restr = restr,
+    treeid = if(!is.null(treeid)) factor(treeid)
   )
   class(retval) <- "mptspec"
   retval

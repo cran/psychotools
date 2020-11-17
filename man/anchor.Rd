@@ -43,7 +43,12 @@ anchor(object, \dots)
     \code{"NST"}, \code{"AO"}, \code{"AOP"}. For details see below and
     Kopf et al. (2014b). Following their recommendations, the default
     \code{selection = "MPT"} is used for \code{class = "constant"} whereas
-    \code{selection = "MTT"} is used for \code{class = "forward"}.}
+    \code{selection = "MTT"} is used for \code{class = "forward"}.
+    Moreover, \code{"Gini"}, \code{"CLF"}, \code{"GiniT"}, and \code{"CLFT"}
+    have been suggested by Strobl et al. (2020) and can be combined
+    with \code{class = "constant"} and \code{length = 1}. The
+    \code{select = "Gini"} method will likely become the default in
+    future versions.}
   \item{length}{integer. It pre-defines a maximum anchor length.
     Per default, the \code{forward} anchor grows up to the proportion
     of currently presumed DIF-free items specified in \code{range}
@@ -78,7 +83,7 @@ characteristics of the anchor and an anchor selection that determines
 the ranking order of candidate anchor items.
 
 In the \code{constant} anchor class, the anchor length is pre-defined by the
-user within the argument \code{length}. The default is four anchor
+user within the argument \code{length}. The current default is four anchor
 items. The iterative \code{forward} class starts with a single anchor item and
 includes items in the anchor as long as the anchor length is shorter
 than a certain percentage of the number of items that do not display
@@ -87,6 +92,12 @@ of first anchor candidates is excluded from consideration (default: 0.1)
 and the user is allowed to set a maximum number of anchor items using the 
 argument \code{length}. A detailed description of the anchor classes can be found
 in Kopf et al. (2014a).
+
+In more recent work Strobl et al. (2020) suggest a simpler yet powerful
+anchor method based on inequality criteria like the Gini coefficient
+or the component loss function (CLF). This can be shown to attain its optimium
+for a single-anchor, thus correponding to a \code{constant} class of \code{length}
+1. This will likely become the default method in future versions.
 
 Both anchor classes require an explicit anchor selection strategy (as opposed to
 the \code{all-other} anchor class which is therefore not included in the
@@ -108,7 +119,7 @@ and \eqn{A_{purified}}{A_{purified}} the anchor after purification steps
 (a detailed description of the anchor selection strategies implemented in
 this function is provided in Kopf et al., 2014b).
 
-All-other selection by Woods(2009), here abbreviated AO:
+All-other selection by Woods (2009), here abbreviated AO:
 \deqn{ c_j^{AO} = | t_j (\{1,\ldots,k\}\textbackslash j) |}{%
  c_j^{AO} = | t_j ({1,\dots,k}\\j) |}
 
@@ -191,6 +202,11 @@ knowledge that DIF is balanced.
   Shih CL, Wang WC (2009).
     Differential Item Functioning Detection Using the Multiple Indicators, Multiple Causes Method with a Pure Short Anchor.
     \emph{Applied Psychological Measurement}, \bold{33}(3), 184--199.
+
+  Strobl C, Kopf J, Kohler L, von Oertzen T, Zeileis A (2020).
+    Anchor Point Selection -- Scale Alignment Based on an Inequality Criterion.
+    \emph{Applied Psychological Measurement}, Forthcoming.
+    \url{https://EconPapers.repec.org/RePEc:inn:wpaper:2018-03}
 
   Wang WC (2004).
     Effects of Anchor Item Methods on the Detection of Differential Item Functioning within the Family of Rasch Models.

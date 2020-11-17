@@ -273,7 +273,7 @@ plmodel <- function(y, weights = NULL, impact = NULL,
     loglik = mirt::extract.mirt(model, "logLik"),
     df = mirt::extract.mirt(model, "nest"),
     code = code,
-    iterations = structure(mirt::extract.mirt(model, "iterations"), names = "gradient"),
+    iterations = structure(mirt::extract.mirt(model, "iterations"), names = "EM cycles"),
     reltol = reltol,
     method = method,
     grouppars = grouppars,
@@ -481,7 +481,8 @@ print.summary.plmodel <- function(x, digits = max(3L, getOption("digits") - 3L),
     na.print = "NA", ...)
   cat("\nLog-likelihood:", format(signif(x$loglik, digits)),
     "(df =", paste(x$df, ")", sep = ""), "\n")
-  cat(sprintf("Number of iterations in %s optimization: %s\n\n", x$method, x$iterations))
+  cat(sprintf("Number of EM cycles: %s\n", x$iterations))
+  cat(sprintf("M-step optimizer: %s\n", x$method))
   invisible(x)
 }
 
@@ -1272,7 +1273,7 @@ ppl <- function(theta = NULL, a = NULL, b = NULL, g = NULL, u = NULL)
   ## probabilities under the model (in IRT formulation) given theta
   stopifnot(!is.null(theta) & !is.null(a) & !is.null(b) & !is.null(g) &
     !is.null(u))
-  stopifnot(all.equal(typeof(a), typeof(b), typeof(g), typeof(u)))
+  stopifnot(all.equal(mode(a), mode(b), mode(g), mode(u)))
   if(is.list(theta)) {
     return(lapply(theta, ppl, a = a, b = b, g = g, u = u))
   }
@@ -1294,7 +1295,7 @@ rpl <- function(theta = NULL, a = NULL, b = NULL, g = NULL, u = NULL,
   ## sample data under the model (in IRT formulation) given theta
   stopifnot(!is.null(theta) & !is.null(a) & !is.null(b) & !is.null(g) &
     !is.null(u))
-  stopifnot(all.equal(typeof(a), typeof(b), typeof(g), typeof(u)))
+  stopifnot(all.equal(mode(a), mode(b), mode(g), mode(u)))
   if(is.list(theta)) {
     return(lapply(theta, rpl, a = a, b = b, g = g, u = u,
       return_setting = return_setting))

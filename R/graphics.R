@@ -341,7 +341,7 @@ piplot <- function(object, pcol = NULL, histogram = TRUE, ref = NULL,
   cex.axis = 0.8, cex.text = 0.5, cex.points = 1.5,
   grid = TRUE, ...)
 {
-  ## FIXME:: general way to handle prettifying options, e.g. supply all colors as a list?
+  ## FIXME: general way to handle prettifying options, e.g. supply all colors as a list?
 
   ## handle grid
   if(is.null(grid)) grid <- TRUE
@@ -424,10 +424,14 @@ piplot <- function(object, pcol = NULL, histogram = TRUE, ref = NULL,
   w <- max(nchar(nms)) * 0.5
   ## setup x axis limits, backup par
   xlim <-
-  if(type == "normal") {
-    range(c(unlist(tp), unlist(lapply(pp, function(x) hist(x, plot = FALSE)$breaks))))
-  } else if(type == "discrete") {
-    range(c(unlist(tp), pp))
+  if(is.null(xlim)) {
+    if(type == "normal") {
+      range(c(unlist(tp), unlist(lapply(pp, function(x) hist(x, plot = FALSE)$breaks))))
+    } else if(type == "discrete") {
+      range(c(unlist(tp), pp))
+    }
+  } else {
+    xlim
   }
   ylim <- c(1, m)
   ## setup graphic region

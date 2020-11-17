@@ -277,7 +277,7 @@ gpcmodel <- function(y, weights = NULL, impact = NULL,
     loglik = mirt::extract.mirt(model, "logLik"),
     df = mirt::extract.mirt(model, "nest"),
     code = code,
-    iterations = structure(mirt::extract.mirt(model, "iterations"), names = "gradient"),
+    iterations = structure(mirt::extract.mirt(model, "iterations"), names = "EM cycles"),
     reltol = reltol,
     method = method,
     grouppars = grouppars,
@@ -374,7 +374,8 @@ print.summary.gpcmodel <- function(x, digits = max(3L, getOption("digits") - 3L)
     na.print = "NA", ...)
   cat("\nLog-likelihood:", format(signif(x$loglik, digits)),
     "(df =", paste(x$df, ")", sep = ""), "\n")
-  cat(sprintf("Number of iterations in %s optimization: %s\n\n", x$method, x$iterations))
+  cat(sprintf("Number of EM cycles: %s\n", x$iterations))
+  cat(sprintf("M-step optimizer: %s\n", x$method))
   invisible(x)
 }
 
@@ -1209,7 +1210,7 @@ pgpcm <- function(theta = NULL, a = NULL, b = NULL)
 {
   ## probabilities under the model (in IRT formulation) given theta
   stopifnot(!is.null(theta) & !is.null(a) & !is.null(b))
-  stopifnot(typeof(a) == typeof(b))
+  stopifnot(mode(a) == mode(b))
   if(is.list(theta)) {
     return(lapply(theta, pgpcm, a = a, b = b))
   }
@@ -1230,7 +1231,7 @@ rgpcm <- function(theta = NULL, a = NULL, b = NULL, nullcats = FALSE,
 {
   ## sample data under the model (in IRT formulation) given theta
   stopifnot(!is.null(theta) & !is.null(a) & !is.null(b))
-  stopifnot(typeof(a) == typeof(b))
+  stopifnot(mode(a) == mode(b))
   if(is.list(theta)) {
     return(lapply(theta, rgpcm, a = a, b = b, nullcats = nullcats,
       return_setting = return_setting))

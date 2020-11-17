@@ -202,10 +202,10 @@ summary.paircomp <- function(object, abbreviate = FALSE, decreasing = TRUE, pcma
   if(any(is.na(dat))) cnam <- c(cnam, "NA's")
 
   rval <- if(is.null(weights)) {
-    t(apply(dat, 2, function(x) table(factor(x, levels = mscale(object)))))
+    t(apply(dat, 2, function(x) table(factor(x, levels = mscale))))
   } else {
     weights <- rep(weights, length.out = nrow(dat))
-    t(apply(dat, 2, function(x) xtabs(weights ~ factor(x, levels = mscale(object)))))
+    t(apply(dat, 2, function(x) xtabs(weights ~ factor(x, levels = mscale))))
   }
   if(decreasing) rval <- rval[, ncol(rval):1, drop = FALSE]
   if(any(is.na(dat))) rval <- cbind(rval, apply(dat, 2, function(x) sum(is.na(x))))
@@ -214,31 +214,31 @@ summary.paircomp <- function(object, abbreviate = FALSE, decreasing = TRUE, pcma
   ## return paired-comparison matrix (only for unordered binary paircomp's)
   ## FIXME: better name for argument / standalone method?
   ## FIXME: table() and xtabs() are both not generic...
-  if(pcmatrix & length(mscale) == 2 & !attr(object, "ordered")) {
-    mat <- matrix(0, ncol = length(lab), nrow = length(lab))
-    rownames(mat) <- colnames(mat) <- lab
-    names(dimnames(mat)) <- cnam[1:2]
-    mat[upper.tri(mat)] <- rval[,1]
-    mat <- t(mat)
-    mat[upper.tri(mat)] <- rval[,2]
-    rval <- t(mat)
-  }
-  if(pcmatrix & length(mscale) == 2 & attr(object, "ordered")) {
-    ordarr <- array(0, c(length(lab), length(lab), 2))
-
-    mat <- matrix(0, ncol = length(lab), nrow = length(lab))
-    mat[upper.tri(mat)] <- rval[1:(nrow(rval)/2), 1]
-    mat <- t(mat)
-    mat[upper.tri(mat)] <- rval[1:(nrow(rval)/2), 2]
-    ordarr[,,1] <- t(mat)
-    mat[upper.tri(mat)] <- rval[(nrow(rval)/2 + 1):nrow(rval), 2]
-    mat <- t(mat)
-    mat[upper.tri(mat)] <- rval[(nrow(rval)/2 + 1):nrow(rval), 1]
-    ordarr[,,2] <- t(mat)
-
-    dimnames(ordarr) <- list(lab, lab, c("1", "2"))
-    names(dimnames(ordarr)) <- c(cnam[1:2], "order")
-    rval <- ordarr
+  if(pcmatrix) {
+    rval <- rval[, colnames(rval) != "NA's"]                   # no NA's
+    wincols  <- if(decreasing) mscale < 0L else mscale > 0L    # no undecided
+    losscols <- if(decreasing) mscale > 0L else mscale < 0L
+    mat <- matrix(0L, ncol = length(lab), nrow = length(lab))
+    if(!attr(object, "ordered")) {
+      dimnames(mat) = list(">" = lab, "<" = lab)
+      mat[ix] <- rowSums(rval[, wincols, drop = FALSE])
+      mat <- t(mat)
+      mat[ix] <- rowSums(rval[, losscols, drop = FALSE])
+      rval <- t(mat)
+    } else {
+      ordarr <- array(0L, c(length(lab), length(lab), 2L),
+                      dimnames = list(">" = lab, "<" = lab,
+                                      order = c("1", "2")))
+      mat[ix] <- rowSums(rval[ seq_len(nrow(rval)/2), wincols, drop = FALSE])
+      mat <- t(mat)
+      mat[ix] <- rowSums(rval[ seq_len(nrow(rval)/2), losscols, drop = FALSE])
+      ordarr[, , "1"] <- t(mat)
+      mat[ix] <- rowSums(rval[-seq_len(nrow(rval)/2), losscols, drop = FALSE])
+      mat <- t(mat)
+      mat[ix] <- rowSums(rval[-seq_len(nrow(rval)/2), wincols, drop = FALSE])
+      ordarr[, , "2"] <- t(mat)
+      rval <- ordarr
+    }
   }
   
   rval

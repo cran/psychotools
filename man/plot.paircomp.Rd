@@ -42,11 +42,10 @@
 }
 
 \references{
-  Zeileis A., Hornik K. and Murrell P. (2009),
+  Zeileis A, Hornik K, Murrell P (2009),
   Escaping RGBland: Selecting Colors for Statistical Graphics.
   \emph{Computational Statistics & Data Analysis}, \bold{53}, 3259-3270.
-  doi:10.1016/j.csda.2008.11.033
-  Preprint available from \url{http://statmath.wu.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
+  \doi{10.1016/j.csda.2008.11.033}
 }
 
 \seealso{\code{\link{paircomp}}}

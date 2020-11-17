@@ -255,7 +255,9 @@ rsmodel <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
     ## ... as well as variance-bcovariance matrix
     if (hessian) {
       vc <- opt$hessian
-      vc <- qr.solve(vc)
+      ## FIXME: how to invert
+      vc <- chol2inv(chol(vc))
+      #vc <- qr.solve(vc)
     } else {
       vc <- matrix(NA, nrow = length(est), ncol = length(est))
     }
@@ -1000,7 +1002,7 @@ rrsm <- function(theta = NULL, beta = NULL, tau = NULL, nullcats = FALSE, return
   res <- do.call(cbind, res)
   
   if (return_setting)
-    return(list(theta = theta, beta = beta, tau = tau, data = res))
+    return(list(beta = beta, tau = tau, theta = theta, data = res))
   else
     return(res)
 }
