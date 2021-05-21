@@ -9,17 +9,20 @@
 }
 
 \usage{
-rpl(theta, a, b, g, u, return_setting = TRUE)
+rpl(theta, a = NULL, b, g = NULL, u = NULL, return_setting = TRUE)
 }
 
 \arguments{
   \item{theta}{numeric vector of person parameters. Can also be a list, then a
     list of length \code{length(theta)} is returned, containing multiple
     simulated data matrices.}
-  \item{a}{numeric vector of item discrimination parameters.}
+  \item{a}{numeric vector of item discrimination parameters. If \code{NULL},
+    by default set to a vector of ones of length \code{length(b)}.}
   \item{b}{numeric vector of item difficulty parameters.}
-  \item{g}{numeric vector of so-called item guessing parameters.}
-  \item{u}{numeric vector of item upper asymptote parameters.}
+  \item{g}{numeric vector of so-called item guessing parameters. If \code{NULL},
+    by default set to a vector of zeroes of length \code{length(b)}.}
+  \item{u}{numeric vector of item upper asymptote parameters. If \code{NULL},
+    by default set to a vector of ones of length \code{length(b)}.}
   \item{return_setting}{logical. Should a list containing slots of "a", "b",
     "g", "u", and "theta", as well as the simulated data matrix "data" be
     returned (default) or only the simulated data matrix.}
@@ -50,7 +53,7 @@ set.seed(1)
 ppar <- rep(c(-2, 0, 2), each = 2)
 ipar <- seq(-2, 2, by = 0.5)
 dpar <- rep(c(0.5, 1, 1.5), each = 3)
-sim <- rpl(theta = ppar, a = dpar, b = ipar, g = rep(0, 9), u = rep(1, 9))
+sim <- rpl(theta = ppar, a = dpar, b = ipar)
 
 ## simulated item response data along with setting parameters
 sim

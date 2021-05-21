@@ -1030,11 +1030,8 @@ ppcm <- function(theta = NULL, delta = NULL)
 }
 
 ## rpcm: calculate response matrices for given thetas and deltas under the PCM.
-rpcm <- function(theta = NULL, delta = NULL, nullcats = FALSE, return_setting = TRUE)
+rpcm <- function(theta, delta, nullcats = FALSE, return_setting = TRUE)
 {
-  ## check input
-  stopifnot(!is.null(theta) && !is.null(delta))
-  
   ## if list input, recurse... (for deltas: one list means several items, two means several groups of items)
   if (is.list(theta)) return(lapply(theta, rpcm, delta = delta, nullcats = nullcats, return_setting = return_setting))
   if (is.list(delta) && is.list(delta[[1]])) return(lapply(delta, rpcm, theta = theta, nullcats = nullcats, return_setting = return_setting))

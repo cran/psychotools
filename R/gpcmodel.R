@@ -1226,11 +1226,9 @@ pgpcm <- function(theta = NULL, a = NULL, b = NULL)
 
 
 
-rgpcm <- function(theta = NULL, a = NULL, b = NULL, nullcats = FALSE,
-  return_setting = TRUE)
+rgpcm <- function(theta, a, b, nullcats = FALSE, return_setting = TRUE)
 {
   ## sample data under the model (in IRT formulation) given theta
-  stopifnot(!is.null(theta) & !is.null(a) & !is.null(b))
   stopifnot(mode(a) == mode(b))
   if(is.list(theta)) {
     return(lapply(theta, rgpcm, a = a, b = b, nullcats = nullcats,

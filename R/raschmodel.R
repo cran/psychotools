@@ -800,11 +800,8 @@ prm <- function(theta = NULL, beta = NULL)
 }
 
 ## rrm: calculate response matrices for given thetas and betas under the RM.
-rrm <- function(theta = NULL, beta = NULL, return_setting = TRUE)
+rrm <- function(theta, beta, return_setting = TRUE)
 {
-  ## check input
-  stopifnot(!is.null(theta) && !is.null(beta))
-  
   ## if list input, recurse...
   if (is.list(theta)) return(lapply(theta, rrm, beta = beta, return_setting = return_setting))
   if (is.list(beta)) return(lapply(beta, rrm, theta = theta, return_setting = return_setting))

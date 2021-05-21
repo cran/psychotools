@@ -972,10 +972,8 @@ prsm <- function(theta = NULL, beta = NULL, tau = NULL)
 }
 
 ## rpcm: calculate response matrices for given thetas, betas and taus under the RSM.
-rrsm <- function(theta = NULL, beta = NULL, tau = NULL, nullcats = FALSE, return_setting = TRUE)
+rrsm <- function(theta, beta, tau, nullcats = FALSE, return_setting = TRUE)
 {
-  ## check input
-  stopifnot(!is.null(theta) && !is.null(beta) && !is.null(tau))
   if (is.list(beta)) stopifnot(is.list(tau) && (length(beta) == length(tau)))
 
   ## if list input, recurse...

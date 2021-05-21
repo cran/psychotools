@@ -1,3 +1,11 @@
+Changes in Version 0.6-1
+
+  o New vignette("toolbox-simulation", package = "psychotools") on how to conduct
+    simulation studies investigating the performance of score-based tests of
+    measurement invariance of IRT models. Accompanies the PsyArXiv preprint mentioned
+    below.
+
+
 Changes in Version 0.6-0
 
   o New anchor() selection strategy using inequality-based alignment, either

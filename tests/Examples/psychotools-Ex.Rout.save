@@ -2850,7 +2850,7 @@ $data
 > ppar <- rep(c(-2, 0, 2), each = 2)
 > ipar <- seq(-2, 2, by = 0.5)
 > dpar <- rep(c(0.5, 1, 1.5), each = 3)
-> sim <- rpl(theta = ppar, a = dpar, b = ipar, g = rep(0, 9), u = rep(1, 9))
+> sim <- rpl(theta = ppar, a = dpar, b = ipar)
 > 
 > ## simulated item response data along with setting parameters
 > sim
