@@ -1,3 +1,23 @@
+Changes in Version 0.7-0
+
+  o Changed default constant anchor selection method in anchor() and anchortest()
+    from MPT to Gini based on Strobl et al. (2021, Applied Psychological
+    Measurement). The Gini-based anchor selection is simpler because it is based
+    on single anchors while at the same time performing very well under DIF.
+
+  o The print() method for anchortest() now just displays the anchor item(s) and
+    the final DIF tests while the summary() method displays the full information
+    including anchored item parameters etc. (rather than vice versa).
+    
+  o The print() and summary() methods for anchor() and anchortest() now display
+    item labels (rather than indexes) for the selected anchor item(s) and for the
+    full vector of criterion values.
+
+  o Added the "proCNI" multinomial processing tree specification in mptspec() for
+    mptmodel(). This provides the CNI model of moral dilemma judgment for
+    proscriptive norms.
+
+
 Changes in Version 0.6-1
 
   o New vignette("toolbox-simulation", package = "psychotools") on how to conduct

@@ -34,15 +34,17 @@ bibentry(bibtype= "TechReport",
 )
 
 bibentry(bibtype = "Article",
-         title   = "Anchor Point Selection -- Scale Alignment Based on an Inequality Criterion",
+         title   = "Anchor Point Selection: Scale Alignment Based on an Inequality Criterion",
          author  = c(person(given = "Carolin", family = "Strobl"),
 	                   person(given = "Julia", family = "Kopf"),
 	                   person(given = "Lucas", family = "Kohler"),
 	                   person(given = "Timo", family = "von Oertzen"),
                      person(given = "Achim", family = "Zeileis")),
          journal = "Applied Psychological Measurement",
-         year    = "2020",
-         note    = "Forthcoming",
-         url     = "https://EconPapers.repec.org/RePEc:inn:wpaper:2018-03",
+         year    = "2021",
+         volume  = "45",
+         number  = "3",
+         pages   = "214--230",
+         doi     = "10.1177/0146621621990743",
          header  = "If you use anchor() or anchortest(), please cite"
 )

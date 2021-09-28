@@ -42,12 +42,11 @@ anchortest(object, \dots)
     Additionally, the class can be \code{fixed}, then \code{select}
     needs to be the numeric index of the fixed selected anchor items.}
   \item{select}{character or numeric. Several anchor selection strategies are
-    available: \code{"MTT"}, \code{"MPT"}, \code{"MT"}, \code{"MP"},
-    \code{"NST"}, \code{"AO"}, \code{"AOP"}. For details see \code{\link{anchor}}.
+    available, for details see \code{\link{anchor}}.
     Alternatively, for \code{class = "fixed"}, \code{select} needs to be the
     numeric index of the fixed selected anchor items. Defaults are set such
-    that \code{class = "constant"} is combined with \code{selection = "MPT"}
-    while \code{class = "forward"} is combined with \code{selection = "MTT"}.
+    that \code{class = "constant"} is combined with \code{select = "Gini"}
+    while \code{class = "forward"} is combined with \code{select = "MTT"}.
     And if \code{select} is numeric, then \code{class = "fixed"} is used.}
   \item{test}{logical. Should the Wald test be returned for the
     intended anchor method as final DIF test?}
@@ -96,8 +95,8 @@ anchortest(object, \dots)
   selection strategy.
 
   In the \code{constant} anchor class, the anchor length is pre-defined
-  by the user within the argument \code{length}. The default is four
-  anchor items. The iterative \code{forward} class starts with a single
+  by the user within the argument \code{length}. The default is a single
+  anchor item. The iterative \code{forward} class starts with a single
   anchor item and includes items in the anchor as long as the anchor
   length is shorter than a certain percentage of the number of items that
   do not display statistically significant DIF. The default proportion is
@@ -114,7 +113,7 @@ anchortest(object, \dots)
   is required and we report \eqn{k}{k} test results. Note that the \code{all-other} 
   anchor class requires strong prior knowledge that DIF is balanced.
 
-  See Kopf et al. (2015ab) for a detailed introduction. For convenience
+  See Strobl et al. (2021) and Kopf et al. (2015ab) for a detailed introduction. For convenience
   a trivial \code{"fixed"} anchor class is provided where the \code{select}ed
   anchor is given directly (e.g., as chosen by a practitioner or by some
   other anchor selection method).
@@ -151,6 +150,11 @@ anchortest(object, \dots)
     \emph{Educational and Psychological Measurement}, \bold{75}(1), 22--56.
     \doi{10.1177/0013164414529792}
 
+  Strobl C, Kopf J, Kohler L, von Oertzen T, Zeileis A (2021).
+    Anchor Point Selection: Scale Alignment Based on an Inequality Criterion.
+    \emph{Applied Psychological Measurement}, \bold{45}(3), 214--230.
+    \doi{10.1177/0146621621990743}
+
   Wang WC (2004).
     Effects of Anchor Item Methods on the Detection of Differential Item Functioning within the Family of Rasch Models.
     \emph{Journal of Experimental Education}, \bold{72}(3), 221--261.
@@ -174,27 +178,23 @@ data("VerbalAggression", package = "psychotools")
 raschmodels <- with(VerbalAggression, lapply(levels(gender), function(i) 
   raschmodel(resp2[gender == i, 1:12])))
 
-## four anchor items from constant anchor class using MPT-selection
+## single anchor from Gini selection (default)
+gini1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]])
+gini1
+summary(gini1)
+
+## four anchor items from constant anchor class using MPT selection
 const1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]],
   class = "constant", select = "MPT", length = 4)
 const1
 summary(const1)
 
-## iterative forward anchor class using MTT-selection
+## iterative forward anchor class using MTT selection
 set.seed(1)
 forw1 <- anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], 
   class = "forward", select = "MTT", test = TRUE,
   adjust = "none", range = c(0.05,1))
 forw1
-
-## the same using the formula interface
-set.seed(1)
-forw2 <- anchortest(resp2[, 1:12] ~ gender, data = VerbalAggression,
-  class = "forward", select = "MTT", test = TRUE,
-  adjust = "none", range = c(0.05, 1))
-
-## compare both results
-all.equal(forw1, forw2, check.attributes = FALSE)
 
 ## DIF test with fixed given anchor (arbitrarily selected to be items 1 and 2)
 anchortest(object = raschmodels[[1]], object2 = raschmodels[[2]], select = 1:2)

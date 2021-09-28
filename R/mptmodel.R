@@ -323,6 +323,16 @@ mptspec <- function(..., .restr = NULL)
         "1.3" = p*(1 - q)*r,
         "1.4" = (1 - p) + p*(1 - q)*(1 - r)
       ),
+      "proCNI" = expression(
+        "1.1" = C + (1 - C)*(1 - N)*(1 - I),
+        "1.2" = (1 - C)*N + (1 - C)*(1 - N)*I,
+        "2.1" = C + (1 - C)*(1 - N)*J,
+        "2.2" = (1 - C)*N + (1 - C)*(1 - N)*(1 - J),
+        "3.1" = (1 - C)*(1 - N)*(1 - I),
+        "3.2" = C + (1 - C)*N + (1 - C)*(1 - N)*I,
+        "4.1" = (1 - C)*(1 - N)*J,
+        "4.2" = C + (1 - C)*N + (1 - C)*(1 - N)*(1 - J)
+      ),
       "prospec" = expression(
         "1.1" = C1*P*(1 - M1)*(1 - g) + C1*(1 - P) +
                 (1 - C1)*P*(1 - M1)*(1 - g)*c + (1 - C1)*(1 - P)*c,
@@ -422,8 +432,8 @@ mptspec <- function(..., .restr = NULL)
     )
     if(is.null(modcall))
       stop("'...' has to be either an expression or one of:\n",
-           "  '1HT', '2HT', 'PairAsso', 'prospec', 'rmodel', 'SourceMon',\n",
-           "  'SR', 'SR2', 'WST'.\n")
+           "  '1HT', '2HT', 'PairAsso', 'proCNI', 'prospec', 'rmodel',\n",
+           "  'SourceMon', 'SR', 'SR2', 'WST'.\n")
 
     ## Get treeid from names
     nm <- do.call(rbind, strsplit(names(modcall), "\\."))  # treeid.catid

@@ -53,7 +53,15 @@ anchor.default <- function(object, object2, class = c("constant", "forward"),
 
   ## anchor method
   class <- match.arg(class)
-  if(is.null(select)) select <- if(class == "constant") "MPT" else "MTT"
+  if(is.null(select)) {
+    select <- if(class == "constant" & (is.null(length) || length == 1L)) {
+      "Gini"
+    } else if(class == "constant") {
+      "MPT"
+    } else {
+      "MTT"
+    }
+  }
   select <- match.arg(select, c("MTT", "MPT", "MT", "MP", "NST", "AO", "AOP", "Gini", "CLF", "GiniT", "CLFT"))
 
   ## default anchor length:
@@ -80,7 +88,7 @@ anchor.default <- function(object, object2, class = c("constant", "forward"),
   anchor_items <- anchorclass(obj1 = object, obj2 = object2, ranking_order = selection_results$ranking_order, 
     class, length = length, range = range)$anchor_items
   results <- list(anchor_items = anchor_items, ranking_order = selection_results$ranking_order,
-    criteria = selection_results$criteria, class = class, select = select, length = length, range = range)
+    criteria = selection_results$criteria, class = class, select = select, length = length, range = range, item_labels = names(cf1))
   class(results) <- "anchor"
   results
 }
@@ -96,7 +104,7 @@ print.anchor <- function(x, ...)
   
   cat(method, "\n")
   cat(if(length(x$anchor_items) > 1L) "Anchor items:" else "Anchor item:",
-    paste(x$anchor_items, collapse = ", "),
+    strwrap(paste(x$item_labels[x$anchor_items], collapse = ", ")),
     "\n")
   
   invisible(x)  
@@ -110,14 +118,22 @@ summary.anchor <- function(object, ...)
 
 print.summary.anchor <- function(x, ...)
 {
-  print.anchor(x, ...)
+  method <- switch(x$class,
+    "constant" = sprintf("Anchor selection with %s criterion and constant length %s", x$select, x$length),
+    "forward" = sprintf("Anchor forward selection with %s criterion and maximum length %s", x$select, x$length)
+  )
+  
+  cat(method, "\n")
+
+  cat(if(length(x$anchor_items) > 1L) "\nAnchor items:" else "\nAnchor item:", "\n")
+  cat(strwrap(paste(x$item_labels[x$anchor_items], collapse = ", ")),
+    "\n")
 
   cat("\nRanking order:\n",
     strwrap(paste(x$ranking_order, collapse = ", ")),
-    "\n")
-  cat("Criterion values (not sorted):\n",
-    strwrap(paste(round(x$criteria, digits = 2 + (x$select %in% c("Gini", "GiniT"))), collapse = ", ")),
-    "\n")
+    "\n\n")
+  cat("Criterion values (not sorted):\n")
+  print(round(setNames(x$criteria, x$item_labels), digits = 2 + (x$select %in% c("Gini", "GiniT"))))
 
   invisible(x)  
 }
@@ -173,7 +189,15 @@ anchortest.default <- function(object, object2,  class = c("constant", "forward"
   ## - if select="numeric" -> class="fixed"
   if(is.null(select) || is.character(select)) {
     class <- match.arg(class)
-    if(is.null(select)) select <- if(class == "constant") "MPT" else "MTT"
+    if(is.null(select)) {
+      select <- if(class == "constant" & (is.null(length) || length == 1L)) {
+        "Gini"
+      } else if(class == "constant") {
+        "MPT"
+      } else {
+        "MTT"
+      }    
+    }
     select <- match.arg(select, c("MTT", "MPT", "MT", "MP", "NST", "AO", "AOP", "Gini", "CLF", "GiniT", "CLFT"))
   } else {
     if(!missing(class) && match.arg(class) != "fixed") warning("if 'select' specifies the anchor items directly, 'class' needs to be 'fixed'")
@@ -204,7 +228,8 @@ anchortest.default <- function(object, object2,  class = c("constant", "forward"
 
   results <- list(anchor_items = anchorres$anchor_items, ranking_order = anchorres$ranking_order,
                   criteria = anchorres$criteria, anchored_item_parameters =  final_tests$itempars,
-                  anchored_covariances = final_tests$vcovs, final_tests = if(test) final_tests$test else NULL)
+                  anchored_covariances = final_tests$vcovs, final_tests = if(test) final_tests$test else NULL,
+                  item_labels = colnames(object$data))
 
   class(results) <- "anchortest"
   results
@@ -214,38 +239,37 @@ anchortest.default <- function(object, object2,  class = c("constant", "forward"
 print.anchortest <- function(x, ...)
 {
   cat("Anchor items:\n")
-  print(x$anchor_items)
-  cat("\nAnchored item parameters:\n")
-  print(x$anchored_item_parameters)
-  cat("\nRanking order:\n")
-  print(x$ranking_order)  
-  cat("\nCriterion values (not sorted):\n")
-  print(x$criteria)       
+  writeLines(if(isTRUE(all.equal(x$anchor_items, NA))) "NA" else strwrap(paste(x$item_labels[x$anchor_items], collapse = ", ")))
   cat("\nFinal DIF tests:\n")
-  print(x$final_tests)   
+  print(x$final_tests, ...)
   invisible(x)  
 }
 
 summary.anchortest <- function(object, ...)
 {
-  res <- list(anchor_items = object$anchor_items, anchored_item_parameters = object$anchored_item_parameters)
-  class(res) <- "summary.anchor"
-  return(res)
+  class(object) <- c("summary.anchortest", class(object))
+  return(object)
 }
 
 print.summary.anchortest <- function(x, ...)
 {
   cat("Anchor items:\n")
-  cat(x$anchor_items)
+  writeLines(if(isTRUE(all.equal(x$anchor_items, NA))) "NA" else strwrap(paste(x$item_labels[x$anchor_items], collapse = ", ")))
   cat("\nAnchored item parameters:\n")
-  print(round(x$anchored_item_parameters,4))   
+  print(x$anchored_item_parameters, ...)
+  cat("\nRanking order:\n")
+  print(x$ranking_order)  
+  cat("\nCriterion values (not sorted):\n")
+  print(setNames(x$criteria, if(isTRUE(all.equal(x$criteria, NA))) NULL else x$item_labels))
+  cat("\nFinal DIF tests:\n")
+  print(x$final_tests, ...)
   invisible(x)  
 }
 
 plot.anchortest <- function(x, main = NULL, ...) {
   if(is.null(main)) main <- sprintf("Anchor item%s: %s",
     if(length(x$anchor_items) > 1L) "s" else "",
-    paste(x$anchor_items, collapse = ", "))
+    paste(x$item_labels[x$anchor_items], collapse = ", "))
   plot(x$final_tests, main = main, ...)
 }
 
@@ -457,7 +481,7 @@ diftests <- function(obj1, obj2, anchor_items, adjust){
   rownames(contr) <- colnames(obj1$data)[-alias]
 	
   ## test employed
-  test <- if(adjust=="none") multcomp::univariate() else multcomp::adjusted(type=adjust)
+  test <- if(adjust == "none") multcomp::univariate() else multcomp::adjusted(type = adjust)
   ftest <- summary(multcomp::glht(mod, linfct = contr), test = test)
   return(list(test = ftest, itempars = cf, vcovs = vc))
 
