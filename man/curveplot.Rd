@@ -17,7 +17,7 @@
 
 \arguments{
   \item{object}{a fitted model object of class \code{"raschmodel"},
-    \code{"rsmodel"}, \code{"pcmodel"}, \code{"plmodel"} or \code{"gpcmodel"}.}
+    \code{"rsmodel"}, \code{"pcmodel"}, \code{"nplmodel"} or \code{"gpcmodel"}.}
   \item{ref}{argument passed over to internal calls of \code{\link{predict}}.}
   \item{items}{character or numeric, specifying the items for which response
     curves should be visualized.}
@@ -78,7 +78,7 @@ legend(x = "topleft", y = 1.0, legend = c("RSM", "PCM"), lty = 1:2, bty = "n")
 \donttest{
 if(requireNamespace("mirt")) {
 ## fit 2PL and generaliced partial credit model to verbal aggression data
-twoplmod <- plmodel(VerbalAggression$resp2)
+twoplmod <- nplmodel(VerbalAggression$resp2)
 gpcmod <- gpcmodel(VerbalAggression$resp)
 
 ## curve plots of the dichotomous 2PL

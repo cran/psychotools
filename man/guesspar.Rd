@@ -3,7 +3,7 @@
 \alias{guesspar.raschmodel}
 \alias{guesspar.rsmodel}
 \alias{guesspar.pcmodel}
-\alias{guesspar.plmodel}
+\alias{guesspar.nplmodel}
 \alias{guesspar.gpcmodel}
 
 \alias{coef.guesspar}
@@ -22,7 +22,7 @@
   \method{guesspar}{raschmodel}(object, alias = TRUE, vcov = TRUE, \dots)
   \method{guesspar}{rsmodel}(object, alias = TRUE, vcov = TRUE, \dots)
   \method{guesspar}{pcmodel}(object, alias = TRUE, vcov = TRUE, \dots)
-  \method{guesspar}{plmodel}(object, alias = TRUE, logit = FALSE, vcov = TRUE, \dots)
+  \method{guesspar}{nplmodel}(object, alias = TRUE, logit = FALSE, vcov = TRUE, \dots)
   \method{guesspar}{gpcmodel}(object, alias = TRUE, vcov = TRUE, \dots)
 }
 
@@ -36,7 +36,7 @@
     where all guessing parameters are fixed to 0, this means that an
     empty numeric vector and an empty variance-covariace matrix is returned if
     \code{alias} is \code{FALSE}.}
-  \item{logit}{logical. If a \code{plmodel} of \code{type} \code{"3PL"} or
+  \item{logit}{logical. If a \code{nplmodel} of \code{type} \code{"3PL"} or
     \code{"4PL"} model has been fit, the guessing parameters were estimated on the
     logit scale. If \code{logit = FALSE}, these estimates and the
     variance-covariance (if requested) are retransformed using the logistic
@@ -79,13 +79,13 @@ o <- options(digits = 3)
 data("Sim3PL", package = "psychotools")
 
 ## fit 2PL to data simulated under the 3PL
-twoplmod <- plmodel(Sim3PL$resp)
+twoplmod <- nplmodel(Sim3PL$resp)
 
 ## extract the guessing parameters (all fixed at 0)
 gp1 <- guesspar(twoplmod)
 
 ## fit 3PL to data simulated under the 3PL
-threeplmod <- plmodel(Sim3PL$resp, type = "3PL")
+threeplmod <- nplmodel(Sim3PL$resp, type = "3PL")
 
 ## extract the guessing parameters
 gp2 <- guesspar(threeplmod)

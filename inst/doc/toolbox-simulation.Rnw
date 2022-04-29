@@ -67,7 +67,7 @@ In this vignette, we want to carry out simulation studies that investigate how t
 
 Both of these simulations serve as illustrations. To keep our presentation concise, the design of these studies is somewhat limited. To provide a realistic setting, we again rely on the first six items of the Verbal Aggression dataset, which were already used in the ``Illustrations with Empirical Data'' section of \cite{schneider2020}. In the following, \texttt{refmodel} refers to a 2PL model fitted to the first six items of the Verbal Aggression dataset:
 
-\texttt{refmodel <- plmodel(VerbalAggression\$resp2[, 1:6])}
+\texttt{refmodel <- nplmodel(VerbalAggression\$resp2[, 1:6])}
 
 Instead of using the item parameters of this fitted 2PL model, we could of course also simply generate them based on specific parametric distributions, such as a standard normal distribution for the item difficulty parameters. This could be done using standard functions of R, which we do not present for brevity.
 
@@ -92,10 +92,10 @@ On the other hand, we keep the following conditions fixed:
 \end{itemize}
 Listing~\ref{lst:dgp} shows the corresponding code.
 \lstinputlisting[firstline=9, lastline=34, frame=single, basicstyle=\scriptsize\ttfamily, language=R, numbers=left, numberstyle=\tiny\color{black}, caption={The data generating process}, label={lst:dgp}]{../demo/toolbox1.R}
-To calculate $p$-values three steps are needed: Simulate data (\texttt{dgp(...)}), fit the 2PL model (\texttt{plmodel(...)}) and calculate the score-based tests (\texttt{sctest(...)}). A possible solution is given in Listing~\ref{lst:perf} using, e.g., 1000 persons (\texttt{N = 1000}), one group (\texttt{G = 1}), simulating no impact (\texttt{impact = FALSE}) and assuming the covariate to be independent of the person parameters (\texttt{cotype = "random"}).
+To calculate $p$-values three steps are needed: Simulate data (\texttt{dgp(...)}), fit the 2PL model (\texttt{nplmodel(...)}) and calculate the score-based tests (\texttt{sctest(...)}). A possible solution is given in Listing~\ref{lst:perf} using, e.g., 1000 persons (\texttt{N = 1000}), one group (\texttt{G = 1}), simulating no impact (\texttt{impact = FALSE}) and assuming the covariate to be independent of the person parameters (\texttt{cotype = "random"}).
 \begin{lstlisting}[frame=single, basicstyle=\scriptsize\ttfamily, language=R, numbers=left, numberstyle=\tiny\color{black}, caption={Calculate $p$-values}, label={lst:perf}]
 d <- dgp(refmodel, N = 1000, G = 1, impact = FALSE, cotype = "random")
-m <- plmodel(d$resp, impact = d$impact, vcov = FALSE)
+m <- nplmodel(d$resp, impact = d$impact, vcov = FALSE)
 sctest(m, order.by = d$covariate, functional = "DM")
 \end{lstlisting}
 In our simulation, these three steps are repeated \texttt{M} times under all simulated conditions. We are interested in the hit rate under each condition, which is calculated as the proportion of significant tests given a specified significance level \texttt{alpha}. As no DIF effect was simulated, this is the Type I error. In the following code, we also allow for setting the \texttt{parm} argument that allows for only testing a specified subset of the item parameters; \texttt{parm = NULL} defaults to using all item parameters. See Listing~\ref{lst:hitrate} for the code using, e.g., \texttt{M = 1000} replications, and setting \texttt{alpha} to \texttt{0.05}.
@@ -157,4 +157,3 @@ All results were obtained using the R system for statistical computing \cite{R} 
 \bibliography{psychotools}
 
 \end{document}
-

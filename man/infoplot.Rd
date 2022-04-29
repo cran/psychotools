@@ -16,7 +16,7 @@
 
 \arguments{
   \item{object}{a fitted model object of class \code{"raschmodel"},
-    \code{"rsmodel"}, \code{"pcmodel"}, \code{"plmodel"} or \code{"gpcmodel"}.}
+    \code{"rsmodel"}, \code{"pcmodel"}, \code{"nplmodel"} or \code{"gpcmodel"}.}
   \item{what}{character, specifying the type of information to visualize.}
   \item{ref}{argument passed over to internal calls of \code{\link{predict}}.}
   \item{items}{character or numeric, specifying the items for which information
@@ -89,7 +89,7 @@ legend(x = "topright", legend = c("PCM", "RM"), lty = 1:2, bty = "n")
 
 if(requireNamespace("mirt")) {
 ## fit 2PL to verbal aggression data
-twoplmod <- plmodel(VerbalAggression$resp2)
+twoplmod <- nplmodel(VerbalAggression$resp2)
 
 ## category information plots for all items under the dichotomous 2PL
 plot(twoplmod, type = "information", what = "categories")

@@ -1,6 +1,6 @@
 
-R version 4.1.1 (2021-08-10) -- "Kick Things"
-Copyright (C) 2021 The R Foundation for Statistical Computing
+R version 4.2.0 (2022-04-22) -- "Vigorous Calisthenics"
+Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -1041,7 +1041,7 @@ c bar
 > ### Name: discrpar
 > ### Title: Extract Discrimination Parameters of Item Response Models
 > ### Aliases: discrpar discrpar.raschmodel discrpar.rsmodel discrpar.pcmodel
-> ###   discrpar.plmodel discrpar.gpcmodel coef.discrpar print.discrpar
+> ###   discrpar.nplmodel discrpar.gpcmodel coef.discrpar print.discrpar
 > ###   vcov.discrpar
 > ### Keywords: classes
 > 
@@ -1071,7 +1071,7 @@ S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout
 > 
 > if(requireNamespace("mirt")) {
 + ## fit 2PL to verbal aggression data
-+ twoplmod <- plmodel(VerbalAggression$resp2)
++ twoplmod <- nplmodel(VerbalAggression$resp2)
 + 
 + ## extract the discrimination parameters
 + dp2 <- discrpar(twoplmod)
@@ -1183,7 +1183,7 @@ S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout
 > ### Name: guesspar
 > ### Title: Extract Guessing Parameters of Item Response Models
 > ### Aliases: guesspar guesspar.raschmodel guesspar.rsmodel guesspar.pcmodel
-> ###   guesspar.plmodel guesspar.gpcmodel coef.guesspar print.guesspar
+> ###   guesspar.nplmodel guesspar.gpcmodel coef.guesspar print.guesspar
 > ###   vcov.guesspar
 > ### Keywords: classes
 > 
@@ -1197,13 +1197,13 @@ S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout
 + data("Sim3PL", package = "psychotools")
 + 
 + ## fit 2PL to data simulated under the 3PL
-+ twoplmod <- plmodel(Sim3PL$resp)
++ twoplmod <- nplmodel(Sim3PL$resp)
 + 
 + ## extract the guessing parameters (all fixed at 0)
 + gp1 <- guesspar(twoplmod)
 + 
 + ## fit 3PL to data simulated under the 3PL
-+ threeplmod <- plmodel(Sim3PL$resp, type = "3PL")
++ threeplmod <- nplmodel(Sim3PL$resp, type = "3PL")
 + 
 + ## extract the guessing parameters
 + gp2 <- guesspar(threeplmod)
@@ -1269,7 +1269,7 @@ S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout
 > 
 > if(requireNamespace("mirt")) {
 + ## fit 2PL to verbal aggression data
-+ twoplmod <- plmodel(VerbalAggression$resp2)
++ twoplmod <- nplmodel(VerbalAggression$resp2)
 + 
 + ## category information plots for all items under the dichotomous 2PL
 + plot(twoplmod, type = "information", what = "categories")
@@ -1286,7 +1286,7 @@ S4WantCurse   S4DoCurse S4WantScold   S4DoScold S4WantShout   S4DoShout
 > ### Name: itempar
 > ### Title: Extract Item Parameters of Item Response Models
 > ### Aliases: itempar itempar.btmodel itempar.raschmodel itempar.rsmodel
-> ###   itempar.pcmodel itempar.plmodel itempar.gpcmodel itempar.raschtree
+> ###   itempar.pcmodel itempar.nplmodel itempar.gpcmodel itempar.raschtree
 > ###   itempar.bttree coef.itempar print.itempar vcov.itempar
 > ### Keywords: classes
 > 
@@ -1811,6 +1811,79 @@ $item3
 > 
 > 
 > cleanEx()
+> nameEx("nplmodel")
+> ### * nplmodel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: nplmodel
+> ### Title: Parametric Logistic Model (n-PL) Fitting Function
+> ### Aliases: nplmodel plmodel print.nplmodel summary.nplmodel
+> ###   print.summary.nplmodel coef.nplmodel confint.nplmodel bread.nplmodel
+> ###   estfun.nplmodel logLik.nplmodel vcov.nplmodel
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> if(requireNamespace("mirt")) {
++ 
++ o <- options(digits = 4)
++ 
++ ## mathematics 101 exam results
++ data("MathExam14W", package = "psychotools")
++ 
++ ## 2PL
++ twopl <- nplmodel(y = MathExam14W$solved)
++ summary(twopl)
++ 
++ ## how to specify starting values as a vector of model parameters
++ st <- coef(twopl)
++ twopl <- nplmodel(y = MathExam14W$solved, start = st)
++ ## or a list containing a vector of slopes and a vector of intercepts
++ set.seed(0)
++ st <- list(a = rlnorm(13, 0, 0.0625), d = rnorm(13, 0, 1))
++ twopl <- nplmodel(y = MathExam14W$solved, start = st)
++ 
++ ## visualizations
++ plot(twopl, type = "profile")
++ plot(twopl, type = "regions")
++ plot(twopl, type = "piplot")
++ plot(twopl, type = "curves", xlim = c(-6, 6))
++ plot(twopl, type = "information", xlim = c(-6, 6))
++ ## visualizing the IRT parametrization
++ plot(twopl, type = "curves", xlim = c(-6, 6), items = 1)
++ abline(v = itempar(twopl)[1])
++ abline(h = 0.5, lty = 2)
++ 
++ ## 2PL accounting for gender impact
++ table(MathExam14W$gender)
++ mtwopl <- nplmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
++   grouppars = TRUE)
++ summary(mtwopl)
++ plot(mtwopl, type = "piplot")
++ ## specifying starting values as a vector of model parameters, note that in
++ ## this example impact is being modelled and therefore grouppars must be TRUE
++ ## to get all model parameters
++ st <- coef(mtwopl)
++ mtwopl <- nplmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
++   start = st)
++ ## or a list containing a vector of slopes, a vector of intercepts and a vector
++ ## of means and a vector of variances as the distributional group parameters
++ set.seed(1)
++ st <- list(a = rlnorm(13, 0, 0.0625), d = rnorm(13, 0, 1), m = 0, v = 1)
++ mtwopl <- nplmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
++   start = st)
++ 
++ ## MML estimated Rasch model (1PL)
++ rm <- nplmodel(y = MathExam14W$solved, type = "1PL")
++ summary(rm)
++ 
++ options(digits = o$digits)
++ }
+> 
+> 
+> 
+> cleanEx()
 > nameEx("paircomp")
 > ### * paircomp
 > 
@@ -2037,8 +2110,8 @@ Warning in pcmodel(pcd, nullcats = "downcode") :
 > ### Name: personpar
 > ### Title: Extract Person Parameters of Item Response Models
 > ### Aliases: personpar personpar.raschmodel personpar.rsmodel
-> ###   personpar.pcmodel personpar.plmodel personpar.gpcmodel coef.personpar
-> ###   print.personpar vcov.personpar
+> ###   personpar.pcmodel personpar.nplmodel personpar.gpcmodel
+> ###   coef.personpar print.personpar vcov.personpar
 > ### Keywords: classes
 > 
 > ### ** Examples
@@ -2160,7 +2233,7 @@ Item response person parameters (RM):
 > 
 > if(requireNamespace("mirt")) {
 + ## fit a 2PL accounting for gender impact and
-+ twoplm <- plmodel(VerbalAggression$resp2, impact = VerbalAggression$gender)
++ twoplm <- nplmodel(VerbalAggression$resp2, impact = VerbalAggression$gender)
 + 
 + ## extract the person parameters
 + ## (= mean/variance parameters from the normal ability distribution)
@@ -2209,79 +2282,6 @@ Item response person parameters (RM):
 > ## just visualize the first six items and the person parameter plot
 > plot(pcmod, type = "piplot", items = 1:6, pcol = "lightblue")
 > 
-> 
-> 
-> 
-> cleanEx()
-> nameEx("plmodel")
-> ### * plmodel
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: plmodel
-> ### Title: Parametric Logistic Model Fitting Function
-> ### Aliases: plmodel print.plmodel summary.plmodel print.summary.plmodel
-> ###   coef.plmodel confint.plmodel bread.plmodel estfun.plmodel
-> ###   logLik.plmodel vcov.plmodel
-> ### Keywords: regression
-> 
-> ### ** Examples
-> 
-> if(requireNamespace("mirt")) {
-+ 
-+ o <- options(digits = 4)
-+ 
-+ ## mathematics 101 exam results
-+ data("MathExam14W", package = "psychotools")
-+ 
-+ ## 2PL
-+ twopl <- plmodel(y = MathExam14W$solved)
-+ summary(twopl)
-+ 
-+ ## how to specify starting values as a vector of model parameters
-+ st <- coef(twopl)
-+ twopl <- plmodel(y = MathExam14W$solved, start = st)
-+ ## or a list containing a vector of slopes and a vector of intercepts
-+ set.seed(0)
-+ st <- list(a = rlnorm(13, 0, 0.0625), d = rnorm(13, 0, 1))
-+ twopl <- plmodel(y = MathExam14W$solved, start = st)
-+ 
-+ ## visualizations
-+ plot(twopl, type = "profile")
-+ plot(twopl, type = "regions")
-+ plot(twopl, type = "piplot")
-+ plot(twopl, type = "curves", xlim = c(-6, 6))
-+ plot(twopl, type = "information", xlim = c(-6, 6))
-+ ## visualizing the IRT parametrization
-+ plot(twopl, type = "curves", xlim = c(-6, 6), items = 1)
-+ abline(v = itempar(twopl)[1])
-+ abline(h = 0.5, lty = 2)
-+ 
-+ ## 2PL accounting for gender impact
-+ table(MathExam14W$gender)
-+ mtwopl <- plmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
-+   grouppars = TRUE)
-+ summary(mtwopl)
-+ plot(mtwopl, type = "piplot")
-+ ## specifying starting values as a vector of model parameters, note that in
-+ ## this example impact is being modelled and therefore grouppars must be TRUE
-+ ## to get all model parameters
-+ st <- coef(mtwopl)
-+ mtwopl <- plmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
-+   start = st)
-+ ## or a list containing a vector of slopes, a vector of intercepts and a vector
-+ ## of means and a vector of variances as the distributional group parameters
-+ set.seed(1)
-+ st <- list(a = rlnorm(13, 0, 0.0625), d = rnorm(13, 0, 1), m = 0, v = 1)
-+ mtwopl <- plmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
-+   start = st)
-+ 
-+ ## MML estimated Rasch model (1PL)
-+ rm <- plmodel(y = MathExam14W$solved, type = "1PL")
-+ summary(rm)
-+ 
-+ options(digits = o$digits)
-+ }
 > 
 > 
 > 
@@ -2338,7 +2338,7 @@ Item response person parameters (RM):
 > ### Name: predict.pcmodel
 > ### Title: Predict Methods for Item Response Models
 > ### Aliases: predict.pcmodel predict.rsmodel predict.raschmodel
-> ###   predict.gpcmodel predict.plmodel
+> ###   predict.gpcmodel predict.nplmodel
 > ### Keywords: regression
 > 
 > ### ** Examples
@@ -3205,8 +3205,8 @@ Dummy       158 158  NA
 > ### Name: threshpar
 > ### Title: Extract Threshold Parameters of Item Response Models
 > ### Aliases: threshpar threshpar.raschmodel threshpar.rsmodel
-> ###   threshpar.pcmodel threshpar.plmodel threshpar.gpcmodel coef.threshpar
-> ###   print.threshpar
+> ###   threshpar.pcmodel threshpar.nplmodel threshpar.gpcmodel
+> ###   coef.threshpar print.threshpar
 > ### Keywords: classes
 > 
 > ### ** Examples
@@ -3344,7 +3344,7 @@ S4DoShout-C2    1.62724  1.62724  3.62860
 > ### Name: upperpar
 > ### Title: Extract Upper Asymptote Parameters of Item Response Models
 > ### Aliases: upperpar upperpar.raschmodel upperpar.rsmodel upperpar.pcmodel
-> ###   upperpar.plmodel upperpar.gpcmodel coef.upperpar print.upperpar
+> ###   upperpar.nplmodel upperpar.gpcmodel coef.upperpar print.upperpar
 > ###   vcov.upperpar
 > ### Keywords: classes
 > 
@@ -3358,13 +3358,13 @@ S4DoShout-C2    1.62724  1.62724  3.62860
 + data("Sim3PL", package = "psychotools")
 + 
 + ## fit 2PL to data simulated under the 3PLu
-+ twoplmod <- plmodel(Sim3PL$resp2)
++ twoplmod <- nplmodel(Sim3PL$resp2)
 + 
 + ## extract the upper asymptote parameters (all fixed at 1)
 + up1 <- upperpar(twoplmod)
 + 
 + ## fit 3PLu to data simulated under the 3PLu
-+ threeplmodu <- plmodel(Sim3PL$resp2, type = "3PLu")
++ threeplmodu <- nplmodel(Sim3PL$resp2, type = "3PLu")
 + 
 + ## extract the upper asymptote parameters
 + up2 <- upperpar(threeplmodu)
@@ -3425,7 +3425,7 @@ Bradley-Terry model parameters (btmodel):
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  14.903 0.147 15.061 0 0 
+Time elapsed:  16.309 0.116 16.436 0 0 
 > grDevices::dev.off()
 null device 
           1 

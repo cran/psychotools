@@ -26,13 +26,15 @@ mptmodel <- function(y, weights = NULL, spec, treeid = NULL,
 
   ## treeid
   tid <- if(length(treeid) == NCOL(y))
-           factor(treeid)
+           treeid
          else if(length(spec$treeid) == NCOL(y))            # read from spec
            spec$treeid
-         else if(!is.null(colnames(y)))
-           factor(gsub("([^.]+)\\..*", "\\1", colnames(y))) # before 1st dot
-         else
+         else if(!is.null(colnames(y))) {                   # before 1st dot
+           tid <- gsub("([^.]+)\\..*", "\\1", colnames(y))
+           factor(tid, levels = unique(tid))                # keep order
+         } else
            rep(1, NCOL(y))
+  tid <- factor(tid)  # make sure treeid is always factor
 
   ## for fitting only sums are needed
   ysum <- colSums(y * weights)
@@ -178,8 +180,8 @@ vcov.mptmodel <- function(object, logit = TRUE, what = c("vcov", "fisher"),
 
 
 ## Based on stats::confint.default
-confint.mptmodel <- function(object, parm, level = 0.95, logit = TRUE, ...)
-{
+confint.mptmodel <- function(object, parm, level = 0.95, logit = TRUE,
+                             ...){
   cf <- coef(object, logit=logit)
   pnames <- names(cf)
   if (missing(parm)) 
@@ -278,10 +280,15 @@ predict.mptmodel <- function(object, newdata = NULL, ...){
 
 
 ## model specification
-mptspec <- function(..., .restr = NULL)
+mptspec <- function(..., .replicates = NULL, .restr = NULL)
 {
   ## non-standard evaluation of arguments
   spec <- match.call()
+
+  replicates <- spec$.replicates
+  if(!is.null(replicates)) {
+    if(!is.numeric(replicates)) stop(".replicates must be a single number")
+  }
 
   restr <- spec$.restr
   if(!is.null(restr)) {
@@ -297,14 +304,15 @@ mptspec <- function(..., .restr = NULL)
                    collapse = ", ")
   }
 
-  # Remove .restr from call (if included)
-  # and (further below, after default models) turn into list of characters
+  # Remove .replicates and .restr from call (if included) and
+  # (further below, after pre-specified models) turn into list of characters
+  spec$.replicates <- NULL
   spec$.restr <- NULL
   spec <- as.list(spec[-1L])                  # exclude function name
   treeid <- NULL
 
-  if (is.character(whichmod <- spec[[1]])) {  # default models
-    modcall <- switch(EXPR = whichmod,
+  if (is.character(whichmod <- spec[[1]])) {  # pre-specified models
+    prespec <- switch(EXPR = whichmod,
       "1HT" = expression(
         "1.1" = r + (1 - r)*b,
         "1.2" = (1 - r)*(1 - b),
@@ -395,66 +403,79 @@ mptspec <- function(..., .restr = NULL)
         "1.4" = c*(1 - r) + (1 - c)*(1 - u)^2
       ),
       "WST" = expression(
-        "1.1"  = (1 - a)*(1 - P)*(1 - p)*(1 - Q)*(1 - q),
-        "1.2"  = a*c*(1 - d)*(1 - sb)*i +
-                 (1 - a)*(1 - P)*(1 - p)*(1 - Q)*q,
-        "1.3"  = a*c*(1 - d)*sb*i +
-                 (1 - a)*(1 - P)*(1 - p)*Q*(1 - q),
-        "1.4"  = a*(1 - c)*(1 - x)*(1 - d)*i +
-                 (1 - a)*(1 - P)*(1 - p)*Q*q,
-        "1.5"  = a*c*d*(1 - sf)*i +
-                 (1 - a)*(1 - P)*p*(1 - Q)*(1 - q),
-        "1.6"  = a*(1 - c)*x*(1 - sfb)*i +
-                 (1 - a)*(1 - P)*p*(1 - Q)*q,
-        "1.7"  = a*c*d*(1 - sf)*(1 - i) +
-                 a*c*(1 - d)*sb*(1 - i) +
-                 (1 - a)*(1 - P)*p*Q*(1 - q),
-        "1.8"  = (1 - a)*(1 - P)*p*Q*q,
-        "1.9"  = a*c*d*sf*i +
-                 (1 - a)*P*(1 - p)*(1 - Q)*(1 - q),
-        "1.10" = a*c*d*sf*(1 - i) +
-                 a*c*(1 - d)*(1 - sb)*(1 - i) +
-                 (1 - a)*P*(1 - p)*(1 - Q)*q,
-        "1.11" = a*(1 - c)*x*sfb*i +
-                 (1 - a)*P*(1 - p)*Q*(1 - q),
-        "1.12" = (1 - a)*P*(1 - p)*Q*q,
-        "1.13" = a*(1 - c)*(1 - x)*d*i +
-                 (1 - a)*P*p*(1 - Q)*(1 - q),
-        "1.14" = (1 - a)*P*p*(1 - Q)*q,
-        "1.15" = (1 - a)*P*p*Q*(1 - q),
-        "1.16" = a*(1 - c)*x*sfb*(1 - i) +
-                 a*(1 - c)*x*(1 - sfb)*(1 - i) +
-                 a*(1 - c)*(1 - x)*d*(1 - i) +
-                 a*(1 - c)*(1 - x)*(1 - d)*(1 - i) +
-                 (1 - a)*P*p*Q*q
+        ".0000" = (1 - a)*(1 - P)*(1 - p)*(1 - Q)*(1 - q),
+        ".0001" = a*c*(1 - d)*(1 - sb)*i +
+                  (1 - a)*(1 - P)*(1 - p)*(1 - Q)*q,
+        ".0010" = a*c*(1 - d)*sb*i +
+                  (1 - a)*(1 - P)*(1 - p)*Q*(1 - q),
+        ".0011" = a*(1 - c)*(1 - x)*(1 - d)*i +
+                  (1 - a)*(1 - P)*(1 - p)*Q*q,
+        ".0100" = a*c*d*(1 - sf)*i +
+                  (1 - a)*(1 - P)*p*(1 - Q)*(1 - q),
+        ".0101" = a*(1 - c)*x*(1 - sfb)*i +
+                  (1 - a)*(1 - P)*p*(1 - Q)*q,
+        ".0110" = a*c*d*(1 - sf)*(1 - i) +
+                  a*c*(1 - d)*sb*(1 - i) +
+                  (1 - a)*(1 - P)*p*Q*(1 - q),
+        ".0111" = (1 - a)*(1 - P)*p*Q*q,
+        ".1000" = a*c*d*sf*i +
+                  (1 - a)*P*(1 - p)*(1 - Q)*(1 - q),
+        ".1001" = a*c*d*sf*(1 - i) +
+                  a*c*(1 - d)*(1 - sb)*(1 - i) +
+                  (1 - a)*P*(1 - p)*(1 - Q)*q,
+        ".1010" = a*(1 - c)*x*sfb*i +
+                  (1 - a)*P*(1 - p)*Q*(1 - q),
+        ".1011" = (1 - a)*P*(1 - p)*Q*q,
+        ".1100" = a*(1 - c)*(1 - x)*d*i +
+                  (1 - a)*P*p*(1 - Q)*(1 - q),
+        ".1101" = (1 - a)*P*p*(1 - Q)*q,
+        ".1110" = (1 - a)*P*p*Q*(1 - q),
+        ".1111" = a*(1 - c)*x*sfb*(1 - i) +
+                  a*(1 - c)*x*(1 - sfb)*(1 - i) +
+                  a*(1 - c)*(1 - x)*d*(1 - i) +
+                  a*(1 - c)*(1 - x)*(1 - d)*(1 - i) +
+                  (1 - a)*P*p*Q*q
       ),
       NULL  # model not available
     )
-    if(is.null(modcall))
+    if(is.null(prespec))
       stop("'...' has to be either an expression or one of:\n",
            "  '1HT', '2HT', 'PairAsso', 'proCNI', 'prospec', 'rmodel',\n",
            "  'SourceMon', 'SR', 'SR2', 'WST'.\n")
+  }
 
-    ## Get treeid from names
-    nm <- do.call(rbind, strsplit(names(modcall), "\\."))  # treeid.catid
-    treeid <- as.numeric(nm[, 1])
+  if(exists("prespec", inherits = FALSE)) spec <- prespec
 
-    ## Replicates?
-    if (!is.null(spec$.replicates) && spec$.replicates > 1) {
-      ntrees <- max(treeid)
-      treeid <- rep(treeid, spec$.replicates) +
-                rep(seq(0, ntrees*(spec$.replicates - 1), ntrees),
-                    each=nrow(nm))
-      pd <- getParseData(parse(text=modcall, keep.source=TRUE))
-      pat <- paste0("(",
-              paste(unique(pd$text[pd$token == "SYMBOL"]), collapse="|"), ")")
-      newcall <- NULL
-      for (i in seq_len(spec$.replicates))
-        newcall <- c(newcall, gsub(pat, paste0("\\1", i), modcall))
-      modcall <- setNames(parse(text=newcall),
-                          paste(treeid, nm[, 2], sep="."))
+  ## Get treeid from names
+  if(!is.null(names(spec))) {
+    nm <- do.call(rbind, strsplit(names(spec), "\\."))  # treeid.catid
+    if(any(nm[, 1] == "")) nm[, 1] <- "1"
+    treeid <- nm[, 1]  # check only if there are .replicates
+  }
+
+  ## Replicates?
+  if (!is.null(replicates) && replicates > 1) {
+    if(is.null(names(spec)) || ncol(nm) != 2 || nrow(nm) != length(spec))
+      stop('.replicates require expressions named "x.y"',
+           ' where "x" is the treeid \n',
+           '  See help("mptspec") for examples.\n')
+    ntrees <- length(unique(treeid))
+    treeid <- if(anyNA(suppressWarnings(as.numeric(treeid)))) {
+      paste0(rep(treeid, replicates),                  # character treeid
+             rep(seq_len(replicates), each = length(treeid)))
+    } else {
+      rep(as.numeric(treeid), replicates) +            # numeric treeid
+      rep(seq(0, ntrees*(replicates - 1), ntrees),
+          each = nrow(nm))
     }
-    spec <- modcall
+    pd <- getParseData(parse(text=spec, keep.source=TRUE))
+    pat <- paste0("(",
+            paste(unique(pd$text[pd$token == "SYMBOL"]), collapse="|"), ")")
+    newspec <- NULL
+    for (i in seq_len(replicates))
+      newspec <- c(newspec, gsub(pat, paste0("\\1", i), spec))
+    spec <- setNames(parse(text=newspec),
+                     paste(treeid, nm[, 2], sep="."))
   }
 
   ## list of strings
@@ -543,20 +564,28 @@ mptspec <- function(..., .restr = NULL)
     prob = prob,
     deriv = deriv,
     par = pars,
+    replicates = replicates,
     restr = restr,
-    treeid = if(!is.null(treeid)) factor(treeid)
+    treeid = if(!is.null(treeid))
+      factor(treeid, levels = unique(treeid))  # keep order
   )
   class(retval) <- "mptspec"
   retval
 }
 
 
-## Apply restrictions to existing mptspec object
-update.mptspec <- function(object, .restr = NULL, ...){
+## Apply replicates/restrictions to existing mptspec object
+update.mptspec <- function(object, .replicates = NULL, .restr = NULL,
+                           ...){
   spec <- match.call()
+  replicates <- spec$.replicates
   restr <- spec$.restr
 
   spec <- unlist(object$prob)
+  if(!is.null(replicates)) {
+    if(!is.numeric(replicates)) stop(".replicates must be a single number")
+    spec$.replicates <- replicates
+  }
   if(!is.null(restr)){
     if(as.character(restr[[1L]]) != "list") stop(".restr must be list")
     spec$.restr <- restr

@@ -3,7 +3,7 @@
 \alias{threshpar.raschmodel}
 \alias{threshpar.rsmodel}
 \alias{threshpar.pcmodel}
-\alias{threshpar.plmodel}
+\alias{threshpar.nplmodel}
 \alias{threshpar.gpcmodel}
 
 \alias{coef.threshpar}
@@ -27,7 +27,7 @@
   \method{threshpar}{pcmodel}(object, type = c("mode", "median", "mean"),
     ref = NULL, alias = TRUE, relative = FALSE, cumulative = FALSE, vcov = TRUE,
     \dots)
-  \method{threshpar}{plmodel}(object, type = c("mode", "median", "mean"),
+  \method{threshpar}{nplmodel}(object, type = c("mode", "median", "mean"),
     ref = NULL, alias = TRUE, relative = FALSE, cumulative = FALSE, vcov = TRUE,
     \dots)
   \method{threshpar}{gpcmodel}(object, type = c("mode", "median", "mean"),
@@ -47,7 +47,7 @@
     models etimated via MML, the relative threshold parameters are centered
     around their item-specific means and the absolute threshold parameters are
     centered around their global mean. For models estimated via MML
-    (\code{plmodel}s and \code{gpcmodel}s), the parameters are by default
+    (\code{nplmodel}s and \code{gpcmodel}s), the parameters are by default
     identified via the distributional parameters of the person parameters (mean
     and variance of a normal distribution). Nevertheless, a restriction on the
     interval scale can be applied.}

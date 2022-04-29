@@ -77,7 +77,7 @@ raschmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
   Hessian matrix.}
 }
 
-\seealso{\code{\link{plmodel}}, \code{\link{pcmodel}}, \code{\link{rsmodel}},
+\seealso{\code{\link{nplmodel}}, \code{\link{pcmodel}}, \code{\link{rsmodel}},
   \code{\link{gpcmodel}}, \code{\link{btmodel}}}
 
 \examples{

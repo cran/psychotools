@@ -99,7 +99,7 @@ rsmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
 }
 
 \seealso{\code{\link{pcmodel}}, \code{\link{gpcmodel}}, \code{\link{raschmodel}},
-  \code{\link{plmodel}}, \code{\link{btmodel}}}
+  \code{\link{nplmodel}}, \code{\link{btmodel}}}
 
 \examples{
 o <- options(digits = 4)

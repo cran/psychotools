@@ -20,7 +20,7 @@ A data frame containing 10000 observations on 2 variables.
 
 \details{
   Data were simulated under the 3PL (\code{resp}) and 3PLu (\code{resp2}) (see
-  \code{\link{plmodel}}). For the 3PL scenario, the random number generator's
+  \code{\link{nplmodel}}). For the 3PL scenario, the random number generator's
   seed was set to 277. For the 3PLu scenario, the random number generator's seed
   was set to 167. Person parameters \eqn{\theta_{i}} of 10000 persons were drawn
   from the standard normal distribution. Item difficulties \eqn{b_{j}} of 10
@@ -41,7 +41,7 @@ A data frame containing 10000 observations on 2 variables.
   \eqn{j}.
 }
 
-\seealso{\code{\link{plmodel}}}
+\seealso{\code{\link{nplmodel}}}
 
 \examples{
 ## overview

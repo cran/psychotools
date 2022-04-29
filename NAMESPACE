@@ -41,7 +41,7 @@ export(
   "rsmodel",
   "pcmodel",
   "gpcmodel",
-  "plmodel",
+  "nplmodel", "plmodel",
   "btmodel",
   "mptmodel",
 
@@ -65,7 +65,7 @@ export(
   "estfun.rsmodel",
   "estfun.pcmodel", 
   "estfun.gpcmodel", 
-  "estfun.plmodel", 
+  "estfun.nplmodel", 
   "estfun.mptmodel", 
 
   ## bread methods
@@ -73,7 +73,7 @@ export(
   "bread.rsmodel",
   "bread.pcmodel", 
   "bread.gpcmodel", 
-  "bread.plmodel", 
+  "bread.nplmodel", 
 
 
   ## graphical functions
@@ -223,24 +223,24 @@ S3method("upperpar", "gpcmodel")
 S3method("vcov", "gpcmodel")
 S3method("weights", "gpcmodel")
 
-## methods for plmodel objects
-S3method("coef", "plmodel")
-S3method("confint", "plmodel")
-S3method("discrpar", "plmodel")
-S3method("guesspar", "plmodel")
-S3method("itempar", "plmodel")
-S3method("logLik", "plmodel")
-S3method("nobs", "plmodel")
-S3method("personpar", "plmodel")
-S3method("plot", "plmodel")
-S3method("predict", "plmodel")
-S3method("print", "plmodel")
-S3method("print", "summary.plmodel")
-S3method("summary", "plmodel")
-S3method("threshpar", "plmodel")
-S3method("upperpar", "plmodel")
-S3method("vcov", "plmodel")
-S3method("weights", "plmodel")
+## methods for nplmodel objects
+S3method("coef", "nplmodel")
+S3method("confint", "nplmodel")
+S3method("discrpar", "nplmodel")
+S3method("guesspar", "nplmodel")
+S3method("itempar", "nplmodel")
+S3method("logLik", "nplmodel")
+S3method("nobs", "nplmodel")
+S3method("personpar", "nplmodel")
+S3method("plot", "nplmodel")
+S3method("predict", "nplmodel")
+S3method("print", "nplmodel")
+S3method("print", "summary.nplmodel")
+S3method("summary", "nplmodel")
+S3method("threshpar", "nplmodel")
+S3method("upperpar", "nplmodel")
+S3method("vcov", "nplmodel")
+S3method("weights", "nplmodel")
 
 ## methods for btmodel objects
 S3method("coef", "btmodel")
@@ -327,11 +327,11 @@ if(getRversion() >= "3.6.0") {
   S3method(sandwich::estfun, "rsmodel")
   S3method(sandwich::estfun, "pcmodel")
   S3method(sandwich::estfun, "gpcmodel")
-  S3method(sandwich::estfun, "plmodel")
+  S3method(sandwich::estfun, "nplmodel")
   S3method(sandwich::estfun, "mptmodel")
   S3method(sandwich::bread,  "raschmodel")
   S3method(sandwich::bread,  "rsmodel")
   S3method(sandwich::bread,  "pcmodel")
   S3method(sandwich::bread,  "gpcmodel")
-  S3method(sandwich::bread,  "plmodel")
+  S3method(sandwich::bread,  "nplmodel")
 }

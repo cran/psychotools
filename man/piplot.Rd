@@ -16,10 +16,10 @@
 
 \arguments{
   \item{object}{a fitted model object of class \code{"raschmodel"},
-    \code{"rsmodel"}, \code{"pcmodel"}, \code{"plmodel"} or \code{"gpcmodel"}.}
+    \code{"rsmodel"}, \code{"pcmodel"}, \code{"nplmodel"} or \code{"gpcmodel"}.}
   \item{pcol}{optional character (vector), specifying the color(s) used for the
     person parameter plot.}
-  \item{histogram}{logical. For models estimated via MML (\code{plmodel}s and
+  \item{histogram}{logical. For models estimated via MML (\code{nplmodel}s and
     \code{gpcmodel}s), should a histogram of the person-wise (individual) person
     parameters be drawn additionally to the normal distribution density of the
     person parameters?}
@@ -50,7 +50,7 @@
 \details{
   The person-item plot visualization illustrates the distribution of the person
   parameters against the absolute item threshold parameters under a certain data
-  set and IRT model. For models estimated via MML (\code{plmodel}s and
+  set and IRT model. For models estimated via MML (\code{nplmodel}s and
   \code{gpcmodel}s), the normal distribution density of the person parameters is
   drawn. If \code{histogram} is set to \code{TRUE} (the default), a histogram of
   the person-wise (individual) person parameters is drawn additionally. If a

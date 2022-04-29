@@ -1,28 +1,29 @@
-\name{plmodel}
+\name{nplmodel}
+\alias{nplmodel}
 \alias{plmodel}
 
-\alias{print.plmodel}
-\alias{summary.plmodel}
-\alias{print.summary.plmodel}
+\alias{print.nplmodel}
+\alias{summary.nplmodel}
+\alias{print.summary.nplmodel}
 
-\alias{coef.plmodel}
-\alias{confint.plmodel}
-\alias{bread.plmodel}
-\alias{estfun.plmodel}
-\alias{logLik.plmodel}
-\alias{vcov.plmodel}
+\alias{coef.nplmodel}
+\alias{confint.nplmodel}
+\alias{bread.nplmodel}
+\alias{estfun.nplmodel}
+\alias{logLik.nplmodel}
+\alias{vcov.nplmodel}
 
-\title{Parametric Logistic Model Fitting Function}
+\title{Parametric Logistic Model (n-PL) Fitting Function}
 
 \description{
-  \code{plmodel} is a basic fitting function for parametric logistic IRT models
+  \code{nplmodel} is a basic fitting function for n-PL type parametric logistic IRT models
   (2PL, 3PL, 3PLu, 4PL, Rasch/1PL), providing a wrapper around
   \code{\link[mirt]{mirt}} and \code{\link[mirt]{multipleGroup}} relying on
   marginal maximum likelihood (MML) estimation via the standard EM algorithm.
 }
 
 \usage{
-plmodel(y, weights = NULL, impact = NULL,
+nplmodel(y, weights = NULL, impact = NULL,
   type = c("2PL", "3PL", "3PLu", "4PL", "1PL", "RM"),
   grouppars = FALSE, vcov = TRUE, 
   start = NULL, method = "BFGS", maxit = 500, reltol = 1e-5, \dots)
@@ -57,7 +58,8 @@ plmodel(y, weights = NULL, impact = NULL,
 }
 
 \details{
-  \code{plmodel} provides a basic fitting function for parametric logistic IRT
+  \code{nplmodel} (\code{plmodel} for backward compatibility with earlier
+  \pkg{psychotools} versions) provides a basic fitting function for n-PL type parametric logistic IRT
   models (2PL, 3PL, 3PLu, 4PL, Rasch/1PL) providing a wrapper around
   \code{\link[mirt]{mirt}} and \code{\link[mirt]{multipleGroup}} relying on
   MML estimation via the standard EM algorithm (Bock & Aitkin, 1981). Models are
@@ -76,8 +78,8 @@ plmodel(y, weights = NULL, impact = NULL,
   person parameters are fixed to follow the standard normal distribution. In the
   remaining \code{impact} groups, the distributional parameters (mean and
   variance of a normal distribution) of the person parameters are
-  estimated freely. See e.g. Baker & Kim (2004, Chapter 11) or Debelak & Strobl
-  (2018) for further details. To improve convergence of the model fitting
+  estimated freely. See e.g. Baker & Kim (2004, Chapter 11), Debelak & Strobl
+  (2019), or Schneider et al. (2022) for further details. To improve convergence of the model fitting
   algorithm, the first level of the \code{impact} variable should always correspond
   to the largest group. If this is not the case, levels are re-ordered internally.
 
@@ -101,7 +103,7 @@ plmodel(y, weights = NULL, impact = NULL,
   of the estimates and their variance-covariance matrix (if requested) using the
   logistic function and the delta method if \code{logit = FALSE}.
 
-  \code{plmodel} returns an object of class \code{"plmodel"} for which
+  \code{nplmodel} returns an object of class \code{"nplmodel"} for which
   several basic methods are available, including \code{print}, \code{plot},
   \code{summary}, \code{coef}, \code{vcov}, \code{logLik}, \code{estfun},
   \code{\link{discrpar}}, \code{\link{itempar}}, \code{\link{threshpar}},
@@ -109,7 +111,7 @@ plmodel(y, weights = NULL, impact = NULL,
 }
 
 \value{
-  \code{plmodel} returns an S3 object of class \code{"plmodel"}, 
+  \code{nplmodel} returns an S3 object of class \code{"nplmodel"}, 
   i.e., a list of the following components:
   \item{coefficients}{estimated model parameters in slope/intercept parametrization,}
   \item{vcov}{covariance matrix of the model parameters,}
@@ -140,8 +142,7 @@ plmodel(y, weights = NULL, impact = NULL,
     Chapman & Hall/CRC, Boca Raton.
 
   Bock RD, Aitkin M (1981).
-    Marginal Maximum Likelihood Estimation of Item Parameters: Application of
-    an EM Algorithm.
+    Marginal Maximum Likelihood Estimation of Item Parameters: Application of an EM Algorithm.
     \emph{Psychometrika}, \bold{46}(4), 443--459.
 
   Chalmers RP (2012).
@@ -149,11 +150,15 @@ plmodel(y, weights = NULL, impact = NULL,
     \emph{Journal of Statistical Software}, \bold{48}(6), 1--29.
     \doi{10.18637/jss.v048.i06}
 
-  Debelak R, Strobl C (2018).
-    Investigating Measurement Invariance by Means of Parameter Instability Tests
-    for 2PL and 3PL Models.
-    \emph{Educational and Psychological Measurement}, forthcoming.
+  Debelak R, Strobl C (2019).
+    Investigating Measurement Invariance by Means of Parameter Instability Tests for 2PL and 3PL Models.
+    \emph{Educational and Psychological Measurement}, \bold{79}(2), 385--398.
     \doi{10.1177/0013164418777784}
+
+  Schneider L, Strobl C, Zeileis A, Debelak R (2022).
+    An R Toolbox for Score-Based Measurement Invariance Tests in IRT Models.
+    \emph{Behavior Research Methods}, forthcoming.
+    \doi{10.3758/s13428-021-01689-0}
 }
 
 \seealso{\code{\link{raschmodel}}, \code{\link{gpcmodel}},
@@ -168,16 +173,16 @@ o <- options(digits = 4)
 data("MathExam14W", package = "psychotools")
 
 ## 2PL
-twopl <- plmodel(y = MathExam14W$solved)
+twopl <- nplmodel(y = MathExam14W$solved)
 summary(twopl)
 
 ## how to specify starting values as a vector of model parameters
 st <- coef(twopl)
-twopl <- plmodel(y = MathExam14W$solved, start = st)
+twopl <- nplmodel(y = MathExam14W$solved, start = st)
 ## or a list containing a vector of slopes and a vector of intercepts
 set.seed(0)
 st <- list(a = rlnorm(13, 0, 0.0625), d = rnorm(13, 0, 1))
-twopl <- plmodel(y = MathExam14W$solved, start = st)
+twopl <- nplmodel(y = MathExam14W$solved, start = st)
 
 ## visualizations
 plot(twopl, type = "profile")
@@ -192,7 +197,7 @@ abline(h = 0.5, lty = 2)
 
 ## 2PL accounting for gender impact
 table(MathExam14W$gender)
-mtwopl <- plmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
+mtwopl <- nplmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
   grouppars = TRUE)
 summary(mtwopl)
 plot(mtwopl, type = "piplot")
@@ -200,17 +205,17 @@ plot(mtwopl, type = "piplot")
 ## this example impact is being modelled and therefore grouppars must be TRUE
 ## to get all model parameters
 st <- coef(mtwopl)
-mtwopl <- plmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
+mtwopl <- nplmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
   start = st)
 ## or a list containing a vector of slopes, a vector of intercepts and a vector
 ## of means and a vector of variances as the distributional group parameters
 set.seed(1)
 st <- list(a = rlnorm(13, 0, 0.0625), d = rnorm(13, 0, 1), m = 0, v = 1)
-mtwopl <- plmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
+mtwopl <- nplmodel(y = MathExam14W$solved, impact = MathExam14W$gender,
   start = st)
 
 ## MML estimated Rasch model (1PL)
-rm <- plmodel(y = MathExam14W$solved, type = "1PL")
+rm <- nplmodel(y = MathExam14W$solved, type = "1PL")
 summary(rm)
 
 options(digits = o$digits)

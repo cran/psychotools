@@ -82,8 +82,8 @@ gpcmodel(y, weights = NULL, impact = NULL, type = c("GPCM", "PCM"),
   person parameters are fixed to follow the standard normal distribution. In the
   remaining \code{impact} groups, the distributional parameters (mean and
   variance of a normal distribution) of the person parameters are
-  estimated freely. See e.g. Baker & Kim (2004, Chapter 11) or Debelak & Strobl
-  (2018) for further details. To improve convergence of the model fitting
+  estimated freely. See e.g. Baker & Kim (2004, Chapter 11), Debelak & Strobl
+  (2019), or Schneider et al. (2022) for further details. To improve convergence of the model fitting
   algorithm, the first level of the \code{impact} variable should always correspond
   to the largest group. If this is not the case, levels are re-ordered internally.
 
@@ -140,8 +140,7 @@ gpcmodel(y, weights = NULL, impact = NULL, type = c("GPCM", "PCM"),
     Chapman & Hall/CRC, Boca Raton.
 
   Bock RD, Aitkin M (1981).
-    Marginal Maximum Likelihood Estimation of Item Parameters: Application of
-    an EM Algorithm.
+    Marginal Maximum Likelihood Estimation of Item Parameters: Application of an EM Algorithm.
     \emph{Psychometrika}, \bold{46}(4), 443--459.
 
   Chalmers RP (2012).
@@ -149,18 +148,22 @@ gpcmodel(y, weights = NULL, impact = NULL, type = c("GPCM", "PCM"),
     \emph{Journal of Statistical Software}, \bold{48}(6), 1--29.
     \doi{10.18637/jss.v048.i06}
 
-  Debelak R, Strobl C (2018).
-    Investigating Measurement Invariance by Means of Parameter Instability Tests
-    for 2PL and 3PL Models.
-    \emph{Educational and Psychological Measurement}, forthcoming.
+  Debelak R, Strobl C (2019).
+    Investigating Measurement Invariance by Means of Parameter Instability Tests for 2PL and 3PL Models.
+    \emph{Educational and Psychological Measurement}, \bold{79}(2), 385--398.
     \doi{10.1177/0013164418777784}
 
   Muraki E (1992).
     A Generalized Partial Credit Model: Application of an EM Algorithm.
     \emph{Applied Psychological Measurement}, \bold{16}(2), 159--176.
+
+  Schneider L, Strobl C, Zeileis A, Debelak R (2022).
+    An R Toolbox for Score-Based Measurement Invariance Tests in IRT Models.
+    \emph{Behavior Research Methods}, forthcoming.
+    \doi{10.3758/s13428-021-01689-0}
 }
 
-\seealso{\code{\link{pcmodel}}, \code{\link{rsmodel}}, \code{\link{plmodel}},
+\seealso{\code{\link{pcmodel}}, \code{\link{rsmodel}}, \code{\link{nplmodel}},
   \code{\link{raschmodel}}, \code{\link{btmodel}}}
 
 \examples{

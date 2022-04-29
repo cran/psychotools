@@ -1,3 +1,15 @@
+Changes in Version 0.7-1
+
+  o The function (and resulting class) for fitting n-PL type
+    parametric logistic IRT models has been renamed from plmodel() to
+    nplmodel(). For now, a copy called plmodel() is also preserved (but
+    this also returns an object of class "nplmodel").
+
+  o Fix logicals of length > 1 in some if() constructs.
+  
+  o Accept .replicates for user-provided model specifications in mptmodel().
+  
+
 Changes in Version 0.7-0
 
   o Changed default constant anchor selection method in anchor() and anchortest()

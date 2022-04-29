@@ -129,7 +129,7 @@ pcmodel(y, weights = NULL, nullcats = c("keep", "downcode", "ignore"),
 }
 
 \seealso{\code{\link{gpcmodel}}, \code{\link{rsmodel}}, \code{\link{raschmodel}},
-  \code{\link{plmodel}}, \code{\link{btmodel}}}
+  \code{\link{nplmodel}}, \code{\link{btmodel}}}
 
 \examples{
 o <- options(digits = 4)

@@ -4,7 +4,7 @@ set.seed(2906)
 
 data("VerbalAggression", package = "psychotools")
 
-refmodel <- plmodel(VerbalAggression$resp2[, 1:6])
+refmodel <- nplmodel(VerbalAggression$resp2[, 1:6])
 
 dgp <- function(model, N = 1000, G = 1, impact = FALSE, cotype = "random") {
 
@@ -52,7 +52,7 @@ hitrate <- function(model, M = 1000, alpha = 0.05, parm = NULL, N = 1000,
 
   pval <- replicate(M, {
     d <- dgp(model, N = N, G = G, impact = impact, cotype = cotype)
-    m <- plmodel(d$resp, type = "2PL", impact = d$impact,
+    m <- nplmodel(d$resp, type = "2PL", impact = d$impact,
       maxit = 5000, reltol = 1e-4, vcov = FALSE)
     sctest(m, order.by = d$covariate, functional = "DM", parm = parm)$p.value
   })

@@ -1,13 +1,14 @@
-# estimate a plmodel in slope / intercept formulation using mirt (MML & EM)
+# estimate an n-PL model in slope / intercept formulation using mirt (MML & EM)
 
-plmodel <- function(y, weights = NULL, impact = NULL,
+plmodel <- ## for backward compatibility
+nplmodel <- function(y, weights = NULL, impact = NULL,
   type = c("2PL", "3PL", "3PLu", "4PL", "1PL", "RM"), grouppars = FALSE, vcov = TRUE,
   start = NULL, method = "BFGS", maxit = 500L, reltol = 1e-5, ...)
 {
 
   ## check for mirt
   if(!requireNamespace("mirt", quietly = TRUE)) {
-    stop("Package 'mirt' ist required for fitting a plmodel.", call. = FALSE)
+    stop("Package 'mirt' ist required for fitting a nplmodel.", call. = FALSE)
   }
 
   ## handle arguments and defaults
@@ -89,7 +90,7 @@ plmodel <- function(y, weights = NULL, impact = NULL,
         }
         if(length(start) != sum(pars$est[pars$group == lvls[1L]]) +
           (2L * (nlvls - 1L)) - (N - 1L)) {
-          stop("Argument 'start' is misspecified (see ?plmodel for possible values).")
+          stop("Argument 'start' is misspecified (see ?nplmodel for possible values).")
         }
         start_i <- start[1L:(length(start) - (2L * (nlvls - 1L)))]
         start_g <- start[-seq_along(start_i)]
@@ -122,7 +123,7 @@ plmodel <- function(y, weights = NULL, impact = NULL,
         }
         if(length(start) != sum(pars$est[pars$group == lvls[1L]]) +
           (2L * (nlvls - 1L))) {
-          stop("Argument 'start' is misspecified (see ?plmodel for possible values).")
+          stop("Argument 'start' is misspecified (see ?nplmodel for possible values).")
         }
         start_i <- start[1L:(length(start) - (2L * (nlvls - 1L)))]
         start_g <- start[-seq_along(start_i)]
@@ -162,7 +163,7 @@ plmodel <- function(y, weights = NULL, impact = NULL,
          start <- c(start[[1L]], start[[2L]])
         }
         if(length(start) != sum(pars$est) - (N - 1L)) {
-          stop("Argument 'start' is misspecified (see ?plmodel for possible values).")
+          stop("Argument 'start' is misspecified (see ?nplmodel for possible values).")
         }
         pars$value[pars$est & pars$name == "a1"] <- start[1L]
         pars$value[pars$est & pars$name != "a1"] <- start[-1L]
@@ -175,7 +176,7 @@ plmodel <- function(y, weights = NULL, impact = NULL,
          start <- as.vector(do.call(rbind, start))
         }
         if(length(start) != sum(pars$est)) {
-          stop("Argument 'start' is misspecified (see ?plmodel for possible values).")
+          stop("Argument 'start' is misspecified (see ?nplmodel for possible values).")
         }
         pars$value[pars$est] <- start
       }
@@ -280,13 +281,13 @@ plmodel <- function(y, weights = NULL, impact = NULL,
     type = type,
     mirt = model
   )
-  class(res) <- "plmodel"
+  class(res) <- "nplmodel"
   return(res)
 }
 
 
 
-print.plmodel <- function(x, digits = max(3L, getOption("digits") - 3L), logit = FALSE, ...)
+print.nplmodel <- function(x, digits = max(3L, getOption("digits") - 3L), logit = FALSE, ...)
 {
   msg <-
   if(x$type == "1PL" | x$type == "2PL") {
@@ -314,7 +315,7 @@ print.plmodel <- function(x, digits = max(3L, getOption("digits") - 3L), logit =
 
 
 
-coef.plmodel <- function(object, logit = FALSE, ...)
+coef.nplmodel <- function(object, logit = FALSE, ...)
 {
   cf <- object$coefficients
   if(!logit) {
@@ -334,7 +335,7 @@ coef.plmodel <- function(object, logit = FALSE, ...)
 
 
 
-vcov.plmodel <- function(object, logit = TRUE, ...)
+vcov.nplmodel <- function(object, logit = TRUE, ...)
 {
   vc <- object$vcov
   method <- attributes(object$vcov)$method
@@ -362,7 +363,7 @@ vcov.plmodel <- function(object, logit = TRUE, ...)
 
 
 ## based on stats::confint.default
-confint.plmodel <- function(object, parm, level = 0.95, logit = TRUE, logistic_bounds = FALSE, ...)
+confint.nplmodel <- function(object, parm, level = 0.95, logit = TRUE, logistic_bounds = FALSE, ...)
 {
   cf <- coef(object, logit = logit)
   estnms <- names(cf)
@@ -395,21 +396,21 @@ confint.plmodel <- function(object, parm, level = 0.95, logit = TRUE, logistic_b
 
 
 
-logLik.plmodel <- function(object, ...)
+logLik.nplmodel <- function(object, ...)
 {
   structure(object$loglik, df = object$df, class = "logLik")
 }
 
 
 
-weights.plmodel <- function(object, ...)
+weights.nplmodel <- function(object, ...)
 {
   if(is.null(object$weights)) rep.int(1L, object$n_org) else object$weights
 }
 
 
 
-summary.plmodel <- function(object, vcov. = NULL, ...)
+summary.nplmodel <- function(object, vcov. = NULL, ...)
 {
   pcf <- coef(object, logit = FALSE)
   vc <-
@@ -434,13 +435,13 @@ summary.plmodel <- function(object, vcov. = NULL, ...)
     colnames(cf) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
   }
   object$coefficients <- cf
-  class(object) <- "summary.plmodel"
+  class(object) <- "summary.nplmodel"
   return(object)
 }
 
 
 
-print.summary.plmodel <- function(x, digits = max(3L, getOption("digits") - 3L),
+print.summary.nplmodel <- function(x, digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"), ...)
 {
   if(is.null(x$call)) {
@@ -488,7 +489,7 @@ print.summary.plmodel <- function(x, digits = max(3L, getOption("digits") - 3L),
 
 
 
-plot.plmodel <- function(x, type = c("regions", "profile", "curves", "information", "piplot"), ...)
+plot.nplmodel <- function(x, type = c("regions", "profile", "curves", "information", "piplot"), ...)
 {
   type <- match.arg(type, c("regions", "profile", "curves", "information", "piplot"))
   switch(type, curves = curveplot(x, ...),
@@ -499,13 +500,13 @@ plot.plmodel <- function(x, type = c("regions", "profile", "curves", "informatio
 
 
 
-predict.plmodel <- function(object, newdata = NULL,
+predict.nplmodel <- function(object, newdata = NULL,
   type = c("probability", "cumprobability", "mode", "median", "mean",
   "category-information", "item-information", "test-information"), ref = NULL, ...)
 {
   ## check for mirt
   if(!requireNamespace("mirt", quietly = TRUE)) {
-    stop("Package 'mirt' ist required for plmodels.", call. = FALSE)
+    stop("Package 'mirt' ist required for nplmodels.", call. = FALSE)
   }
 
   if(!is.null(ref)) {
@@ -575,7 +576,7 @@ predict.plmodel <- function(object, newdata = NULL,
 
 
 
-itempar.plmodel <- function(object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
+itempar.nplmodel <- function(object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
 {
   cf <- unlist(threshpar(object))
   N <- sum(object$items)
@@ -629,7 +630,7 @@ itempar.plmodel <- function(object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
 
 
 
-threshpar.plmodel <- function(object, type = c("mode", "median", "mean"),
+threshpar.nplmodel <- function(object, type = c("mode", "median", "mean"),
   ref = NULL, alias = TRUE, relative = FALSE, cumulative = FALSE, vcov = TRUE, ...)
 {
   type <- match.arg(type, c("mode", "median", "mean"))
@@ -770,7 +771,7 @@ threshpar.plmodel <- function(object, type = c("mode", "median", "mean"),
 
 
 
-discrpar.plmodel <- function(object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
+discrpar.nplmodel <- function(object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
 {
   N <- sum(object$items)
   coefs <- coef(object, logit = FALSE)
@@ -863,7 +864,7 @@ discrpar.plmodel <- function(object, ref = NULL, alias = TRUE, vcov = TRUE, ...)
 
 
 
-guesspar.plmodel <- function(object, alias = TRUE, logit = FALSE, vcov = TRUE, ...)
+guesspar.nplmodel <- function(object, alias = TRUE, logit = FALSE, vcov = TRUE, ...)
 {
   N <- sum(object$items)
   lbs <- colnames(object$data)
@@ -901,7 +902,7 @@ guesspar.plmodel <- function(object, alias = TRUE, logit = FALSE, vcov = TRUE, .
 
 
 
-upperpar.plmodel <- function(object, alias = TRUE, logit = FALSE, vcov = TRUE, ...)
+upperpar.nplmodel <- function(object, alias = TRUE, logit = FALSE, vcov = TRUE, ...)
 {
   N <- sum(object$items)
   lbs <- colnames(object$data)
@@ -939,12 +940,12 @@ upperpar.plmodel <- function(object, alias = TRUE, logit = FALSE, vcov = TRUE, .
 
 
 
-personpar.plmodel <- function(object, personwise = FALSE, vcov = TRUE,
+personpar.nplmodel <- function(object, personwise = FALSE, vcov = TRUE,
   interval = NULL, tol = 1e-6, method = "EAP", ...)
 {
   ## check for mirt
   if(!requireNamespace("mirt", quietly = TRUE)) {
-    stop("Package 'mirt' ist required for plmodels.", call. = FALSE)
+    stop("Package 'mirt' ist required for nplmodels.", call. = FALSE)
   }
 
   ## dropped ref
@@ -987,14 +988,14 @@ personpar.plmodel <- function(object, personwise = FALSE, vcov = TRUE,
 
 
 
-nobs.plmodel <- function(object, ...)
+nobs.nplmodel <- function(object, ...)
 {
   object$n
 }
 
 
 
-bread.plmodel <- function(x, ...)
+bread.nplmodel <- function(x, ...)
 {
   x$n * vcov(x, ...)
 }
@@ -1002,11 +1003,11 @@ bread.plmodel <- function(x, ...)
 
 
 ## unexported: estfun interface for mirt:::estfun.AllModelClass
-estfun_plmodel <- function(x, ...)
+estfun_nplmodel <- function(x, ...)
 {
   ## check for mirt
   if(!requireNamespace("mirt", quietly = TRUE)) {
-    stop("Package 'mirt' ist required for plmodels.", call. = FALSE)
+    stop("Package 'mirt' ist required for nplmodels.", call. = FALSE)
   }
 
   ## call mirt
@@ -1018,11 +1019,11 @@ estfun_plmodel <- function(x, ...)
   return(scores)
 }
 
-estfun.plmodel <- function(x, ...)
+estfun.nplmodel <- function(x, ...)
 {
   ## check for mirt
   if(!requireNamespace("mirt", quietly = TRUE)) {
-    stop("Package 'mirt' ist required for plmodels.", call. = FALSE)
+    stop("Package 'mirt' ist required for nplmodels.", call. = FALSE)
   }
 
   ## logit = TRUE (g and u parameters) as in mirt

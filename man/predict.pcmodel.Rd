@@ -4,7 +4,7 @@
 \alias{predict.rsmodel}
 \alias{predict.raschmodel}
 \alias{predict.gpcmodel}
-\alias{predict.plmodel}
+\alias{predict.nplmodel}
 
 \title{Predict Methods for Item Response Models}
 

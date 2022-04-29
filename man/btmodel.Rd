@@ -76,7 +76,7 @@ btmodel(y, weights = NULL, type = c("loglin", "logit"), ref = NULL,
 }
 
 \seealso{\code{\link{pcmodel}}, \code{\link{gpcmodel}}, \code{\link{rsmodel}},
-  \code{\link{raschmodel}}, \code{\link{plmodel}}, the \pkg{eba} package}
+  \code{\link{raschmodel}}, \code{\link{nplmodel}}, the \pkg{eba} package}
 
 \examples{
 o <- options(digits = 4)

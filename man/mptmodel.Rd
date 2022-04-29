@@ -37,7 +37,7 @@ mptmodel(y, weights = NULL, spec, treeid = NULL,
   \item{weights}{an optional vector of weights (interpreted as case weights).}
   \item{spec}{an object of class \code{mptspec}: typically result of a call to
     \code{\link{mptspec}}. A symbolic description of the model to be fitted.}
-  \item{treeid}{a vector that identifies each tree in a joint multinomial
+  \item{treeid}{a factor that identifies each tree in a joint multinomial
     model.}
   \item{optimargs}{a list of arguments passed to the optimization function
     (\code{\link{optim}}).}
@@ -82,7 +82,7 @@ mptmodel(y, weights = NULL, spec, treeid = NULL,
 }
 
 \seealso{\code{\link{btmodel}}, \code{\link{pcmodel}}, \code{\link{gpcmodel}},
-  \code{\link{rsmodel}}, \code{\link{raschmodel}}, \code{\link{plmodel}},
+  \code{\link{rsmodel}}, \code{\link{raschmodel}}, \code{\link{nplmodel}},
   \code{\link{mptspec}}, the \pkg{mpt} package}
 
 \examples{

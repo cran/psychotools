@@ -16,7 +16,7 @@
 
 \arguments{
   \item{object}{a fitted model object of class \code{"raschmodel"},
-    \code{"rsmodel"}, \code{"pcmodel"}, \code{"plmodel"} or \code{"gpcmodel"}.}
+    \code{"rsmodel"}, \code{"pcmodel"}, \code{"nplmodel"} or \code{"gpcmodel"}.}
   \item{parg}{list of arguments passed over to internal calls of
     \code{\link{threshpar}}. See the help page of \code{\link{threshpar}}
     for more details.}

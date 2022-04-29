@@ -4,7 +4,7 @@
 \alias{itempar.raschmodel}
 \alias{itempar.rsmodel}
 \alias{itempar.pcmodel}
-\alias{itempar.plmodel}
+\alias{itempar.nplmodel}
 \alias{itempar.gpcmodel}
 \alias{itempar.raschtree}
 \alias{itempar.bttree}
@@ -25,7 +25,7 @@
   \method{itempar}{raschmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
   \method{itempar}{rsmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
   \method{itempar}{pcmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
-  \method{itempar}{plmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
+  \method{itempar}{nplmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
   \method{itempar}{gpcmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
   \method{itempar}{btmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, log = FALSE, \dots)
 }
@@ -36,7 +36,7 @@
     contrast matrix which should be used as restriction/for normalization. If
     \code{NULL} (the default) for all models except models estimated via MML,
     all items are used (sum zero restriction). For models estimated via MML
-    (\code{plmodel}s and \code{gpcmodel}s), the parameters are by default
+    (\code{nplmodel}s and \code{gpcmodel}s), the parameters are by default
     identified via the distributional parameters of the person parameters (mean
     and variance of a normal distribution). Nevertheless, a restriction on the
     interval scale can be applied.}

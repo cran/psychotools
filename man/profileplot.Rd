@@ -20,7 +20,7 @@
 
 \arguments{
   \item{object}{a fitted model object of class \code{"raschmodel"},
-    \code{"rsmodel"}, \code{"pcmodel"}, \code{"plmodel"} or \code{"gpcmodel"}.}
+    \code{"rsmodel"}, \code{"pcmodel"}, \code{"nplmodel"} or \code{"gpcmodel"}.}
   \item{what}{character, specifying the type of parameters to be plotted.}
   \item{parg}{list of arguments passed over to internal calls of
     \code{\link{itempar}}, \code{\link{threshpar}}, \code{\link{discrpar}},
@@ -94,7 +94,7 @@ plot(rmmod, type = "profile", what = "discrimination")
 \donttest{
 if(requireNamespace("mirt")) {
 ## fit 2PL and generalized partial credit model to verbal aggression data
-twoplmod <- plmodel(VerbalAggression$resp2)
+twoplmod <- nplmodel(VerbalAggression$resp2)
 gpcmod <- gpcmodel(VerbalAggression$resp)
 
 ## profile plot of the discrimination parameters of a dichotomous 2PL

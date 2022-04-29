@@ -3,7 +3,7 @@
 \alias{personpar.raschmodel}
 \alias{personpar.rsmodel}
 \alias{personpar.pcmodel}
-\alias{personpar.plmodel}
+\alias{personpar.nplmodel}
 \alias{personpar.gpcmodel}
 
 \alias{coef.personpar}
@@ -25,7 +25,7 @@ personpar(object, \dots)
   vcov = TRUE, interval = NULL, tol = 1e-8, \dots)
 \method{personpar}{pcmodel}(object, personwise = FALSE, ref = NULL,
   vcov = TRUE, interval = NULL, tol = 1e-8, \dots)
-\method{personpar}{plmodel}(object, personwise = FALSE, vcov = TRUE,
+\method{personpar}{nplmodel}(object, personwise = FALSE, vcov = TRUE,
   interval = NULL, tol = 1e-6, method = "EAP", \dots)
 \method{personpar}{gpcmodel}(object, personwise = FALSE, vcov = TRUE,
   interval = NULL, tol = 1e-6, method = "EAP", \dots)
@@ -76,7 +76,7 @@ personpar(object, \dots)
   More specifically, the following algorithms are employed for obtaining the
   distributional person parameters: \itemize{
   
-    \item In the MML case -- i.e., for \code{plmodel}s and \code{gpcmodel}s --
+    \item In the MML case -- i.e., for \code{nplmodel}s and \code{gpcmodel}s --
       the distributional parameters are already part of the model specification.
       In a single-group specification and in the reference group of a multi-group
       specification the mean/variance parameters are fixed to 0/1. In the multi-group
@@ -172,7 +172,7 @@ cbind(personpar(rsm, vcov = FALSE), personpar(pcm, vcov = FALSE))
 
 if(requireNamespace("mirt")) {
 ## fit a 2PL accounting for gender impact and
-twoplm <- plmodel(VerbalAggression$resp2, impact = VerbalAggression$gender)
+twoplm <- nplmodel(VerbalAggression$resp2, impact = VerbalAggression$gender)
 
 ## extract the person parameters
 ## (= mean/variance parameters from the normal ability distribution)

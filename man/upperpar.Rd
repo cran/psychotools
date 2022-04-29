@@ -3,7 +3,7 @@
 \alias{upperpar.raschmodel}
 \alias{upperpar.rsmodel}
 \alias{upperpar.pcmodel}
-\alias{upperpar.plmodel}
+\alias{upperpar.nplmodel}
 \alias{upperpar.gpcmodel}
 
 \alias{coef.upperpar}
@@ -22,7 +22,7 @@
   \method{upperpar}{raschmodel}(object, alias = TRUE, vcov = TRUE, \dots)
   \method{upperpar}{rsmodel}(object, alias = TRUE, vcov = TRUE, \dots)
   \method{upperpar}{pcmodel}(object, alias = TRUE, vcov = TRUE, \dots)
-  \method{upperpar}{plmodel}(object, alias = TRUE, logit = FALSE, vcov = TRUE, \dots)
+  \method{upperpar}{nplmodel}(object, alias = TRUE, logit = FALSE, vcov = TRUE, \dots)
   \method{upperpar}{gpcmodel}(object, alias = TRUE, vcov = TRUE, \dots)
 }
 
@@ -36,7 +36,7 @@
     where all upper asymptote parameters are fixed to 1, this means
     that an empty numeric vector and an empty variance-covariace matrix is
     returned if \code{alias} is \code{FALSE}.}
-  \item{logit}{logical. If a \code{plmodel} of \code{type} \code{"3PLu"} or
+  \item{logit}{logical. If a \code{nplmodel} of \code{type} \code{"3PLu"} or
     \code{"4PL"} model has been fit, the upper asymptote parameters were estimated
     on the logit scale. If \code{logit = FALSE}, these estimates and the
     variance-covariance (if requested) are retransformed using the logistic
@@ -80,13 +80,13 @@ o <- options(digits = 3)
 data("Sim3PL", package = "psychotools")
 
 ## fit 2PL to data simulated under the 3PLu
-twoplmod <- plmodel(Sim3PL$resp2)
+twoplmod <- nplmodel(Sim3PL$resp2)
 
 ## extract the upper asymptote parameters (all fixed at 1)
 up1 <- upperpar(twoplmod)
 
 ## fit 3PLu to data simulated under the 3PLu
-threeplmodu <- plmodel(Sim3PL$resp2, type = "3PLu")
+threeplmodu <- nplmodel(Sim3PL$resp2, type = "3PLu")
 
 ## extract the upper asymptote parameters
 up2 <- upperpar(threeplmodu)

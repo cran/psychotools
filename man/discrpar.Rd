@@ -3,7 +3,7 @@
 \alias{discrpar.raschmodel}
 \alias{discrpar.rsmodel}
 \alias{discrpar.pcmodel}
-\alias{discrpar.plmodel}
+\alias{discrpar.nplmodel}
 \alias{discrpar.gpcmodel}
 
 \alias{coef.discrpar}
@@ -22,7 +22,7 @@
   \method{discrpar}{raschmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
   \method{discrpar}{rsmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
   \method{discrpar}{pcmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
-  \method{discrpar}{plmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
+  \method{discrpar}{nplmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
   \method{discrpar}{gpcmodel}(object, ref = NULL, alias = TRUE, vcov = TRUE, \dots)
 }
 
@@ -32,7 +32,7 @@
   \item{ref}{a restriction to be used. Not used for models estimated via CML as
     the discrimination parameters are fixed to 1 in \code{raschmodel}s,
     \code{rsmodel}s and \code{pcmodel}s. For models estimated via MML
-    (\code{plmodel}s and \code{gpcmodel}s), the parameters are by default
+    (\code{nplmodel}s and \code{gpcmodel}s), the parameters are by default
     identified via the distributional parameters of the person parameters (mean and
     variance of a normal distribution). Nevertheless, a restriction on the ratio
     scale can be applied.}
@@ -90,7 +90,7 @@ sqrt(diag(vcov(dp1)))
 
 if(requireNamespace("mirt")) {
 ## fit 2PL to verbal aggression data
-twoplmod <- plmodel(VerbalAggression$resp2)
+twoplmod <- nplmodel(VerbalAggression$resp2)
 
 ## extract the discrimination parameters
 dp2 <- discrpar(twoplmod)
