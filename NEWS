@@ -1,3 +1,13 @@
+Changes in Version 0.7-2
+
+  o Bug fix in discrpar() method for nplmodel(..., type = "1PL") so that the
+    variance covariance matrix is computed correctly.
+
+  o Documentation enhancements in the mathematical notation (suggested by Kurt
+    Hornik) and in the description of the 1PL/Rasch model in nplmodel()
+    (suggested by Feng Lin).
+
+
 Changes in Version 0.7-1
 
   o The function (and resulting class) for fitting n-PL type

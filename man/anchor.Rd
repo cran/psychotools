@@ -143,7 +143,7 @@ CLFT selection (of test statistics) similar to Muthén & Asparouhov (2014):
  c_j^{CLFT} = CLF({|t_1(j)|, \ldots, |t_k(j)|}) }
 
 All-other selection by Woods (2009), here abbreviated AO:
-\deqn{ c_j^\mathrm{AO} = | t_j (\{1,\ldots,k\}\textbackslash j) |}{%
+\deqn{ c_j^\mathrm{AO} = | t_j (\{1,\ldots,k\}\setminus j) |}{%
  c_j^{AO} = | t_j ({1,\dots,k}\\j) |}
 
 All-other purified selection by Wang et al. (2012), here abbreviated AOP:
@@ -151,22 +151,22 @@ All-other purified selection by Wang et al. (2012), here abbreviated AOP:
  c_j^{AOP} = | t_j ( A_{purified} ) |}
 
 Number of significant threshold selection based on Wang et al. (2004), here abbreviated NST:
-\deqn{ c_j^\mathrm{NST} = \sum_{l \in \{1,\ldots,k\} \textbackslash j} 1 \left\{ p_j ( \{l\} )  \leq \alpha \right\}) |}{%
+\deqn{ c_j^\mathrm{NST} = \sum_{l \in \{1,\ldots,k\} \setminus j} 1 \left\{ p_j ( \{l\} )  \leq \alpha \right\}) |}{%
  c_j^{NST} = \sum_{l in {1,\dots,k} \\ j} 1 { p_j ({l}) \le \alpha }) |}
 
 Mean test statistic selection by Shih et al. (2009), here abbreviated MT:
-\deqn{ c_j^\mathrm{MT} = \frac{1}{k-1} \sum_{l \in \{1,\ldots,k\} \textbackslash j} \left| t_j ( \{l\}) \right| }{%
+\deqn{ c_j^\mathrm{MT} = \frac{1}{k-1} \sum_{l \in \{1,\ldots,k\} \setminus j} \left| t_j ( \{l\}) \right| }{%
  c_j^{MT} = 1/(k-1) \sum_{l in {1,\dots,k} \\ j} | t_j ({l}) |}
 
 Mean p-value selection by Kopf et al. (2015b), here abbreviated MP:
-\deqn{ c_j^\mathrm{MP} = - \frac{1}{k-1} \sum_{l \in \{1,\ldots,k\} \textbackslash j} p_j ( \{l\} ) }{%
+\deqn{ c_j^\mathrm{MP} = - \frac{1}{k-1} \sum_{l \in \{1,\ldots,k\} \setminus j} p_j ( \{l\} ) }{%
 c_j^{MP} = - 1/(k-1) \sum_{l in {1,\dots,k} \\ j} p_j ({l})}
 
 Mean test statistic threshold selection by Kopf et al. (2015b), here abbreviated MTT:
 \deqn{ c_j^\mathrm{MTT} = 
- \sum_{l \in \{1,\ldots,k\} \textbackslash j} 
+ \sum_{l \in \{1,\ldots,k\} \setminus j} 
 1 \left\{ \left|  t_j ( \{l\} ) \right| >  
- \left( \left| \frac{1}{k-1} \sum_{l \in \{ 1, \ldots, k \} \textbackslash j} 
+ \left( \left| \frac{1}{k-1} \sum_{l \in \{ 1, \ldots, k \} \setminus j} 
 t_j ( \{l\} ) \right|
 \right)_{\left( \lceil 0.5\cdot k\rceil \right)}
   \right\} }{%
@@ -178,9 +178,9 @@ t_j ({l}) | )_{<0.5k>}}
 
 Mean p-value threshold selection by Kopf et al. (2015b), here abbreviated MPT:
 \deqn{ c_j^\mathrm{MPT} = 
- -  \sum_{l \in \{1,\ldots,k\} \textbackslash j} 
+ -  \sum_{l \in \{1,\ldots,k\} \setminus j} 
 1 \left\{ p_j ( \{l\} ) >  \left( 
-\frac{1}{k-1} \sum_{l \in \{ 1, \ldots, k \} \textbackslash j} 
+\frac{1}{k-1} \sum_{l \in \{ 1, \ldots, k \} \setminus j} 
  p_j ( \{l\} )
  \right)_{ \left( \lceil 0.5\cdot k\rceil \right)}
   \right\} }{%

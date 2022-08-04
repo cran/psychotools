@@ -1,6 +1,6 @@
-aad518b184b0d5786dcd68c64d9f32af *DESCRIPTION
+9f270741e1f056352a4304dc5792e587 *DESCRIPTION
 faccc107913629c8db7e0389294d4920 *NAMESPACE
-0516271957ffe7e6ddad1a097ff39aa7 *NEWS
+6a84ab8f112b97077830894394ed269b *NEWS
 3a5d59b45190fea7c63833962ad9478c *R/anchor.R
 9ecf49f5d1d402963205c2e832e042dd *R/btmodel.R
 6ea89bb2ad68fc144b87f56937546ddc *R/discrpar.R
@@ -12,7 +12,7 @@ f1c03aec21bd443d23915961606fbda1 *R/guesspar.R
 85b442a64878537dba38989550f6c10a *R/itempar.R
 8533d7929aff5eb69ba6be78e089ab36 *R/itemresp.R
 6d34039097753b1b173cfafd8b616752 *R/mptmodel.R
-331b86b887c2c1c586dfe26a7611fc9e *R/nplmodel.R
+af37f0d60296680a3c67c732b8a4e2e4 *R/nplmodel.R
 9a75f8d508f8988f4542b2956097eb33 *R/paircomp.R
 a89331dd6d4958c14cb2950e258f50d1 *R/pcmodel.R
 80c264aca7f794346fe5103df48614a3 *R/personpar.R
@@ -21,8 +21,8 @@ c93f115fd0732a1d3e034ec4273dda17 *R/raschmodel.R
 afc88c38cc226a2a0003b5f31b398080 *R/threshpar.R
 359a607babf7b4bc5d17e092150b585e *R/upperpar.R
 fb21aef50a64909babc8cf881a480595 *R/zzz.R
-1961639f6f4f7f9efffa91b624b3d060 *build/partial.rdb
-4899bd2be94449ef0e588c2bd014d8fd *build/vignette.rds
+0c6ad5b3446721162c89589e8077ab1c *build/partial.rdb
+e012eb5fe42d60a367a6f43f1e730abe *build/vignette.rds
 7e3ca8bd9a665ab2582b2b146d602246 *data/ConspiracistBeliefs2016.rda
 160941d0ef5927d863a494458d657dd1 *data/FirstNames.rda
 5e9eff138616c5c0472805b724d00128 *data/GermanParties2009.rda
@@ -42,7 +42,7 @@ c8a6137956d2fbb63abc735be423243e *demo/MathExam14W.R
 fc95992347b272acb4e18f80e60749b0 *demo/toolbox2.R
 bc9c5515f278d598e5749cb030315e35 *inst/CITATION
 3e9dfa7c4425114e8d1d507dd21a5f04 *inst/doc/toolbox-simulation.Rnw
-5dc141f8d1adeeec8e22bc4a5c9212cf *inst/doc/toolbox-simulation.pdf
+6ac93742646a969549868d2fb23626e3 *inst/doc/toolbox-simulation.pdf
 8cfa2fa03d8b63e269805e914f3f1443 *man/ConspiracistBeliefs2016.Rd
 f85e170eb03653929ccad3902c61659c *man/FirstNames.Rd
 a5e69a330ce708579921a6d1a2fda3d8 *man/GermanParties2009.Rd
@@ -55,7 +55,7 @@ dfacd4c7ac36c65d865ae94b6b5efefe *man/SourceMonitoring.Rd
 739a493af639cc17ee58fff7ae7bc834 *man/StereotypeThreat.Rd
 f3b909e135f3b2d711838615b12826e0 *man/VerbalAggression.Rd
 20246643862baf587f4d7e57049cd7d1 *man/YouthGratitude.Rd
-c0061e02308b9d67aec2002587e580fd *man/anchor.Rd
+509451684860e5e50494fb5d7a051f3e *man/anchor.Rd
 6b06a8dae822276001479f84584f5d80 *man/anchortest.Rd
 15462be24145f7c6480ce77974d4c2e4 *man/as.list.itemresp.Rd
 73d32fc189f4ae955023e9785c2082c6 *man/btmodel.Rd
@@ -71,7 +71,7 @@ e6f47a817f5ba3288f306531b2dad4db *man/itemresp.Rd
 e0793112d42895bebeade215f5f0d0f8 *man/labels.Rd
 8025595db4f8d1b7e9ba3512165e97f5 *man/mptmodel.Rd
 58a192ba4aa565b7d46efb27966e79cb *man/mscale.Rd
-25967b42098828df5471fdedb9f76792 *man/nplmodel.Rd
+5a4de43b3c69b78c0738d02e48336c31 *man/nplmodel.Rd
 32d18e41404edd7172bd08bf1a26fedc *man/paircomp.Rd
 1fefa9dba142e54891b64ec504a44681 *man/pcmodel.Rd
 4585929f2d53e11fc797721d2d7d2fce *man/personpar.Rd

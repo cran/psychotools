@@ -787,8 +787,7 @@ discrpar.nplmodel <- function(object, ref = NULL, alias = TRUE, vcov = TRUE, ...
     tmp <- vcov(object)
     if(object$type == "1PL") {
       a_var <- tmp[1L, 1L]
-      tmp <- matrix(1, N, N)
-      diag(tmp) <- a_var
+      tmp <- matrix(a_var, N, N)
     } else {
       tmp[grep("-a1$", rownames(tmp)), grep("-a1$", colnames(tmp))]
     }
@@ -858,7 +857,7 @@ discrpar.nplmodel <- function(object, ref = NULL, alias = TRUE, vcov = TRUE, ...
     }
   }
   rv <- structure(a, class = "discrpar", model = "PL", ref = ref,
-    alias = alias, vcov = vc)
+                  alias = alias, vcov = vc)
   return(rv)
 }
 

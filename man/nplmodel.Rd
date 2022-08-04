@@ -108,6 +108,21 @@ nplmodel(y, weights = NULL, impact = NULL,
   \code{summary}, \code{coef}, \code{vcov}, \code{logLik}, \code{estfun},
   \code{\link{discrpar}}, \code{\link{itempar}}, \code{\link{threshpar}},
   \code{\link{guesspar}}, \code{\link{upperpar}}, and \code{\link{personpar}}.
+  
+  Finally, if \code{type} is set to \code{"1PL"}, a Rasch model is estimated. 
+  Here, a common slope parameter is estimated for all items, whereas the
+  person parameters are assumed to follow a standard normal distribution.
+  Please note that this variant of the Rasch model differs from the one used 
+  by \code{\link[mirt]{mirt}}, which sets all slope parameters to 1, and 
+  estimates the variance of the person parameters instead. Both variants 
+  are mathematically equivalent and hence should lead to the same intercept parameter 
+  estimates. For numerical reasons, \code{nplmodel} and \code{mirt} 
+  can lead to slightly different item parameter estimates, though, under their 
+  respective default settings, in particular when some items are very easy 
+  or very difficult and the common slope parameter is large. A distinct advantage 
+  of the variant used by \code{nplmodel} is that it allows a direct 
+  comparison of the slope and intercept parameters with that estimated in more complex 
+  IRT models, such as the 2PL model. 
 }
 
 \value{
