@@ -38,10 +38,11 @@ A data frame containing 128 observations on four components.
   of A and B items along with new distractor items, N. Participants are
   required to classify each item as A, B, or N.
 
-  In an experiment at the Department of Psychology, University of Tuebingen,
-  two source conditions were used in the study phase: In the first one,
-  subjects had to read items either quietly (think) or aloud (say). In the
-  second, they wrote them down (write) or read them aloud (say).
+  In an experiment at the Department of Psychology, University of Tuebingen
+  (Wickelmaier & Zeileis, 2013, 2018), two source conditions were used in
+  the study phase: Half of the subjects had to read items either quietly
+  (source A = think) or aloud (source B = say). The other half had to write
+  items down (source A = write) or read them aloud (source B = say).
 
   The data were analyzed using the multinomial processing tree model of
   source monitoring (Batchelder & Riefer, 1990).
@@ -49,15 +50,22 @@ A data frame containing 128 observations on four components.
 
 \source{
   Wickelmaier F, Zeileis A (2013).
-    A First Implementation of Recursive Partitioning for Multinomial Processing Tree Models.
-    Presented at the Psychoco 2013 International Workshop on Psychometric Computing,
-    February 14--15, Zurich, Switzerland. 
+    A First Implementation of Recursive Partitioning for Multinomial
+    Processing Tree Models.
+    Presented at the Psychoco 2013 International Workshop on Psychometric
+    Computing, February 14--15, Zurich, Switzerland. 
 }
 
 \references{
   Batchelder WH, Riefer DM (1990).
     Multinomial Processing Tree Models of Source Monitoring.
     \emph{Psychological Review}, \bold{97}, 548--564.
+
+  Wickelmaier F, Zeileis A (2018).
+    Using Recursive Partitioning to Account for Parameter Heterogeneity in
+    Multinomial Processing Tree Models.
+    \emph{Behavior Research Methods}, \bold{50}(3), 1217--1233.
+    \doi{10.3758/s13428-017-0937-z}
 }
 
 \examples{

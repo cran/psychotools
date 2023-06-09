@@ -1,3 +1,24 @@
+Changes in Version 0.7-3
+
+  o Fixed calculation of person parameter covariance matrix estimate (and thus
+    confidence intervals) in personpar() methods for Rasch models (reported by
+    Rainer W. Alexandrowicz).
+    
+  o Fixed bug in threshpar() method of pcmodel objects fitted to binary items
+    reported by Rainer W. Alexandrowicz).
+
+  o Fixed bug in pcmodel() which failed when the reference category was a
+    null category (without observations). Now the first category with observations
+    is chosen as the reference category (reported by Rainer W. Alexandrowicz).
+
+  o Improved raschmodel(), rsmodel(), and pcmodel() so that an NA variance-covariance
+    matrix is returned (with a warning) if the Hessian cannot be inverted instead
+    of stopping with a technical error message (suggested by Rainer W. Alexandrowicz).
+
+  o Fixed names of "mscale" attribute in itemresp variable in MathExam14W data,
+    now consistent with column names.
+
+
 Changes in Version 0.7-2
 
   o Bug fix in discrpar() method for nplmodel(..., type = "1PL") so that the

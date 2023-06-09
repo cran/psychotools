@@ -43,8 +43,6 @@ age was 18.4.
 
 \source{
 Online materials accompanying De Boeck and Wilson (2004).
-
-\url{http://bear.soe.berkeley.edu/EIRM/}
 }
 
 \references{
@@ -55,7 +53,7 @@ De Boeck, P., Wilson, M. (eds) (2004).
 Smits, D.J.M., De Boeck, P., Vansteelandt, K. (2004).
   The Inhibition of Verbally Aggressive Behaviour
   \emph{European Journal of Personality}, \bold{18}, 537-555.
-  doi:10.1002/per.529
+  \doi{10.1002/per.529}
 }
 
 \seealso{\code{\link{raschmodel}}}

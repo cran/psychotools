@@ -47,8 +47,8 @@ pcmodel <- function (y, weights = NULL, nullcats = c("keep", "downcode", "ignore
     if (nullcats == "keep") {
       all_par <- rep.int(NA, sum(oj))
       est_par <- !unlist(lapply(nl_cats, "[", -1))
-      all_par[1] <- 0
-      est_par[1] <- FALSE
+      all_par[which(est_par == TRUE)[1]] <- 0
+      est_par[which(est_par == TRUE)[1]] <- FALSE
       oj <- oj - sapply(nl_cats, sum)
       oj_vec <- mapply(function(x, y) x[!y], oj_vec, nl_cats, SIMPLIFY = FALSE)
     }
@@ -293,9 +293,14 @@ pcmodel <- function (y, weights = NULL, nullcats = c("keep", "downcode", "ignore
     if (hessian) {
       vc <- opt$hessian
       ## FIXME: how to invert
-      vc <- chol2inv(chol(vc))
-      #vc <- qr.solve(vc)
-    } else {
+      ## #vc <- qr.solve(vc)
+      vc <- try(chol2inv(chol(vc)), silent = TRUE)
+      if (inherits(vc, "try-error")) {
+        hessian <- FALSE
+        warning("could not invert Hessian, setting variance-covariance matrix to NA")
+      }
+    }
+    if (!hessian) {
       vc <- matrix(NA, nrow = length(est), ncol = length(est))
     }
     rownames(vc) <- colnames(vc) <- names(est)
@@ -610,7 +615,9 @@ threshpar.pcmodel <- function (object, type = c("mode", "median", "mean"), ref =
       ## into relative item threshold parameters
       C <- diag(b)
       for (j in 1:m) {
-        for (k in (2:oj[j])) C[c(0, ojc)[j] + k, c(0, ojc)[j] + k - 1] <- -1
+        if(oj[j] >= 2L) {
+          for (k in (2:oj[j])) C[c(0, ojc)[j] + k, c(0, ojc)[j] + k - 1] <- -1
+        }
         C[c(0, ojc)[j] + 1:oj[j], ojc[j]] <- C[c(0, ojc)[j] + 1:oj[j], ojc[j]] - 1/oj[j]
       }
       tp <- as.vector(C %*% tp)
@@ -669,7 +676,9 @@ threshpar.pcmodel <- function (object, type = c("mode", "median", "mean"), ref =
       ## parameters to absolute item threshold parameters
       C <- diag(b)
       for (j in 1:m) {
-        for (k in (2:oj[j])) C[c(0, ojc)[j] + k, c(0, ojc)[j] + k - 1] <- -1
+        if(oj[j] >= 2L) {
+          for (k in (2:oj[j])) C[c(0, ojc)[j] + k, c(0, ojc)[j] + k - 1] <- -1
+        }
       }
       tp <- as.vector(C %*% tp)
       if (vcov) vc <- C %*% rbind(0, cbind(0, vcov(object))) %*% t(C)
@@ -847,8 +856,8 @@ personpar.pcmodel <- function(object, personwise = FALSE, ref = NULL,
       # obtain Hessian from objective function: joint log likelihood
       cloglik <- function(pp) {
         ppx <- lapply(ojvl, function(x) outer(x, pp)) # l * theta_i
-        - sum(rf * rng * pp) + sum(unlist(mapply("*", cs, tp))) +
-        sum(rf * rowSums(log(1 + mapply(function(x, y) {
+        - sum(rng * pp) + sum(unlist(mapply("*", cs, tp))) +
+        sum(rowSums(log(1 + mapply(function(x, y) {
           colSums(exp(x - y))
         }, ppx, tp))))
       }

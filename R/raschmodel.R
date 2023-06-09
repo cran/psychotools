@@ -252,9 +252,14 @@ raschmodel <- function(y, weights = NULL, start = NULL, reltol = 1e-10,
     if(hessian) {
       vc <- if(deriv == "numeric") opt$hessian else ahessian(cf, esf)
       ## FIXME: how to invert
-      vc <- chol2inv(chol(vc))
-      #vc <- qr.solve(vc)
-    } else {
+      ## #vc <- qr.solve(vc)
+      vc <- try(chol2inv(chol(vc)), silent = TRUE)
+      if (inherits(vc, "try-error")) {
+        hessian <- FALSE
+        warning("could not invert Hessian, setting variance-covariance matrix to NA")
+      }
+    }
+    if (!hessian) {
       vc <- matrix(NA, nrow = length(cf), ncol = length(cf))
     }
     rownames(vc) <- colnames(vc) <- names(cf)
@@ -666,8 +671,8 @@ personpar.raschmodel <- function(object, personwise = FALSE, ref = NULL,
       rf <- rf[rf != 0]
       # obtain Hessian from objective function: joint log likelihood
       cloglik <- function(pp) {
-        - sum(rf * rng * pp) + sum(cs * ip) +
-        sum(rf * rowSums(log(1 + exp(outer(pp, ip, "-")))))
+        - sum(rng * pp) + sum(cs * ip) +
+        sum(rowSums(log(1 + exp(outer(pp, ip, "-")))))
       }
       vc <- solve(optim(pp, fn = cloglik, hessian = TRUE, method = "BFGS",
         control = list(reltol = tol, maxit = 0, ...))$hessian)

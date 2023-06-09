@@ -252,13 +252,18 @@ rsmodel <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
       elementary_symmetric_functions(par = split(parx, rep.int(mv, oj)), order = 1, diff = diff)
     }
     
-    ## ... as well as variance-bcovariance matrix
+    ## ... as well as variance-covariance matrix
     if (hessian) {
       vc <- opt$hessian
       ## FIXME: how to invert
-      vc <- chol2inv(chol(vc))
-      #vc <- qr.solve(vc)
-    } else {
+      ## #vc <- qr.solve(vc)
+      vc <- try(chol2inv(chol(vc)), silent = TRUE)
+      if (inherits(vc, "try-error")) {
+        hessian <- FALSE
+        warning("could not invert Hessian, setting variance-covariance matrix to NA")
+      }
+    }
+    if (!hessian) {
       vc <- matrix(NA, nrow = length(est), ncol = length(est))
     }
     rownames(vc) <- colnames(vc) <- names(est)
@@ -266,7 +271,6 @@ rsmodel <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
     esf <- NULL
     vc <- NULL
   }
-
 
   ## collect results, set class, and return
   res <- list(coefficients = est,
@@ -795,8 +799,8 @@ personpar.rsmodel <- function(object, personwise = FALSE, ref = NULL,
       tp <- do.call("cbind", tp)
       # obtain Hessian from objective function: joint log likelihood
       cloglik <- function(pp) {
-        - sum(rf * rng * pp) + sum(cs * tp) +
-        sum(rf * colSums(log(1 + apply(outer(os, pp), 2, function(x) {
+        - sum(rng * pp) + sum(cs * tp) +
+        sum(colSums(log(1 + apply(outer(os, pp), 2, function(x) {
           colSums(exp(x - tp))
         }))))
       }
