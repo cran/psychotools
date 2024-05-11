@@ -148,7 +148,8 @@ nplmodel(y, weights = NULL, impact = NULL,
   \item{reltol}{convergence threshold passed to \code{mirt},}
   \item{grouppars}{the logical \code{grouppars} value,}
   \item{type}{the \code{type} of model restriction specified,}
-  \item{mirt}{the \code{mirt} object fitted internally.}
+  \item{mirt}{the \code{mirt} object fitted internally,}
+  \item{call}{original function call.}
 }
 
 \references{

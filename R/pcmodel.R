@@ -2,6 +2,9 @@
 pcmodel <- function (y, weights = NULL, nullcats = c("keep", "downcode", "ignore"), start = NULL,
   reltol = 1e-10, deriv = c("sum", "diff"), hessian = TRUE, maxit = 100L, full = TRUE, ...)
 {
+  ## original function call
+  mcall <- if(full) match.call() else NULL
+
   ## argument matching
   deriv <- match.arg(deriv)
 
@@ -325,7 +328,8 @@ pcmodel <- function (y, weights = NULL, nullcats = c("keep", "downcode", "ignore
               df = length(est),
               code = opt$convergence,
               iterations = tail(na.omit(opt$counts), 1L),
-              reltol = reltol)
+              reltol = reltol,
+              call = mcall)
   class(res) <- "pcmodel"
   return(res)
 }
@@ -368,7 +372,8 @@ summary.pcmodel <- function (object, vcov. = NULL, ...) {
 print.summary.pcmodel <- function (x, digits = max(3, getOption("digits") - 3),
                                    signif.stars = getOption("show.signif.stars"), ...)
 {
-  if (is.null(x$call)) {
+  show_call <- FALSE
+  if (is.null(x$call) || !show_call) {
     cat("\nPartial credit model\n\n")  
   } else {
     cat("\nCall:\n")

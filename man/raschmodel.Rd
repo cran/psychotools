@@ -74,7 +74,8 @@ raschmodel(y, weights = NULL, start = NULL, reltol = 1e-10,
   \item{iterations}{number of iterations used by \code{optim},}
   \item{reltol}{tolerance passed to \code{optim},}
   \item{deriv}{type of derivatives used for computing gradient and
-  Hessian matrix.}
+    Hessian matrix,}
+  \item{call}{original function call.}
 }
 
 \seealso{\code{\link{nplmodel}}, \code{\link{pcmodel}}, \code{\link{rsmodel}},

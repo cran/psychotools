@@ -943,7 +943,7 @@ Levels: - +
 > bt <- btmodel(GermanParties2009$preference)
 > summary(bt)
 
-Bradley-Terry regression model
+Bradley-Terry model
 
 Parameters:
         Estimate Std. Error z value Pr(>|z|)    

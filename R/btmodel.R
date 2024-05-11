@@ -124,7 +124,7 @@ deviance.btmodel <- function(object, ...) -2 * object$loglik
 
 ## more elaborate methods
 print.btmodel <- function(x, digits = max(3, getOption("digits") - 3), ...) {
-  cat("BT regression coefficients:\n")
+  cat("Bradley-Terry coefficients:\n")
   print(coef(x), digits = digits)
   invisible(x)
 }
@@ -154,8 +154,9 @@ summary.btmodel <- function(object, vcov. = NULL, ...)
 print.summary.btmodel <- function(x, digits = max(3, getOption("digits") - 3), 
     signif.stars = getOption("show.signif.stars"), ...)
 {
-  if(is.null(x$call)) {
-    cat("\nBradley-Terry regression model\n\n")  
+  show_call <- FALSE
+  if (is.null(x$call) || !show_call) {
+    cat("\nBradley-Terry model\n\n")  
   } else {
     cat("\nCall:\n")
     cat(paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n\n", sep = "")

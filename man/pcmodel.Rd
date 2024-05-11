@@ -115,7 +115,8 @@ pcmodel(y, weights = NULL, nullcats = c("keep", "downcode", "ignore"),
   \item{df}{number of estimated parameters,}
   \item{code}{convergence code from \code{optim},}
   \item{iterations}{number of iterations used by \code{optim},}
-  \item{reltol}{tolerance passed to \code{optim}.}
+  \item{reltol}{tolerance passed to \code{optim},}
+  \item{call}{original function call.}
 }
 
 \references{

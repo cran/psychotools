@@ -1,7 +1,7 @@
 Package: psychotools
 Title: Psychometric Modeling Infrastructure
-Version: 0.7-3
-Date: 2023-06-09
+Version: 0.7-4
+Date: 2024-05-11
 Authors@R: c(person(given = "Achim", family = "Zeileis", role = c("aut", "cre"), email = "Achim.Zeileis@R-project.org", comment = c(ORCID = "0000-0003-0918-3766")),
              person(given = "Carolin", family = "Strobl", role = "aut", email = "Carolin.Strobl@psychologie.uzh.ch", comment = c(ORCID = "0000-0003-0952-3230")),
              person(given = "Florian", family = "Wickelmaier", role = "aut"),
@@ -24,7 +24,7 @@ Description: Infrastructure for psychometric modeling such as data classes (for
   psychometric models in package "psychotree".
 License: GPL-2 | GPL-3
 NeedsCompilation: yes
-Packaged: 2023-06-09 14:16:25 UTC; zeileis
+Packaged: 2024-05-11 08:06:11 UTC; zeileis
 Author: Achim Zeileis [aut, cre] (<https://orcid.org/0000-0003-0918-3766>),
   Carolin Strobl [aut] (<https://orcid.org/0000-0003-0952-3230>),
   Florian Wickelmaier [aut],
@@ -34,4 +34,4 @@ Author: Achim Zeileis [aut, cre] (<https://orcid.org/0000-0003-0918-3766>),
   Rudolf Debelak [aut] (<https://orcid.org/0000-0001-8900-2106>)
 Maintainer: Achim Zeileis <Achim.Zeileis@R-project.org>
 Repository: CRAN
-Date/Publication: 2023-06-09 16:00:02 UTC
+Date/Publication: 2024-05-11 08:40:02 UTC

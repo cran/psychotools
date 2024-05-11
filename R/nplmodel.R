@@ -5,6 +5,8 @@ nplmodel <- function(y, weights = NULL, impact = NULL,
   type = c("2PL", "3PL", "3PLu", "4PL", "1PL", "RM"), grouppars = FALSE, vcov = TRUE,
   start = NULL, method = "BFGS", maxit = 500L, reltol = 1e-5, ...)
 {
+  ## original function call
+  mcall <- match.call()
 
   ## check for mirt
   if(!requireNamespace("mirt", quietly = TRUE)) {
@@ -279,7 +281,8 @@ nplmodel <- function(y, weights = NULL, impact = NULL,
     method = method,
     grouppars = grouppars,
     type = type,
-    mirt = model
+    mirt = model,
+    call = mcall
   )
   class(res) <- "nplmodel"
   return(res)
@@ -444,7 +447,8 @@ summary.nplmodel <- function(object, vcov. = NULL, ...)
 print.summary.nplmodel <- function(x, digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"), ...)
 {
-  if(is.null(x$call)) {
+  show_call <- FALSE
+  if (is.null(x$call) || !show_call) {
     cat(sprintf("\n%s\n\n",
       if(x$type == "1PL") {
         "One parameter logistic model"

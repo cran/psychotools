@@ -3,6 +3,8 @@ raschmodel <- function(y, weights = NULL, start = NULL, reltol = 1e-10,
   deriv = c("sum", "diff", "numeric"), hessian = TRUE, maxit = 100L,
   full = TRUE, gradtol = reltol, iterlim = maxit, ...)
 {
+  ## original function call
+  mcall <- if(full) match.call() else NULL
 
   ## argument matching
   if(missing(reltol) && !missing(gradtol) && !is.null(gradtol)) reltol <- gradtol
@@ -283,7 +285,8 @@ raschmodel <- function(y, weights = NULL, start = NULL, reltol = 1e-10,
     code = opt$convergence,
     iterations = tail(na.omit(opt$counts), 1L),
     reltol = reltol,
-    deriv = deriv        
+    deriv = deriv,
+    call = mcall
   )
   class(rval) <- "raschmodel"
   return(rval)
@@ -339,7 +342,8 @@ summary.raschmodel <- function(object, vcov. = NULL, ...)
 print.summary.raschmodel <- function(x, digits = max(3, getOption("digits") - 3), 
     signif.stars = getOption("show.signif.stars"), ...)
 {
-  if(is.null(x$call)) {
+  show_call <- FALSE
+  if (is.null(x$call) || !show_call) {
     cat("\nRasch model\n\n")  
   } else {
     cat("\nCall:\n")

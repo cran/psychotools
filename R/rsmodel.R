@@ -2,6 +2,9 @@
 rsmodel <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
   deriv = c("sum", "diff"), hessian = TRUE, maxit = 100L, full = TRUE, ...)
 {
+  ## original function call
+  mcall <- if(full) match.call() else NULL
+
   ## argument matching
   deriv <- match.arg(deriv)
 
@@ -287,7 +290,8 @@ rsmodel <- function (y, weights = NULL, start = NULL, reltol = 1e-10,
               df = length(est),
               code = opt$convergence,
               iterations = tail(na.omit(opt$counts), 1L),
-              reltol = reltol)
+              reltol = reltol,
+              call = mcall)
   class(res) <- c("rsmodel")
   return(res )
 }
@@ -331,7 +335,8 @@ summary.rsmodel <- function (object, vcov. = NULL, ...) {
 print.summary.rsmodel <- function (x, digits = max(3, getOption("digits") - 3),
                                    signif.stars = getOption("show.signif.stars"), ...)
 {
-  if (is.null(x$call)) {
+  show_call <- FALSE
+  if (is.null(x$call) || !show_call) {
     cat("\nRating scale model\n\n")  
   } else {
     cat("\nCall:\n")
