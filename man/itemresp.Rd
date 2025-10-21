@@ -186,7 +186,9 @@ plot(r2)
 if(require("likert")) {
 lik <- likert(as.data.frame(as.list(r)))
 lik
+\donttest{
 plot(lik)
+}
 }
 }
 

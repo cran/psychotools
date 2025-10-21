@@ -1,4 +1,4 @@
-library(strucchange)
+stopifnot(require("strucchange"))
 
 set.seed(2409)
 

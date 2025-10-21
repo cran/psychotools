@@ -1298,9 +1298,9 @@ rpl <- function(theta, a = NULL, b, g = NULL, u = NULL, return_setting = TRUE)
   ## sample data under the model (in IRT formulation) given theta
   stopifnot(!is.null(theta) & !is.null(b))
   N <- length(b)
-  if (is.null(a)) a <- rep(1, length = N)
-  if (is.null(g)) g <- rep(0, length = N)
-  if (is.null(u)) u <- rep(1, length = N)
+  if (is.null(a)) a <- rep(1, length.out = N)
+  if (is.null(g)) g <- rep(0, length.out = N)
+  if (is.null(u)) u <- rep(1, length.out = N)
   stopifnot(all.equal(mode(a), mode(b), mode(g), mode(u)))
   if(is.list(theta)) {
     return(lapply(theta, rpl, a = a, b = b, g = g, u = u,

@@ -1,7 +1,7 @@
 
-R version 4.2.2 (2022-10-31 ucrt) -- "Innocent and Trusting"
-Copyright (C) 2022 The R Foundation for Statistical Computing
-Platform: x86_64-w64-mingw32/x64 (64-bit)
+R version 4.5.0 (2025-04-11) -- "How About a Twenty-Six"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -20,7 +20,6 @@ Type 'q()' to quit R.
 > pkgname <- "psychotools"
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
-> options(pager = "console")
 > library('psychotools')
 > 
 > base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
@@ -460,7 +459,7 @@ Model 2: cbind(numerical, abstract, verbal) ~ ethnicity + condition
 1    291      7.5292                                          
 2    292  1   7.5714 0.026692   2.6419      3    289 0.04961 *
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 > ## corresponding univariate results
 > printCoefmat(t(sapply(summary(m),
 +   function(x) x$coefficients["ethnicityminority:conditionthreat", ])))
@@ -469,7 +468,7 @@ Response numerical -0.33844    0.57424 -0.5894  0.55607
 Response abstract   1.71660    0.72798  2.3580  0.01903 *
 Response verbal     0.80439    0.70783  1.1364  0.25672  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 > 
 > ## MGCFA (Table 3, p. 704)
 > ## can be replicated using package lavaan
@@ -569,7 +568,7 @@ S2DoScold    1.359e+00  2.012e-01   6.755 1.42e-11 ***
 S2WantShout  1.283e+00  2.007e-01   6.395 1.61e-10 ***
 S2DoShout    3.067e+00  2.343e-01  13.088  < 2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -1255 (df = 11) 
 Number of iterations in BFGS optimization: 19 
@@ -953,7 +952,7 @@ Gruene    1.1858     0.0951   12.47  < 2e-16 ***
 SPD       0.8131     0.0907    8.97  < 2e-16 ***
 CDU/CSU   0.1756     0.0875    2.01    0.045 *  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -1720 (df = 5) 
 
@@ -1666,17 +1665,29 @@ S2DoShout   0.7531646 0.1677215 0.07911392
 > if(require("likert")) {
 + lik <- likert(as.data.frame(as.list(r)))
 + lik
-+ plot(lik)
 + }
 Loading required package: likert
 Loading required package: ggplot2
 Loading required package: xtable
+          Item        0        1         2
+1  S1WantCurse 28.79747 30.06329 41.139241
+2    S1DoCurse 28.79747 34.17722 37.025316
+3  S1WantScold 39.87342 27.21519 32.911392
+4    S1DoScold 43.03797 30.69620 26.265823
+5  S1WantShout 48.73418 31.32911 19.936709
+6    S1DoShout 65.82278 21.51899 12.658228
+7  S2WantCurse 21.20253 35.44304 43.354430
+8    S2DoCurse 34.49367 30.69620 34.810127
+9  S2WantScold 37.34177 29.43038 33.227848
+10   S2DoScold 51.26582 29.11392 19.620253
+11 S2WantShout 50.00000 26.58228 23.417722
+12   S2DoShout 75.31646 16.77215  7.911392
 > 
 > 
 > 
 > cleanEx()
 
-detaching 'package:likert', 'package:xtable', 'package:ggplot2'
+detaching ‘package:likert’, ‘package:xtable’, ‘package:ggplot2’
 
 > nameEx("labels")
 > ### * labels
@@ -1739,7 +1750,7 @@ b     0.172      -1.5687     0.0427  -36.72   <2e-16 ***
 D2    0.675       0.7292     0.0568   12.84   <2e-16 ***
 d2    0.425      -0.3031     0.1428   -2.12    0.034 *  
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Likelihood ratio G2: 0 on 0 df, p-value: 1 
 AIC: 12478
@@ -2065,7 +2076,7 @@ S2WantShout-C2   2.1175     0.3650    5.80  6.6e-09 ***
 S2DoShout-C1     2.1247     0.2273    9.35  < 2e-16 ***
 S2DoShout-C2     4.4099     0.4200   10.50  < 2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -2470 (df = 23) 
 Number of iterations in BFGS optimization: 32 
@@ -2595,7 +2606,7 @@ S2DoScold    1.36e+00   2.01e-01    6.76  1.4e-11 ***
 S2WantShout  1.28e+00   2.01e-01    6.39  1.6e-10 ***
 S2DoShout    3.07e+00   2.34e-01   13.09  < 2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -1260 (df = 11) 
 Number of iterations in BFGS optimization: 19 
@@ -3029,7 +3040,7 @@ S2WantShout   0.8635     0.1214    7.11  1.1e-12 ***
 S2DoShout     2.0598     0.1466   14.05  < 2e-16 ***
 C2            0.5024     0.0850    5.91  3.4e-09 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Log-likelihood: -2480 (df = 12) 
 Number of iterations in BFGS optimization: 19 
@@ -3424,7 +3435,7 @@ Bradley-Terry model parameters (btmodel):
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  18.11 0.98 19.19 NA NA 
+Time elapsed:  26.092 0.244 26.337 0 0 
 > grDevices::dev.off()
 null device 
           1 

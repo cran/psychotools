@@ -1,3 +1,9 @@
+## packages --------------------------------------------------------------------
+
+stopifnot(require("psychotools"), require("multcomp"), require("strucchange"),
+  require("psychotree"), require("psychomix"))
+
+
 ## data ------------------------------------------------------------------------
 
 library("psychotools")
@@ -32,7 +38,7 @@ plot(rsm, type = "piplot")
 plot(pcm, type = "piplot")
 
 ## (mean) item profiles similar
-cols3 <- colorspace::rainbow_hcl(3, c = 60, l = 60)
+cols3 <- hcl.colors(3, "Dark 2")
 plot(ram, type = "profile", what = "items", parg = list(ref = 8), col = cols3[1])
 plot(rsm, type = "profile", what = "items", parg = list(ref = 8), col = cols3[2], add = TRUE)
 plot(pcm, type = "profile", what = "items", parg = list(ref = 8), col = cols3[3], add = TRUE)
@@ -70,7 +76,7 @@ c(
 
 ## itemwise visualization with different fixed anchorings
 ## anchor: item 1
-rb <- psychomix:::qualitative_hcl(2)
+rb <- hcl.colors(3, "Dark3")[c(3, 1)]
 plot(mr1, parg = list(ref = 1), ref = FALSE, ylim = c(-2.6, 2.6), col = rb[1])
 plot(mr2, parg = list(ref = 1), ref = FALSE, add = TRUE, col = rb[2])
 legend("topleft", paste("Group", 1:2), pch = 19, col = rb, bty = "n")

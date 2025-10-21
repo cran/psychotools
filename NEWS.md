@@ -1,3 +1,12 @@
+# psychotools 0.7-5
+
+* Add packages utilized in `demo(package = "psychotools")` to `DESCRIPTION/Suggests`.
+  Also use `hcl.colors()` instead of package `colorspace`.
+
+* Don't test visualization of `likert` objects that can be coerced from `itemresp`
+  objects because its `plot()` method currently throws a warning.
+
+
 # psychotools 0.7-4
 
 * Return the matched function call as `$call` in IRT functions `raschmodel()`,

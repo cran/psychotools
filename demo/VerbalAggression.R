@@ -1,5 +1,7 @@
-## package
-library("psychotools")
+## packages --------------------------------------------------------------------
+
+stopifnot(require("psychotools"), require("likert"), require("lmtest"),
+  require("car"), require("psychotree"))
 
 
 ## data ------------------------------------------------------------------------
@@ -113,9 +115,9 @@ print(cbind(coef(rtprsm, type = "matrix"),
 ## PCM visualizations
 lbs <- labels(d$poly)
 tlm <- c(-2, 6)
-cols <- colorspace::rainbow_hcl(4, c = 60, l = 75)
-cols2 <- colorspace::heat_hcl(6, h = c(0, -100), c = 60, l = 75)
-cols3 <- colorspace::rainbow_hcl(3, c = 60, l = 60)
+cols <- hcl.colors(4, "Set 2")
+cols2 <- hcl.colors(6, "ag_Sunset", rev = TRUE)
+cols3 <- hcl.colors(3, "Dark 2")
 
 plot(pcm, type = "curves", ref = 1, items = 1:6, layout = matrix(1:6, ncol = 3, nrow = 2, byrow = FALSE), 
      names = lbs, ylim = c(0, 1), xlim = tlm, col = cols[1:3], lwd = 1.5,

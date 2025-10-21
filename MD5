@@ -1,6 +1,6 @@
-6ee7f84dbb85749cbcf80ce6e9b97197 *DESCRIPTION
+02cb1e518f0f7c1f376c3f06bdbb4c24 *DESCRIPTION
 faccc107913629c8db7e0389294d4920 *NAMESPACE
-4dae82e74386d37201fa277daa0cb5d0 *NEWS.md
+813b257aa2ac33a20e3a2e00624e1f96 *NEWS.md
 3a5d59b45190fea7c63833962ad9478c *R/anchor.R
 fa994e67050de8ae7426b9256cc5f2f6 *R/btmodel.R
 6ea89bb2ad68fc144b87f56937546ddc *R/discrpar.R
@@ -12,7 +12,7 @@ f1c03aec21bd443d23915961606fbda1 *R/guesspar.R
 85b442a64878537dba38989550f6c10a *R/itempar.R
 8533d7929aff5eb69ba6be78e089ab36 *R/itemresp.R
 6d34039097753b1b173cfafd8b616752 *R/mptmodel.R
-43440f1a3e6035a76ea107065e8e782c *R/nplmodel.R
+9921c2618af8b9aa2dac7ae96082fa3d *R/nplmodel.R
 9a75f8d508f8988f4542b2956097eb33 *R/paircomp.R
 f47765a67059562cef734da6989239aa *R/pcmodel.R
 80c264aca7f794346fe5103df48614a3 *R/personpar.R
@@ -21,8 +21,8 @@ dad7fbc7bb17ddcee486ab09e36a3640 *R/raschmodel.R
 afc88c38cc226a2a0003b5f31b398080 *R/threshpar.R
 359a607babf7b4bc5d17e092150b585e *R/upperpar.R
 fb21aef50a64909babc8cf881a480595 *R/zzz.R
-20c8d3f97d93e2e318a22508275b5a02 *build/partial.rdb
-e631d0b7e63c2d3baa59c2570b862c9c *build/vignette.rds
+b52aabe9a2757fc86742763db9dafc9b *build/partial.rdb
+8a9569cf4089d6affd0de05eb82e49ae *build/vignette.rds
 7e3ca8bd9a665ab2582b2b146d602246 *data/ConspiracistBeliefs2016.rda
 160941d0ef5927d863a494458d657dd1 *data/FirstNames.rda
 5e9eff138616c5c0472805b724d00128 *data/GermanParties2009.rda
@@ -36,13 +36,13 @@ b546dc6dad667b74e2563f5de948bc12 *data/Sim3PL.rda
 3684d6f4bec4a076894b687fd0af2f44 *data/VerbalAggression.rda
 f8e6d053006991630ebbc69f96177df6 *data/YouthGratitude.rda
 ee8247b7577a53ce03dc8ae81fba113b *demo/00Index
-c8a6137956d2fbb63abc735be423243e *demo/MathExam14W.R
-661134333cd2f0b82e1c688eb93113d3 *demo/VerbalAggression.R
-510db8ed13deeda67edf5268ffa04712 *demo/toolbox1.R
-fc95992347b272acb4e18f80e60749b0 *demo/toolbox2.R
+24e42306b09a1ba6f6949d42e95e9a42 *demo/MathExam14W.R
+2d696777b59419df572af02342cb2300 *demo/VerbalAggression.R
+86ada65634dc40acad2d7410ea72526d *demo/toolbox1.R
+eb1f95e74ac6708fce10bf0605fe8f91 *demo/toolbox2.R
 bc9c5515f278d598e5749cb030315e35 *inst/CITATION
 3e9dfa7c4425114e8d1d507dd21a5f04 *inst/doc/toolbox-simulation.Rnw
-a45cd0204fefea1a5db0a27847961bc7 *inst/doc/toolbox-simulation.pdf
+66b0c388f5a5a43d132bc5b4658d03e0 *inst/doc/toolbox-simulation.pdf
 8cfa2fa03d8b63e269805e914f3f1443 *man/ConspiracistBeliefs2016.Rd
 f85e170eb03653929ccad3902c61659c *man/FirstNames.Rd
 a5e69a330ce708579921a6d1a2fda3d8 *man/GermanParties2009.Rd
@@ -67,7 +67,7 @@ f1720cc8734da180c80f52dae0eede18 *man/discrpar.Rd
 3be3653deb785e7534b05ef847f5a21d *man/guesspar.Rd
 e067149002bae9c38e006ef8fcc9ae81 *man/infoplot.Rd
 db122b7a3de02d066aedb72a6c294f8f *man/itempar.Rd
-e6f47a817f5ba3288f306531b2dad4db *man/itemresp.Rd
+41122f85c664332e97fa38bb84db1c87 *man/itemresp.Rd
 e0793112d42895bebeade215f5f0d0f8 *man/labels.Rd
 8025595db4f8d1b7e9ba3512165e97f5 *man/mptmodel.Rd
 58a192ba4aa565b7d46efb27966e79cb *man/mscale.Rd
@@ -99,7 +99,7 @@ aa2cc658eee2173b1500e9e4f6b182a4 *man/threshpar.Rd
 882318d0b4b6eb783082813351cd19fe *man/worth.Rd
 8d5d328ee4e5249d533db460b74ad01d *src/esf.c
 379cb49b29fdc394ae3d5032232ee64b *src/init.c
-f42e5a45196fd97d4bd6aa808922f8cd *tests/Examples/psychotools-Ex.Rout.save
+38331ddf41e3f9030b2c3667e0999823 *tests/Examples/psychotools-Ex.Rout.save
 cdb1ae7d29007942250481f21f6aa64c *tests/elementary_symmetric_functions.R
 c683d7e568c3d7d7f2bea48862e89208 *vignettes/psychotools.bib
 3e9dfa7c4425114e8d1d507dd21a5f04 *vignettes/toolbox-simulation.Rnw
