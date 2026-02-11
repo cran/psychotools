@@ -1,3 +1,13 @@
+# psychotools 0.7-6
+
+* Fix in `estfun()` method for `npmodel()` objects for the case when some impact
+  groups are empty (which is not unusual when fitting trees).
+  
+
+* Updated examples and reference output to avoid differences in output of summary
+  with `NAs` vs. `NA's`.
+
+
 # psychotools 0.7-5
 
 * Add packages utilized in `demo(package = "psychotools")` to `DESCRIPTION/Suggests`.

@@ -1,4 +1,4 @@
-# estimate an n-PL model in slope / intercept formulation using mirt (MML & EM)
+# estimate an n-PL model in slope/intercept formulation using mirt (MML & EM)
 
 plmodel <- ## for backward compatibility
 nplmodel <- function(y, weights = NULL, impact = NULL,
@@ -104,7 +104,7 @@ nplmodel <- function(y, weights = NULL, impact = NULL,
           means <- (means - means[ix])[-nlvls]
           vx <- seq(from = 2L, to = (2L * (nlvls - 1L)), by = 2L)
           vars <- c(1, start_g[vx])
-          vars <- (vars / vars[ix])[-nlvls]
+          vars <- (vars/vars[ix])[-nlvls]
           start_g <- as.vector(rbind(means, vars))
         }
         pars$value[pars$est & pars$name == "a1"] <- start_i[1L]
@@ -137,7 +137,7 @@ nplmodel <- function(y, weights = NULL, impact = NULL,
           means <- (means - means[ix])[-nlvls]
           vx <- seq(from = 2L, to = (2L * (nlvls - 1L)), by = 2L)
           vars <- c(1, start_g[vx])
-          vars <- (vars / vars[ix])[-nlvls]
+          vars <- (vars/vars[ix])[-nlvls]
           start_g <- as.vector(rbind(means, vars))
         }
         pars$value[pars$est & pars$item != "GROUP"] <- rep.int(start_i, nlvls)
@@ -349,12 +349,12 @@ vcov.nplmodel <- function(object, logit = TRUE, ...)
     C <- diag(1, length(cf), length(cf))
     if(object$type %in% c("3PL", "4PL")) {
       gx <- grep("-logit\\(g\\)$", estnms)
-      diag(C)[gx] <- exp(cf[gx]) / ((1 + exp(cf[gx])) ^ 2)
+      diag(C)[gx] <- exp(cf[gx]) / ((1 + exp(cf[gx]))^2)
       estnms[gx] <- gsub("-logit\\(g\\)$", "-g", estnms[gx])
     }
     if(object$type %in% c("3PLu", "4PL")) {
       ux <- grep("-logit\\(u\\)$", estnms)
-      diag(C)[ux] <- exp(cf[ux]) / ((1 + exp(cf[ux])) ^ 2)
+      diag(C)[ux] <- exp(cf[ux]) / ((1 + exp(cf[ux]))^2)
       estnms[ux] <- gsub("-logit\\(u\\)$", "-u", estnms[ux])
     }
     vc <- C %*% vc %*% t(C)
@@ -685,7 +685,7 @@ threshpar.nplmodel <- function(object, type = c("mode", "median", "mean"),
     for(j in 1L:N) {
       ind <- (loc[j] + 1L):loc[j + 1L]
       C[ind[1L], ind[1L]] <- 1
-      C[ind[2L], ind[1L]] <- d[[j]] / ((a[[j]]) ^ 2)
+      C[ind[2L], ind[1L]] <- d[[j]] / ((a[[j]])^2)
       C[ind[2L], ind[2L]] <- -1 / a[[j]]
     }
     vc_t <- C %*% vc %*% t(C)
@@ -1036,13 +1036,16 @@ estfun.nplmodel <- function(x, ...)
   weights <- weights_org[weights_org > 0]
   ## groups
   impact <- x$impact
-  g <-
-  if(is.null(impact)) {
+  g <- if(is.null(impact)) {
     as.factor(rep("all", x$n))
   } else {
     impact
   }
-  G <- length(levels(g))
+  
+  ## drop empty group factor levels
+  actual_groups <- sort(unique(as.numeric(g)))
+  G <- length(actual_groups)
+
   g <- as.numeric(g)
   ## coefficients (not logit for g and u)
   coefs <- coef(x, logit = FALSE)
@@ -1096,17 +1099,20 @@ estfun.nplmodel <- function(x, ...)
     nest <- 2L * N
   }
   scores <- matrix(0, M, nest)
-  for(a in 1L:G) {
+
+  ## loop over group number "idx" with original level number "a"
+  for(idx in 1L:G) {
     ## px_tmp_ probability for a person showing the observed pattern
     ## given f, computed iteratively
+    a <- actual_groups[idx]
     px_tmp_ <- matrix(1, sum(g == a), q)
-    scores_a[[a]] <- scores_d[[a]] <- vector("list", N)
+    scores_a[[idx]] <- scores_d[[idx]] <- vector("list", N)
     if(x$type == "3PL") {
-      scores_g[[a]] <- vector("list", N)
+      scores_g[[idx]] <- vector("list", N)
     } else if(x$type == "3PLu") {
-      scores_u[[a]] <- vector("list", N)
+      scores_u[[idx]] <- vector("list", N)
     } else if(x$type == "4PL") {
-      scores_g[[a]] <- scores_u[[a]] <- vector("list", N)
+      scores_g[[idx]] <- scores_u[[idx]] <- vector("list", N)
     }
     M_tmp <- sum(g == a)
     for(j in 1L:N) {
@@ -1118,7 +1124,7 @@ estfun.nplmodel <- function(x, ...)
       uest_tmp <- uest[j]
       ## px_tmp probability for a person falling into 0 or 1 of j given q
       exp_tmp <- exp(aest_tmp * X + dest_tmp)
-      px_tmp <- gest_tmp + (uest_tmp - gest_tmp) * (exp_tmp / (1 + exp_tmp))
+      px_tmp <- gest_tmp + (uest_tmp - gest_tmp) * (exp_tmp/(1 + exp_tmp))
       if(any(px_tmp == 1)) {
         px_tmp[px_tmp == 1] <- 1 - .Machine$double.neg.eps
       }
@@ -1138,25 +1144,24 @@ estfun.nplmodel <- function(x, ...)
       ## calculate some intermediates that will be used repeatedly
       gdiffu <- gest_tmp - uest_tmp
       expone <- 1 + exp_tmp
-      exponesq <- expone ^ 2
+      exponesq <- expone^2
       ## evaluated 1st partial derivative of the model with respect to a
-      px_da_tmp <- -(gdiffu * X * exp_tmp) / exponesq
+      px_da_tmp <- -(gdiffu * X * exp_tmp)/exponesq
       px_da_tmp <- rbind(-px_da_tmp, px_da_tmp)
-      scores_a[[a]][[j]] <- px_da_tmp[pat, ] / px_tmp[pat, ]
+      scores_a[[idx]][[j]] <- px_da_tmp[pat, ]/px_tmp[pat, ]
       ## evaluated 1st partial derivative of the model with respect to d
-      px_dd_tmp <- -(gdiffu * exp_tmp) / exponesq
+      px_dd_tmp <- -(gdiffu * exp_tmp)/exponesq
       px_dd_tmp <- rbind(-px_dd_tmp, px_dd_tmp)
-      scores_d[[a]][[j]] <- px_dd_tmp[pat, ] / px_tmp[pat, ]
+      scores_d[[idx]][[j]] <- px_dd_tmp[pat, ]/px_tmp[pat, ]
       ## evaluated 1st partial derivative of the model with respect to g
       ## mirt internally logit transforms the guessing parameters
       ## for the scores this also has to be done to g as well as applying the
       ## logistic transformation prior to deriving the model after g
       if(x$type == "3PL" | x$type == "4PL") {
         gest_tmp_logit <- qlogis(gest_tmp)
-        px_dg_tmp <- exp(gest_tmp_logit) /
-          (((1 + exp(gest_tmp_logit)) ^ 2) * expone)
+        px_dg_tmp <- exp(gest_tmp_logit)/(((1 + exp(gest_tmp_logit))^2) * expone)
         px_dg_tmp <- rbind(-px_dg_tmp, px_dg_tmp)
-        scores_g[[a]][[j]] <- px_dg_tmp[pat, ] / px_tmp[pat, ]
+        scores_g[[idx]][[j]] <- px_dg_tmp[pat, ]/px_tmp[pat, ]
       }
       ## evaluated 1st partial derivative of the model with respect to u
       ## mirt internally logit transforms the upper asymptotes
@@ -1164,71 +1169,57 @@ estfun.nplmodel <- function(x, ...)
       ## logistic transformation prior to deriving the model after u
       if(x$type == "3PLu" | x$type == "4PL") {
         uest_tmp_logit <- qlogis(uest_tmp)
-        px_du_tmp <- exp(aest_tmp * X + dest_tmp + uest_tmp_logit) /
-          (((1 + exp(uest_tmp_logit)) ^ 2) * expone)
+        px_du_tmp <- exp(aest_tmp * X + dest_tmp + uest_tmp_logit)/(((1 + exp(uest_tmp_logit))^2) * expone)
         px_du_tmp <- rbind(-px_du_tmp, px_du_tmp)
-        scores_u[[a]][[j]] <- px_du_tmp[pat, ] / px_tmp[pat, ]
+        scores_u[[idx]][[j]] <- px_du_tmp[pat, ]/px_tmp[pat, ]
       }
     }
     ## calculate LX and pX
     LX[g == a, ] <- px_tmp_
-    pX[g == a, ] <- px_tmp_ * matrix(AX[, a], M_tmp, q, TRUE)
-    pX[g == a, ] <- pX[g == a, ] / rowSums(pX[g == a, , drop = FALSE])
+    pX[g == a, ] <- px_tmp_ * matrix(AX[, idx], M_tmp, q, TRUE)
+    pX[g == a, ] <- pX[g == a, ]/rowSums(pX[g == a, , drop = FALSE])
     ## finally calculate the scores using pX
-    scores_a[[a]] <-
-    lapply(scores_a[[a]], function(sc_a) {
+    scores_a[[idx]] <- lapply(scores_a[[idx]], function(sc_a) {
       rowSums(sc_a * pX[g == a, , drop = FALSE])
     })
-    scores_d[[a]] <-
-    lapply(scores_d[[a]], function(sc_d) {
+    scores_d[[idx]] <- lapply(scores_d[[idx]], function(sc_d) {
       rowSums(sc_d * pX[g == a, , drop = FALSE])
     })
     if(x$type == "3PL" | x$type == "4PL") {
-      scores_g[[a]] <-
-      lapply(scores_g[[a]], function(sc_g) {
+      scores_g[[idx]] <- lapply(scores_g[[idx]], function(sc_g) {
         rowSums(sc_g * pX[g == a, , drop = FALSE])
       })
     }
     if(x$type == "3PLu" | x$type == "4PL") {
-      scores_u[[a]] <-
-      lapply(scores_u[[a]], function(sc_u) {
+      scores_u[[idx]] <- lapply(scores_u[[idx]], function(sc_u) {
         rowSums(sc_u * pX[g == a, , drop = FALSE])
       })
     }
     ## combine the scores into one matrix
-    text <-
-    if(x$type == "4PL") {
-      paste0("cbind(", paste0(
-        sapply(1L:N, function(j) {
-          paste0(gsub("item", j, "scores_a[[a]][[item]]"),
-            ",", gsub("item", j, "scores_d[[a]][[item]]"),
-            ",", gsub("item", j, "scores_g[[a]][[item]]"),
-            ",", gsub("item", j, "scores_u[[a]][[item]]"))
-        }), collapse = ","), ")"
-      )
+    text <- if(x$type == "4PL") {
+      paste0("cbind(", paste0(sapply(1L:N, function(j) {
+        paste0(gsub("item", j, "scores_a[[idx]][[item]]"),
+          ",", gsub("item", j, "scores_d[[idx]][[item]]"),
+          ",", gsub("item", j, "scores_g[[idx]][[item]]"),
+          ",", gsub("item", j, "scores_u[[idx]][[item]]"))
+        }), collapse = ","), ")")
     } else if(x$type == "3PL") {
-      paste0("cbind(", paste0(
-        sapply(1L:N, function(j) {
-          paste0(gsub("item", j, "scores_a[[a]][[item]]"),
-            ",", gsub("item", j, "scores_d[[a]][[item]]"),
-            ",", gsub("item", j, "scores_g[[a]][[item]]"))
-        }), collapse = ","), ")"
-      )
+      paste0("cbind(", paste0(sapply(1L:N, function(j) {
+        paste0(gsub("item", j, "scores_a[[idx]][[item]]"),
+          ",", gsub("item", j, "scores_d[[idx]][[item]]"),
+          ",", gsub("item", j, "scores_g[[idx]][[item]]"))
+      }), collapse = ","), ")")
     } else if(x$type == "3PLu") {
-       paste0("cbind(", paste0(
-        sapply(1L:N, function(j) {
-          paste0(gsub("item", j, "scores_a[[a]][[item]]"),
-            ",", gsub("item", j, "scores_d[[a]][[item]]"),
-            ",", gsub("item", j, "scores_u[[a]][[item]]"))
-        }), collapse = ","), ")"
-      )
+      paste0("cbind(", paste0(sapply(1L:N, function(j) {
+        paste0(gsub("item", j, "scores_a[[idx]][[item]]"),
+          ",", gsub("item", j, "scores_d[[idx]][[item]]"),
+          ",", gsub("item", j, "scores_u[[idx]][[item]]"))
+      }), collapse = ","), ")")
     } else {
-      paste0("cbind(", paste0(
-        sapply(1L:N, function(j) {
-          paste0(gsub("item", j, "scores_a[[a]][[item]]"),
-            ",", gsub("item", j, "scores_d[[a]][[item]]"))
-        }), collapse = ","), ")"
-      )
+      paste0("cbind(", paste0(sapply(1L:N, function(j) {
+        paste0(gsub("item", j, "scores_a[[idx]][[item]]"),
+          ",", gsub("item", j, "scores_d[[idx]][[item]]"))
+      }), collapse = ","), ")")
     }
     scores[g == a, ] <- eval(parse(text = text))
   }
@@ -1243,22 +1234,23 @@ estfun.nplmodel <- function(x, ...)
   if(x$grouppars) {
     ## PX posterior for a person showing the observed pattern over all fs
     PX <- numeric(M)
-    for(a in 2L:G) {
-      PX[g == a] <- rowSums(LX[g == a, ] *
-        matrix(AX[, a], sum(g == a), q, TRUE))
+    for(idx in 2L:G) {
+      a <- actual_groups[idx]
+      PX[g == a] <- rowSums(LX[g == a, ] * matrix(AX[, idx], sum(g == a), q, TRUE))
     }
-    for(a in 2L:G) {
+    for(idx in 2L:G) {
+      a <- actual_groups[idx]
       scores <- cbind(scores, matrix(0, M, 2L))
-      m <- means[a]
-      v <- vars[a]
+      m <- means[idx]
+      v <- vars[idx]
       ## scores for the group mean, Baker & Kim, 2004, p. 274, Eq. (10.36)
-      scores[g == a, dim(scores)[2L] - 1L] <- ((v ^ -1) * (PX[g == a] ^ -1) *
+      scores[g == a, dim(scores)[2L] - 1L] <- ((v^-1) * (PX[g == a]^-1) *
         colSums(matrix(X - m, q, sum(g == a)) * t(LX[g == a, , drop = FALSE]) *
-          matrix(AX[, a], q, sum(g == a))))
+        matrix(AX[, idx], q, sum(g == a))))
       ## scores for the group variance, Baker & Kim, 2004, p. 274, Eq. (10.37)
-      scores[g == a, dim(scores)[2L]] <- (- (1 / 2) * (PX[g == a] ^ -1) *
-        colSums(matrix((v ^ -1) - ((X - m) ^ 2) * (v ^ -2), q, sum(g == a)) *
-          t(LX[g == a, , drop = FALSE]) * matrix(AX[, a], q, sum(g == a))))
+      scores[g == a, dim(scores)[2L]] <- (-(1/2) * (PX[g == a]^-1) *
+        colSums(matrix((v^-1) - ((X - m)^2) * (v^-2), q, sum(g == a)) *
+        t(LX[g == a, , drop = FALSE]) * matrix(AX[, idx], q, sum(g == a))))
     }
   }
   ## handle weights
@@ -1320,4 +1312,3 @@ rpl <- function(theta, a = NULL, b, g = NULL, u = NULL, return_setting = TRUE)
     return(res)
   }
 }
-

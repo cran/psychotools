@@ -591,63 +591,28 @@ Number of iterations in BFGS optimization: 19
 > ### ** Examples
 > 
 > data("YouthGratitude", package = "psychotools")
-> summary(YouthGratitude)
-       id              age         agegroup       gq6_1           gq6_2      
- Min.   :   1.0   Min.   :10.00   10-11:217   Min.   :1.000   Min.   :1.000  
- 1st Qu.: 244.8   1st Qu.:13.00   12-13:194   1st Qu.:6.000   1st Qu.:5.000  
- Median : 498.5   Median :15.00   14   :211   Median :6.000   Median :6.000  
- Mean   : 511.5   Mean   :14.47   15   :249   Mean   :6.111   Mean   :5.856  
- 3rd Qu.: 778.2   3rd Qu.:16.00   16   :260   3rd Qu.:7.000   3rd Qu.:7.000  
- Max.   :1098.0   Max.   :19.00   17-19:274   Max.   :7.000   Max.   :7.000  
- NA's   :1                                                                   
-     gq6_3          gq6_4           gq6_5           gq6_6           gac_1      
- Min.   :1.00   Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
- 1st Qu.:5.00   1st Qu.:5.000   1st Qu.:5.000   1st Qu.:3.000   1st Qu.:3.000  
- Median :6.00   Median :6.000   Median :6.000   Median :4.000   Median :4.000  
- Mean   :5.72   Mean   :5.551   Mean   :5.918   Mean   :4.453   Mean   :3.817  
- 3rd Qu.:7.00   3rd Qu.:6.000   3rd Qu.:7.000   3rd Qu.:6.000   3rd Qu.:5.000  
- Max.   :7.00   Max.   :7.000   Max.   :7.000   Max.   :7.000   Max.   :5.000  
-                                                                               
-     gac_2           gac_3           losd_1          losd_2     
- Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
- 1st Qu.:3.000   1st Qu.:3.000   1st Qu.:6.000   1st Qu.:4.000  
- Median :4.000   Median :4.000   Median :7.000   Median :6.000  
- Mean   :3.886   Mean   :3.966   Mean   :7.133   Mean   :5.734  
- 3rd Qu.:5.000   3rd Qu.:5.000   3rd Qu.:9.000   3rd Qu.:8.000  
- Max.   :5.000   Max.   :5.000   Max.   :9.000   Max.   :9.000  
-                                                                
-     losd_3          losd_4          losd_5          losd_6     
- Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
- 1st Qu.:3.000   1st Qu.:3.000   1st Qu.:4.000   1st Qu.:4.000  
- Median :5.000   Median :5.000   Median :6.000   Median :5.000  
- Mean   :5.289   Mean   :5.345   Mean   :5.846   Mean   :5.389  
- 3rd Qu.:8.000   3rd Qu.:8.000   3rd Qu.:9.000   3rd Qu.:7.000  
- Max.   :9.000   Max.   :9.000   Max.   :9.000   Max.   :9.000  
-                                                                
-      sa_1            sa_2            sa_3            sa_4      
- Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
- 1st Qu.:3.000   1st Qu.:2.000   1st Qu.:4.000   1st Qu.:5.000  
- Median :5.000   Median :5.000   Median :5.000   Median :6.000  
- Mean   :5.035   Mean   :4.696   Mean   :5.444   Mean   :5.723  
- 3rd Qu.:7.000   3rd Qu.:6.000   3rd Qu.:7.000   3rd Qu.:7.607  
- Max.   :9.000   Max.   :9.000   Max.   :9.000   Max.   :9.000  
-                                                                
-      sa_5            sa_6            ao_1            ao_2      
- Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
- 1st Qu.:6.000   1st Qu.:7.000   1st Qu.:6.000   1st Qu.:6.000  
- Median :7.000   Median :9.000   Median :7.000   Median :7.000  
- Mean   :7.052   Mean   :7.669   Mean   :6.772   Mean   :6.739  
- 3rd Qu.:9.000   3rd Qu.:9.000   3rd Qu.:9.000   3rd Qu.:8.000  
- Max.   :9.000   Max.   :9.000   Max.   :9.000   Max.   :9.000  
-                                                                
-      ao_3            ao_4       
- Min.   :1.000   Min.   : 1.000  
- 1st Qu.:5.000   1st Qu.: 6.000  
- Median :7.000   Median : 7.000  
- Mean   :6.404   Mean   : 7.278  
- 3rd Qu.:8.000   3rd Qu.: 9.000  
- Max.   :9.000   Max.   :34.203  
-                                 
+> head(YouthGratitude)
+  id age agegroup gq6_1 gq6_2 gq6_3 gq6_4 gq6_5 gq6_6 gac_1 gac_2 gac_3 losd_1
+1 18  10    10-11     6     5     3     6     5     5     3     3     4      9
+2 33  10    10-11     6     7     7     7     5     6     2     3     3      8
+3 36  10    10-11     7     7     6     7     7     7     5     5     5      9
+4 49  10    10-11     7     6     7     6     6     5     5     5     5      9
+5 54  10    10-11     6     6     6     6     6     6     4     4     4      8
+6 61  10    10-11     7     7     6     7     7     4     4     5     5      9
+  losd_2 losd_3 losd_4 losd_5 losd_6 sa_1 sa_2 sa_3 sa_4 sa_5 sa_6 ao_1 ao_2
+1      5      4      5      6      2    8    7    9    4    7    7    7    7
+2      3      1      1      1      1    6    3    1    2    5    6    9    7
+3      1      1      1      1      3    9    1    9    5    9    9    9    9
+4      4      1      1      1      3    9    5    9    1    9    8    9    9
+5      7      7      5      5      7    8    7    6    5    6    8    9    8
+6      2      4      8      9      5    4    3    5    7    8    8    8    8
+  ao_3 ao_4
+1    8    6
+2    5    6
+3    9    9
+4    9    9
+5    6    7
+6    7    5
 > 
 > ## modeling can be carried out using package lavaan
 > ## Not run: 

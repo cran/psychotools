@@ -1,6 +1,6 @@
-02cb1e518f0f7c1f376c3f06bdbb4c24 *DESCRIPTION
+1d2e12ec5fc9806e0b837bff46efdbd1 *DESCRIPTION
 faccc107913629c8db7e0389294d4920 *NAMESPACE
-813b257aa2ac33a20e3a2e00624e1f96 *NEWS.md
+e310b501c35d9b19779b0b17a54f0d53 *NEWS.md
 3a5d59b45190fea7c63833962ad9478c *R/anchor.R
 fa994e67050de8ae7426b9256cc5f2f6 *R/btmodel.R
 6ea89bb2ad68fc144b87f56937546ddc *R/discrpar.R
@@ -12,7 +12,7 @@ f1c03aec21bd443d23915961606fbda1 *R/guesspar.R
 85b442a64878537dba38989550f6c10a *R/itempar.R
 8533d7929aff5eb69ba6be78e089ab36 *R/itemresp.R
 6d34039097753b1b173cfafd8b616752 *R/mptmodel.R
-9921c2618af8b9aa2dac7ae96082fa3d *R/nplmodel.R
+063ac4110e2a02c771bfad2eabb1d978 *R/nplmodel.R
 9a75f8d508f8988f4542b2956097eb33 *R/paircomp.R
 f47765a67059562cef734da6989239aa *R/pcmodel.R
 80c264aca7f794346fe5103df48614a3 *R/personpar.R
@@ -41,8 +41,8 @@ ee8247b7577a53ce03dc8ae81fba113b *demo/00Index
 86ada65634dc40acad2d7410ea72526d *demo/toolbox1.R
 eb1f95e74ac6708fce10bf0605fe8f91 *demo/toolbox2.R
 bc9c5515f278d598e5749cb030315e35 *inst/CITATION
-3e9dfa7c4425114e8d1d507dd21a5f04 *inst/doc/toolbox-simulation.Rnw
-66b0c388f5a5a43d132bc5b4658d03e0 *inst/doc/toolbox-simulation.pdf
+c7e8d776673c78207da9f8413d625f5c *inst/doc/toolbox-simulation.Rnw
+de6f6600279cd00e39bbfc81f23ba4b2 *inst/doc/toolbox-simulation.pdf
 8cfa2fa03d8b63e269805e914f3f1443 *man/ConspiracistBeliefs2016.Rd
 f85e170eb03653929ccad3902c61659c *man/FirstNames.Rd
 a5e69a330ce708579921a6d1a2fda3d8 *man/GermanParties2009.Rd
@@ -54,7 +54,7 @@ eb7014c2fe56ed9ddc5e6880050e3478 *man/Sim3PL.Rd
 f3b097b6cd52c94e0381797df169f2c2 *man/SourceMonitoring.Rd
 739a493af639cc17ee58fff7ae7bc834 *man/StereotypeThreat.Rd
 bf83018805833d8f1b03cce2a79016fb *man/VerbalAggression.Rd
-20246643862baf587f4d7e57049cd7d1 *man/YouthGratitude.Rd
+ce69a55fc7c0045ec3ecc0cf43b4f73c *man/YouthGratitude.Rd
 509451684860e5e50494fb5d7a051f3e *man/anchor.Rd
 6b06a8dae822276001479f84584f5d80 *man/anchortest.Rd
 15462be24145f7c6480ce77974d4c2e4 *man/as.list.itemresp.Rd
@@ -99,7 +99,7 @@ aa2cc658eee2173b1500e9e4f6b182a4 *man/threshpar.Rd
 882318d0b4b6eb783082813351cd19fe *man/worth.Rd
 8d5d328ee4e5249d533db460b74ad01d *src/esf.c
 379cb49b29fdc394ae3d5032232ee64b *src/init.c
-38331ddf41e3f9030b2c3667e0999823 *tests/Examples/psychotools-Ex.Rout.save
+0f481f0dd839fee6a2bd646446f5a8ef *tests/Examples/psychotools-Ex.Rout.save
 cdb1ae7d29007942250481f21f6aa64c *tests/elementary_symmetric_functions.R
 c683d7e568c3d7d7f2bea48862e89208 *vignettes/psychotools.bib
-3e9dfa7c4425114e8d1d507dd21a5f04 *vignettes/toolbox-simulation.Rnw
+c7e8d776673c78207da9f8413d625f5c *vignettes/toolbox-simulation.Rnw

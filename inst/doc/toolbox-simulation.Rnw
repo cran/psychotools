@@ -36,24 +36,24 @@ The detection of differential item functioning (DIF) is a central topic in psych
 
 \Address{
   Lennart Schneider\\
-  Department of Statistics\\
   Ludwig-Maximilians-Universit\"at M\"unchen\\
+  Department of Statistics\\
   Ludwigstra{\ss}e 33\\
   80539 M\"unchen, Germany\\
   E-mail: \email{lennart.sch@web.de}\\
 
   Carolin Strobl, Rudolf Debelak\\
-  Department of Psychology\\
   Universit\"at Z\"urich\\
+  Department of Psychology\\
   Binzm\"uhlestr.~14\\
   8050 Z\"urich, Switzerland\\
   E-mail: \email{Carolin.Strobl@psychologie.uzh.ch}, \email{Rudolf.Debelak@psychologie.uzh.ch}\\
-  URL: \url{http://www.psychologie.uzh.ch/fachrichtungen/methoden.html}\\
+  URL: \url{https://www.psychologie.uzh.ch/fachrichtungen/methoden.html}\\
 
   Achim Zeileis\\
+  Universit\"at Innsbruck\\
   Department of Statistics\\
   Faculty of Economics and Statistics\\
-  Universit\"at Innsbruck\\
   Universit\"atsstr.~15\\
   6020 Innsbruck, Austria\\
   E-mail: \email{Achim.Zeileis@R-project.org}\\

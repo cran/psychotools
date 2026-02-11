@@ -77,7 +77,7 @@ Provided by Jeff Froh and Jinyan Fan.
 
 \examples{
 data("YouthGratitude", package = "psychotools")
-summary(YouthGratitude)
+head(YouthGratitude)
 
 ## modeling can be carried out using package lavaan
 \dontrun{
