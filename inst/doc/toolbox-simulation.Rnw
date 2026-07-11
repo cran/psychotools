@@ -48,7 +48,6 @@ The detection of differential item functioning (DIF) is a central topic in psych
   Binzm\"uhlestr.~14\\
   8050 Z\"urich, Switzerland\\
   E-mail: \email{Carolin.Strobl@psychologie.uzh.ch}, \email{Rudolf.Debelak@psychologie.uzh.ch}\\
-  URL: \url{https://www.psychologie.uzh.ch/fachrichtungen/methoden.html}\\
 
   Achim Zeileis\\
   Universit\"at Innsbruck\\

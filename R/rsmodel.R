@@ -755,7 +755,7 @@ discrpar.rsmodel <- function (object, ref = NULL, alias = TRUE, vcov = TRUE, ...
   }
 
   ## setup and return result object
-  rv <- structure(dp, .Names = if (is.logical(alias)) lbs, class = "discrpar", model = "RSM", ref = ref, alias = alias, vcov = vc)
+  rv <- structure(dp, names = if (is.logical(alias)) lbs, class = "discrpar", model = "RSM", ref = ref, alias = alias, vcov = vc)
   return(rv)
 }
 
@@ -788,7 +788,7 @@ personpar.rsmodel <- function(object, personwise = FALSE, ref = NULL,
     pp <- pp[match(rs, rng)]
     vc <- matrix(NA_real_, length(pp), length(pp))
     rownames(vc) <- colnames(vc) <- seq_along(rs)
-    rv <- structure(pp, .Names = seq_along(rs), class = "personpar",
+    rv <- structure(pp, names = seq_along(rs), class = "personpar",
       model = "RSM", vcov = vc, type = "personwise")
   } else {
     if(vcov) {
@@ -815,7 +815,7 @@ personpar.rsmodel <- function(object, personwise = FALSE, ref = NULL,
       vc <- matrix(NA_real_, nrow = length(rng), ncol = length(rng))
     }
     rownames(vc) <- colnames(vc) <- rng
-    rv <- structure(pp, .Names = rng, class = "personpar", model = "RSM",
+    rv <- structure(pp, names = rng, class = "personpar", model = "RSM",
       vcov = vc, type = "discrete")
   }
   return(rv)

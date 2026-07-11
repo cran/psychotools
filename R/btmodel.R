@@ -175,7 +175,7 @@ coef.btmodel <- function(object, all = TRUE, ref = !all, ...) {
   lab <- object$labels
   nobj <- length(lab)
   acf <- object$coefficients
-  cf <- structure(rep(0, nobj), .Names = lab)
+  cf <- structure(rep(0, nobj), names = lab)
   ocf <- acf[1:(nobj-1)]
   cf[names(ocf)] <- ocf
   cf <- c(cf, acf[-(1:(nobj-1))])

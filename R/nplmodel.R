@@ -965,7 +965,7 @@ personpar.nplmodel <- function(object, personwise = FALSE, vcov = TRUE,
     nms <- seq_along(tmp)
     vc <- matrix(NA_real_, length(tmp), length(tmp))
     rownames(vc) <- colnames(vc) <- nms
-    rv <- structure(tmp, .Names = nms, class = "personpar", model = "PL",
+    rv <- structure(tmp, names = nms, class = "personpar", model = "PL",
       vcov = vc, type = "personwise")
   } else {
     tmp <- mirt::mod2values(object$mirt)
@@ -983,7 +983,7 @@ personpar.nplmodel <- function(object, personwise = FALSE, vcov = TRUE,
       vc <- matrix(NA_real_, length(tmp[, 6L]), length(tmp[, 6L]))
     }
     rownames(vc) <- colnames(vc) <- nms
-    rv <- structure(tmp[, 6L], .Names = nms, class = "personpar", model = "PL",
+    rv <- structure(tmp[, 6L], names = nms, class = "personpar", model = "PL",
       vcov = vc, type = "normal")
   }
   return(rv)

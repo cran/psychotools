@@ -31,7 +31,7 @@ paircomp <- function(data, labels = NULL, mscale = NULL, ordered = FALSE, covari
   cnam <- which(upper.tri(diag(nobj)), arr.ind = TRUE)
   if(ordered) cnam <- rbind(cnam, cnam[,2:1])
   cnam <- apply(cnam, 1, paste, collapse = ":")
-  data <- structure(as.integer(data), .Dim = c(nsubj, npc), .Dimnames = list(rownames(data), cnam))
+  data <- structure(as.integer(data), dim = c(nsubj, npc), dimnames = list(rownames(data), cnam))
   data_unique <- as.integer(data_unique)
 
   ## process labels

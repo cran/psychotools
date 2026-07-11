@@ -500,7 +500,7 @@ mptspec <- function(..., .replicates = NULL, .restr = NULL)
     pd <- getParseData(e)
     pd$text[pd$token == "SYMBOL"]                     # get parameter names
   })))
-  pars <- structure(rep.int(NA_real_, length(pars)), .Names = pars)
+  pars <- structure(rep.int(NA_real_, length(pars)), names = pars)
 
   # ## use .pars to fix parameters or starting values or so
   # if(!is.null(.pars)) {

@@ -129,7 +129,7 @@ itemresp <- function(data, mscale = NULL, labels = NULL, names = NULL)
   }
   
   ## coerce data to integer matrix (keep dim and dimnames)
-  data <- structure(as.integer(as.matrix(data)), .Dim = dim(data), .Dimnames = dimnames(data))
+  data <- structure(as.integer(as.matrix(data)), dim = dim(data), dimnames = dimnames(data))
 
   ## simplify mscale classes to integer if possible
   lclass <- sapply(mscale, class)
